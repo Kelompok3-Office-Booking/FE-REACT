@@ -1,8 +1,9 @@
+import SetupRouters from "./routers";
 import "./App.css";
 function App() {
   return (
     <div className="App">
-      <h1>Initial Project here</h1>
+      <SetupRouters />
     </div>
   );
 }
