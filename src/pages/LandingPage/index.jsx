@@ -1,10 +1,11 @@
-import { Navbar } from "components/index";
+import { Navbar, Footer } from "components/index";
 import React from "react";
 
 const LandingPage = () => {
   return (
     <div>
       <Navbar />
+      <Footer />
     </div>
   );
 };
