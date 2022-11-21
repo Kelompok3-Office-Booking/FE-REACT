@@ -22,7 +22,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row lg:flex-row lg:px-32">
-                        <div className="text-start flex flex-col md:pr-12 lg:px-32">
+                        <div className="text-start flex flex-col md:pr-12 lg:px-24 2xl:px-32">
                             <h3 className="font-bold text-lg py-4">MAIN MENU</h3>
                             <Link className="my-1" to="/#home">Home</Link>
                             <Link className="my-1" to="/#testimonial">Testimonial</Link>
@@ -31,9 +31,9 @@ const Footer = () => {
                         </div>
                         <div className="text-start flex flex-col">
                             <h3 className="font-bold text-lg pt-8 md:py-4 lg:py-4">CONTACT</h3>
-                            <Link className="my-1" to="/#home">Savana street 21, Jakarta</Link>
-                            <Link className="my-1" to="/#testimonial">Better.space@gmail.com</Link>
-                            <Link className="my-1" to="/#feature">081-678-890</Link>
+                            <Link className="my-1" to="/#">Savana street 21, Jakarta</Link>
+                            <Link className="my-1" to="/#">Better.space@gmail.com</Link>
+                            <Link className="my-1" to="/#">081-678-890</Link>
                         </div>
                     </div>
                 </div>
