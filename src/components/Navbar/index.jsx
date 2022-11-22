@@ -92,7 +92,7 @@ const Navbar = () => {
                 <HashLink
                   onClick={HANDLETOGGLE}
                   smooth
-                  to="/#step"
+                  to="/#tips"
                   className="block py-2 pl-3 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
                 >
                   Step
@@ -102,7 +102,7 @@ const Navbar = () => {
                 <HashLink
                   onClick={HANDLETOGGLE}
                   smooth
-                  to="/#aboutus"
+                  to="/#contact"
                   className="block py-2 pl-3 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
                 >
                   About us
