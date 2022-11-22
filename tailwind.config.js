@@ -5,7 +5,19 @@ module.exports = {
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#020203",
+        secondary: "#2943A3",
+      },
+    },
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+    },
+    container: {
+      padding: "4rem",
+      center: true,
+    },
   },
   plugins: [require("flowbite/plugin")],
 };

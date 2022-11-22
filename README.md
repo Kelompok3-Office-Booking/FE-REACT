@@ -9,9 +9,8 @@ It is also important for the business to manage its listings, customers, and mar
 ### How to Run?
 
 1. Clone this Project
-2. On your command, type cd office-booking-system
-3. type `code .`
-4. Create .env files in the root of project
-5. On your Code editor, open terminal and then type `npm install`
-6. Run the project by typing `npm start`
-7. Happy Testing
+2. type `code .`
+3. Create .env files in the root of project
+4. On your Code editor, open terminal and then type `npm install`
+5. Run the project by typing `npm start`
+6. Happy Testing
