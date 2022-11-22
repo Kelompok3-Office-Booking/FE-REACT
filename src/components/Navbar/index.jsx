@@ -1,4 +1,4 @@
-import { LogoNavbar } from "assets";
+import { BetterSpace, LogoNavbar } from "assets";
 import React, { useState } from "react";
 import { HashLink } from "react-router-hash-link";
 
@@ -20,7 +20,7 @@ const Navbar = () => {
         <div className="container flex flex-wrap items-center justify-between mx-auto">
           <HashLink smooth to="#" className="flex items-center">
             <img
-              src={LogoNavbar}
+              src={BetterSpace}
               className="h-6 mr-3 sm:h-9"
               alt="Flowbite Logo"
             />
