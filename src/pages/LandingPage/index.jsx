@@ -6,7 +6,12 @@ import Headers from "./Header";
 import "./style.css";
 import Tips from "./Tips";
 
+
+
+
 const LandingPage = () => {
+
+
   return (
     <div>
       <Navbar />

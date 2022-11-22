@@ -12,10 +12,11 @@ import {
 import { Link } from "react-router-dom";
 
 const Contact = () => {
+
     return (
         <div
             id="contact"
-            className="bg-gray-200 py-12 lg:py-44 flex justify-center"
+            className="bg-gray-200 py-20 lg:py-44 flex justify-center"
             data-aos="fade-up"
             data-aos-duration="1200"
         >
