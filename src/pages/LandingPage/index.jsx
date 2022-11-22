@@ -4,6 +4,7 @@ import Contact from "./Contact";
 import Features from "./Features";
 import Headers from "./Header";
 import "./style.css";
+import Testimonials from "./Testimonials";
 import Tips from "./Tips";
 
 
@@ -17,6 +18,7 @@ const LandingPage = () => {
       <Navbar />
       <Headers />
       <Features />
+      <Testimonials />
       <Tips />
       <Contact />
       <Footer />

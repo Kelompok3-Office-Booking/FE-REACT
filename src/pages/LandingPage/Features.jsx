@@ -33,7 +33,7 @@ const Features = () => {
       <motion.div className="progress-bar mt-20" style={{ scaleX }} />
       <div className="container flex flex-col text-white py-24 md:py-12 lg:py-28 2xl:py-32">
         <div data-aos="fade-up">
-          <h1 className="p-2 font-bold lg:text-3xl">Amazing Apps Feature!</h1>
+          <h1 className="pb-4 text-2xl font-bold lg:text-3xl">Amazing Apps Feature!</h1>
           <div className="flex justify-center py-2">
             <hr className="w-44" />
           </div>
@@ -44,8 +44,7 @@ const Features = () => {
         </div>
         <div
           data-aos="zoom-in"
-          className="flex flex-col md:flex-row md:flex-wrap justify-center pt-12"
-        >
+          className="flex flex-col md:flex-row md:flex-wrap justify-center pt-12">
           <Feature
             imgUrl={fitur1}
             // efect="fade-up"
