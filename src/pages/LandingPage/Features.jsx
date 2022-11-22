@@ -13,7 +13,7 @@ const Feature = ({ imgUrl, title, desc, efect }) => (
 
 const Features = () => {
     return (
-        <div className="bg-slate-900 flex justify-center">
+        <div className="bg-slate-900 flex justify-center" id="features">
             <div className="container flex flex-col text-white py-8 md:py-12 lg:py-16 2xl:py-24">
                 <div>
                     <h1 className="p-2 font-bold lg:text-3xl">Amazing Apps Feature!</h1>

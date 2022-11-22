@@ -1,5 +1,6 @@
 import { Navbar, Footer } from "components/index";
 import React from "react";
+import Contact from "./Contact";
 import Features from "./Features";
 import Headers from "./Header";
 import "./style.css";
@@ -12,6 +13,7 @@ const LandingPage = () => {
       <Headers />
       <Features />
       <Tips />
+      <Contact />
       <Footer />
     </div>
   );
