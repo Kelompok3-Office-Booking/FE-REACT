@@ -20,7 +20,7 @@ const Features = () => {
   return (
     <div id="features" className="bg-slate-900 flex justify-center">
       <div className="container flex flex-col text-white py-8 md:py-12 lg:py-16 2xl:py-24">
-        <div>
+        <div data-aos="fade-up">
           <h1 className="p-2 font-bold lg:text-3xl">Amazing Apps Feature!</h1>
           <div className="flex justify-center py-2">
             <hr className="w-44" />
@@ -30,7 +30,10 @@ const Features = () => {
             don't miss it!
           </p>
         </div>
-        <div className="flex flex-col md:flex-row md:flex-wrap justify-center pt-12">
+        <div
+          data-aos="zoom-in"
+          className="flex flex-col md:flex-row md:flex-wrap justify-center pt-12"
+        >
           <Feature
             imgUrl={fitur1}
             // efect="fade-up"
