@@ -11,5 +11,23 @@ import fitur2 from "./img/features/fitur2.svg";
 import fitur3 from "./img/features/fitur3.svg";
 import fitur4 from "./img/features/fitur4.svg";
 import mockup_phone from "./img/tips/mockup-phone.svg";
+import LogoNavbar from "./img/Navbar/Hamburger.svg";
+import BetterSpace from "./img/Navbar/Logo.svg";
 
-export { logo, logo_black, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone };
+export {
+  logo,
+  logo_black,
+  facebook,
+  instagram,
+  twitter,
+  googleplay,
+  appstore,
+  gambar_header,
+  fitur1,
+  fitur2,
+  fitur3,
+  fitur4,
+  mockup_phone,
+  LogoNavbar,
+  BetterSpace,
+};
