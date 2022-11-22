@@ -9,5 +9,6 @@ import fitur1 from "./img/features/fitur1.svg";
 import fitur2 from "./img/features/fitur2.svg";
 import fitur3 from "./img/features/fitur3.svg";
 import fitur4 from "./img/features/fitur4.svg";
+import mockup_phone from "./img/tips/mockup-phone.svg";
 
-export { logo, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4 };
+export { logo, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone };
