@@ -3,7 +3,7 @@ import { mockup_phone } from "assets";
 
 const Tips = () => {
     return (
-        <div className="bg-white flex justify-center">
+        <div className="bg-white flex justify-center py-20">
             <div className="container flex flex-col lg:flex-row md:justify-around">
                 <div>
                     <img src={mockup_phone} alt="Mockup Phone" className="w-full py-12 md:w-full lg:w-auto md:p-12" />
