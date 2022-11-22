@@ -2,7 +2,8 @@ import { Navbar, Footer } from "components/index";
 import React from "react";
 import Features from "./Features";
 import Headers from "./Header";
-import "./index.css";
+import "./style.css";
+import Tips from "./Tips";
 
 const LandingPage = () => {
   return (
@@ -10,6 +11,7 @@ const LandingPage = () => {
       <Navbar />
       <Headers />
       <Features />
+      <Tips />
       <Footer />
     </div>
   );
