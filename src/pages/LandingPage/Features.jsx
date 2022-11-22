@@ -19,7 +19,7 @@ const Feature = ({ imgUrl, title, desc, efect }) => (
 const Features = () => {
   return (
     <div id="features" className="bg-slate-900 flex justify-center">
-      <div className="container flex flex-col text-white py-8 md:py-12 lg:py-16 2xl:py-24">
+      <div className="container flex flex-col text-white py-8 md:py-12 lg:py-28 2xl:py-32">
         <div data-aos="fade-up">
           <h1 className="p-2 font-bold lg:text-3xl">Amazing Apps Feature!</h1>
           <div className="flex justify-center py-2">

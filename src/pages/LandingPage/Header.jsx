@@ -12,7 +12,7 @@ const Headers = () => {
   }, []);
   return (
     <div id="hero">
-      <div className="flex justify-center lg:py-32 2xl:py-48">
+      <div className="flex justify-center py-24 lg:py-32 2xl:py-48">
         <div className="container">
           <div className="flex flex-row md:justify-center lg:px-20 lg:justify-between">
             <div data-aos="fade-up" className="py-12">
