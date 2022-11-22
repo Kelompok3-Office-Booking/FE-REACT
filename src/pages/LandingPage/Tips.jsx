@@ -5,7 +5,7 @@ const Tips = () => {
     return (
         <div className="bg-white flex justify-center lg:py-20" id="tips">
             <div className="container flex flex-col lg:flex-row lg:content-center md:justify-around">
-                <div className="lg:w-1/2 m-auto">
+                <div className="md:w-3/4 lg:w-1/2 m-auto">
                     <img src={mockup_phone} alt="Mockup Phone" className="w-full py-12 md:w-full lg:w-auto md:p-12" />
                 </div>
                 <div className="py-12 lg:w-1/2 text-center md:text-start">
