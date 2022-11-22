@@ -1,6 +1,6 @@
 import React from "react";
 import { logo, facebook, twitter, instagram } from "assets/index";
-import { HashLink as Link } from 'react-router-hash-link';
+import { HashLink } from 'react-router-hash-link';
 
 const Footer = () => {
     return (
@@ -24,21 +24,47 @@ const Footer = () => {
                     <div className="flex flex-col md:flex-row lg:flex-row lg:px-12">
                         <div className="text-start flex flex-col md:pr-12 lg:px-8 2xl:px-32">
                             <h3 className="font-bold text-lg py-4">MAIN MENU</h3>
-                            <Link className="my-1" to="/#home">Home</Link>
-                            <Link className="my-1" to="/#testimonial">Testimonial</Link>
-                            <Link className="my-1" to="/#feature">Feature</Link>
-                            <Link className="my-1" to="/#about">About Us</Link>
+                            <HashLink
+                                smooth
+                                to="/#hero"
+                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                Home
+                            </HashLink>
+                            <HashLink
+                                smooth
+                                to="/#features"
+                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                Feature
+                            </HashLink>
+                            <HashLink
+                                smooth
+                                to="/#testimonials"
+                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                Testimonial
+                            </HashLink>
+                            <HashLink
+                                smooth
+                                to="/#tips"
+                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                Step
+                            </HashLink>
+                            <HashLink
+                                smooth
+                                to="/#contact"
+                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                About us
+                            </HashLink>
                         </div>
                         <div className="text-start flex flex-col">
                             <h3 className="font-bold text-lg pt-8 md:py-4 lg:py-4">CONTACT</h3>
-                            <Link className="my-1" to="/#">Savana street 21, Jakarta</Link>
-                            <Link className="my-1" to="/#">Better.space@gmail.com</Link>
-                            <Link className="my-1" to="/#">081-678-890</Link>
+                            <HashLink className="my-1" to="/#">Savana street 21, Jakarta</HashLink>
+                            <HashLink className="my-1" to="/#">Better.space@gmail.com</HashLink>
+                            <HashLink className="my-1" to="/#">081-678-890</HashLink>
                         </div>
                     </div>
                 </div>
                 <div className="text-center pt-12">
-                    Kelompok 3 Alterra Academy | 2022 Capstone Project
+                    <a href="">Kelompok 3 Alterra Academy | 2022 Capstone Project</a>
                 </div>
             </div>
         </div>

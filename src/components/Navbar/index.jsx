@@ -52,9 +52,8 @@ const Navbar = () => {
             </svg>
           </button>
           <div
-            className={`${
-              toggle ? "block" : "hidden"
-            } w-full md:block md:w-auto`}
+            className={`${toggle ? "block" : "hidden"
+              } w-full md:block md:w-auto`}
             id="navbar-default"
           >
             <ul className="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium items-center">
@@ -109,14 +108,14 @@ const Navbar = () => {
                 </HashLink>
               </li>
               <li>
-                <a href="#">
+                <HashLink smooth to="#hero">
                   <button
                     type="button"
                     className="text-white bg-secondary hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0"
                   >
                     Get Now
                   </button>
-                </a>
+                </HashLink>
               </li>
             </ul>
           </div>
