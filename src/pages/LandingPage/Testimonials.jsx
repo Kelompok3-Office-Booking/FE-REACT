@@ -37,7 +37,7 @@ const Testimonials = () => {
     // console.log(testimonial)
 
     return (
-        <div className="flex pt-16 flex-col lg:pt-32">
+        <div className="flex pt-16 flex-col lg:pt-32" id="testimonials">
             <div data-aos="fade-up" className="flex container flex-col justify-center">
                 <div className="text-start pb-20">
                     <h1 className="font-bold text-2xl lg:text-4xl pb-2 lg:pb-8">Comfort and happy customers is our achievement !</h1>
