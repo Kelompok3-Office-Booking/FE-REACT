@@ -3,7 +3,7 @@ import { appstore, googleplay, gambar_header } from "assets";
 
 const Headers = () => {
     return (
-        <div>
+        <div id="header">
             <div className="flex justify-center lg:py-32 2xl:py-48">
                 <div className="container">
                     <div className="flex flex-row md:justify-center lg:px-20 lg:justify-between">

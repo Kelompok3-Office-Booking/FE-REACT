@@ -1,4 +1,5 @@
 import logo from "./img/logo.svg";
+import logo_black from "./img/logo-black.svg";
 import facebook from "./img/facebook.svg";
 import instagram from "./img/instagram.svg";
 import twitter from "./img/twitter.svg";
@@ -11,4 +12,4 @@ import fitur3 from "./img/features/fitur3.svg";
 import fitur4 from "./img/features/fitur4.svg";
 import mockup_phone from "./img/tips/mockup-phone.svg";
 
-export { logo, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone };
+export { logo, logo_black, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone };

@@ -21,8 +21,8 @@ const Footer = () => {
                             <img src={facebook} alt="instagram" className="pr-4" />
                         </div>
                     </div>
-                    <div className="flex flex-col md:flex-row lg:flex-row lg:px-32">
-                        <div className="text-start flex flex-col md:pr-12 lg:px-24 2xl:px-32">
+                    <div className="flex flex-col md:flex-row lg:flex-row lg:px-12">
+                        <div className="text-start flex flex-col md:pr-12 lg:px-8 2xl:px-32">
                             <h3 className="font-bold text-lg py-4">MAIN MENU</h3>
                             <Link className="my-1" to="/#home">Home</Link>
                             <Link className="my-1" to="/#testimonial">Testimonial</Link>

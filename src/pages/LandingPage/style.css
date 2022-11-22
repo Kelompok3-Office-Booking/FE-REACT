@@ -1,5 +1,9 @@
 #image-header {
-  right: 290px;
-  top: 150px;
-  z-index: -50;
+    right: 290px;
+    top: 150px;
+    z-index: -50;
+}
+
+.logo {
+    justify-content: center !important;
 }
