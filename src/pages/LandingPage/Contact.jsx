@@ -49,7 +49,7 @@ const Contact = () => {
                     <div className="bg-slate-900 flex-col rounded-lg flex content-center h-auto">
                         <textarea type="text" id="writesomething" placeholder="Write something" className="bg-slate-900 text-white rounded-lg border-0 w-full h-40 p-4 text-lg" />
                         <div className="flex justify-end absolute">
-                            <FontAwesomeIcon icon={faPenToSquare} className="h-6 p-4 text-white relative lg:top-24 lg:left-[370px] 2xl:left-[640px]" />
+                            <FontAwesomeIcon icon={faPenToSquare} className="h-6 p-4 text-white relative lg:top-24 lg:left-[370px] xl:left-[490px] 2xl:left-[640px]" />
                         </div>
                     </div>
                     <div className="my-4 w-full bg-blue-700 p-3 rounded-lg font-bold text-white">
