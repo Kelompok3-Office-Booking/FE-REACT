@@ -27,31 +27,31 @@ const Footer = () => {
                             <HashLink
                                 smooth
                                 to="/#hero"
-                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                className="block py-2 lg:pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
                                 Home
                             </HashLink>
                             <HashLink
                                 smooth
                                 to="/#features"
-                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                className="block py-2 lg:pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
                                 Feature
                             </HashLink>
                             <HashLink
                                 smooth
                                 to="/#testimonials"
-                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                className="block py-2 lg:pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
                                 Testimonial
                             </HashLink>
                             <HashLink
                                 smooth
                                 to="/#tips"
-                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                className="block py-2 lg:pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
                                 Step
                             </HashLink>
                             <HashLink
                                 smooth
                                 to="/#contact"
-                                className="block py-2 pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                className="block py-2 lg:pl-3 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
                                 About us
                             </HashLink>
                         </div>

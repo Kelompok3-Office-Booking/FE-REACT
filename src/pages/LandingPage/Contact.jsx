@@ -89,7 +89,7 @@ const Contact = () => {
                         <div className="flex justify-end absolute">
                             <FontAwesomeIcon
                                 icon={faPenToSquare}
-                                className="h-6 p-4 text-white relative lg:top-24 lg:left-[370px] xl:left-[490px] 2xl:left-[640px]"
+                                className="h-6 p-4 text-white relative top-24 left-[200px] md:left-[530px] lg:top-24 lg:left-[370px] xl:left-[490px] 2xl:left-[640px]"
                             />
                         </div>
                     </div>
