@@ -1,4 +1,4 @@
-import { Layout } from "components";
+import { LayoutAdmin } from "components";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { LandingPage } from "../pages";
@@ -11,7 +11,7 @@ const SetupRouters = () => {
 
       {/*Protected Routes*/}
       <Route path="admin-dashboard">
-        <Route index element={<Layout />} />
+        <Route index element={<LayoutAdmin />} />
       </Route>
 
       {/*Private Routes*/}

@@ -1,5 +1,5 @@
 import Navbar from "./Navbar/index";
 import Footer from "./Footer/index";
-import Layout from "./Layout";
+import LayoutAdmin from "./LayoutAdmin";
 
-export { Navbar, Footer, Layout };
+export { Navbar, Footer, LayoutAdmin };
