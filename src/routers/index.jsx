@@ -1,7 +1,7 @@
 import { LayoutAdmin, DashboardPage, TransactionPage, UserPage, OfficePage, ReviewPage, PromoPage, AdminPage } from "components";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { LandingPage } from "../pages";
+import { LandingPage, LoginPage } from "../pages";
 
 const SetupRouters = () => {
   return (
@@ -22,7 +22,9 @@ const SetupRouters = () => {
       </Route>
 
       {/*Private Routes*/}
-      <Route></Route>
+      <Route path="login">
+        <Route index element={<LoginPage />} />
+      </Route>
 
       {/*Notfound Routes*/}
       <Route />

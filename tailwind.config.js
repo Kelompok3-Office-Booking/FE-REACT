@@ -5,7 +5,9 @@ module.exports = {
         extend: {
             colors: {
                 primary: "#020203",
-                secondary: "#2943A3",
+        secondary: "#2943A3",
+        third: "##F5F5F5",
+        fourth: "#FCFCFC",
             },
             animation: {
                 "bounce-slow": "bounce 1s infinite",
@@ -23,5 +25,17 @@ module.exports = {
             center: true,
         },
     },
-    plugins: [require("flowbite/plugin")],
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+    },
+    container: {
+      padding: "4rem",
+      center: true,
+    },
+    container_mobile: {
+      padding: "2rem",
+      center: true,
+    },
+  },
+  plugins: [require("flowbite/plugin")],
 };
