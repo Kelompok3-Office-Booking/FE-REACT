@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-slate-900 px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0">
+      <nav className="bg-bgPrimary px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0">
         <div className="container flex flex-wrap items-center justify-between mx-auto">
           <HashLink smooth to="#" className="flex items-center">
             <img

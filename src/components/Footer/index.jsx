@@ -1,10 +1,11 @@
 import React from "react";
 import { logo, facebook, twitter, instagram } from "assets/index";
 import { HashLink } from 'react-router-hash-link';
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
-        <div className="bg-slate-900 py-12 flex justify-center">
+        <div className="bg-bgPrimary py-12 flex justify-center">
             <div className="container text-white">
                 <div className="flex flex-col md:flex-row lg:flex-row justify-between">
                     <div className="flex flex-col content-center">
@@ -64,7 +65,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="text-center pt-12">
-                    <a href="">Kelompok 3 Alterra Academy | 2022 Capstone Project</a>
+                    <Link href="">Kelompok 3 Alterra Academy | 2022 Capstone Project</Link>
                 </div>
             </div>
         </div>

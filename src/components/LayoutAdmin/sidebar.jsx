@@ -7,7 +7,7 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
 let activeClassName =
-    "bg-blue-800 text-white rounded-tr-full rounded-br-full mr-12";
+    "bg-blue-500 text-white rounded-tr-full rounded-br-full mr-12";
 
 let notActive =
     "my-auto text-lg";
@@ -31,7 +31,7 @@ const SidebarAdmin = () => {
                     <div className="py-12 px-16">
                         <div>
                             <label class="flex">
-                                <FontAwesomeIcon className="my-auto text-gray-500 pl-1 h-5" icon={faSearch} />
+                                <FontAwesomeIcon onClick={HANDLETOGGLE} className="my-auto text-gray-500 pl-1 h-5" icon={faSearch} />
                                 <input class={`${toggle ? "visible" : "invisible"} placeholder:text-slate-400 block w-full py-2 pl-12 pr-3 shadow-sm border-0 sm:text-lg focus:outline-none focus:ring-0`} placeholder="Search " type="text" name="search" />
                             </label>
                         </div>

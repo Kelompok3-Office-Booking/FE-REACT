@@ -6,7 +6,7 @@ import Carousel from 'better-react-carousel'
 import "./style.css";
 
 const Card = ({ name, comment, time, rating, imgUrl }) => (
-    <div data-aos="zoom-in" className="h-auto mr-4 mr-4 lg:mr-0 lg:ml-12 lg:w-3/4 mb-8 bg-black rounded-3xl text-white border-gray-400 border-8">
+    <div data-aos="zoom-in" className="h-auto mr-4 lg:mr-0 lg:ml-12 lg:w-3/4 mb-8 bg-bgPrimary rounded-3xl text-white border-gray-400 border-8">
         <div className="flex flex-col text-end content-between p-4">
             <div>
                 <h3 className="h-20 font-bold text-xl">" {comment} "</h3>

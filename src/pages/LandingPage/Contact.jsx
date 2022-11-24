@@ -42,7 +42,7 @@ const Contact = () => {
                                     alt=""
                                     className=" mb-4 px-12 w-full h-24 2xl:w-full lg:h-auto"
                                 />
-                                <p className="text-black text-lg font-bold 2xl:text-xl">
+                                <p className="text-bgPrimary text-lg font-bold 2xl:text-xl">
                                     BETTER SPACE
                                 </p>
                             </div>
@@ -68,7 +68,7 @@ const Contact = () => {
                     </div>
                 </div>
                 <form className="lg:w-1/2 md:ml-12 2xl:ml-2">
-                    <div className="bg-slate-900 rounded-lg flex content-center my-4">
+                    <div className="bg-bgPrimary rounded-lg flex content-center my-4">
                         <FontAwesomeIcon
                             icon={faCalendarDays}
                             className="h-6 p-4 text-white"
@@ -76,15 +76,15 @@ const Contact = () => {
                         <input
                             type="text"
                             placeholder="Input your email"
-                            className="bg-slate-900 text-white rounded-lg w-full border-0 text-lg"
+                            className="bg-bgPrimary text-white rounded-lg w-full border-0 text-lg"
                         />
                     </div>
-                    <div className="bg-slate-900 flex-col rounded-lg flex content-center h-auto">
+                    <div className="bg-bgPrimary flex-col rounded-lg flex content-center h-auto">
                         <textarea
                             type="text"
                             id="writesomething"
                             placeholder="Write something"
-                            className="bg-slate-900 text-white rounded-lg border-0 w-full h-40 p-4 text-lg"
+                            className="bg-bgPrimary text-white rounded-lg border-0 w-full h-40 p-4 text-lg"
                         />
                         <div className="flex justify-end absolute">
                             <FontAwesomeIcon

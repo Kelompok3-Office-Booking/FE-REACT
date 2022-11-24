@@ -15,7 +15,7 @@ const NavbarAdmin = () => {
     setToggle(false);
   }, [])
   return (
-    <div className="bg-slate-900 text-white flex justify-center">
+    <div className="bg-bgPrimary text-white flex justify-center">
       <div className="container">
         <nav className="flex justify-between my-4">
           <Link className="my-auto">Dashboard / ini nanti link</Link>
