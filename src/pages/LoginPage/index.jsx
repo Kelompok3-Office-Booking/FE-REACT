@@ -1,28 +1,28 @@
 import { BetterSpace } from "assets";
 import { Button } from "components";
 import React from "react";
+import { Link } from "react-router-dom";
 const LoginPage = () => {
   return (
     <section className="bg-gray-50 ">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
-          <a
+        <div className="w-full bg-white rounded-2xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
+          <Link
             href="#"
-            className="flex items-center justify-center mb-6 text-2xl font-bold text-gray-900 pt-10 xl:pt-20"
-          >
-            <img className="w-8 h-8 mr-2" src={BetterSpace} alt="logo" />
+            className="flex items-center justify-center mb-6 text-2xl font-bold text-gray-900 pt-10 xl:pt-20">
+            <img className="w-16 h-16 mr-2" src={BetterSpace} alt="logo" />
             BETTER SPACE
-          </a>
+          </Link>
           <div className="p-6 space-y-2 md:space-y-4 sm:p-8">
             <div className="flex flex-col items-start">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2x">
-                welcome Admin,
+              <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-2x">
+                Welcome Admin,
               </h1>
               <p className="text-base text-neutral-600">
                 Lets login to manage the app
               </p>
             </div>
-            <form onSubmit={() => {}} className="space-y-4 pt-4">
+            <form onSubmit={() => { }} className="space-y-4 pt-4">
               <div>
                 <div className="relative">
                   <input
@@ -56,14 +56,14 @@ const LoginPage = () => {
                 </div>
               </div>
               <div className="flex items-center justify-end">
-                <p className="font-normal text-neutral-500">
+                <p className="font-normal text-sm text-neutral-500">
                   Forgot your password?
-                  <a
+                  <Link
                     href="#"
-                    className="text-sm font-semibold text-secondary hover:underline"
+                    className="text-sm font-normal pl-2 text-red-600 hover:underline"
                   >
                     Forgot password
-                  </a>
+                  </Link>
                 </p>
               </div>
               <Button props={"Login"} />
