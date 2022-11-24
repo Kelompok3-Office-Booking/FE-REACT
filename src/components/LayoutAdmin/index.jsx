@@ -1,5 +1,5 @@
-import { BetterSpace } from "assets";
-import React, { useState } from "react";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import NavbarAdmin from "./navbar";
 import SidebarAdmin from "./sidebar";
 
@@ -12,7 +12,11 @@ const LayoutAdmin = () => {
         </aside>
         <main className="w-full flex flex-col">
           <NavbarAdmin />
-          <div className="p-12">{"ini adalah content"}</div>
+          <div className="p-12 bg-slate-50 container text-black">
+            <div>
+              {<Outlet />}
+            </div>
+          </div>
         </main>
       </div>
     </div>

@@ -7,6 +7,9 @@ module.exports = {
                 primary: "#020203",
                 secondary: "#2943A3",
             },
+            animation: {
+                "bounce-slow": "bounce 1s infinite",
+            },
         },
         fontFamily: {
             sans: ["Inter", "sans-serif"],
