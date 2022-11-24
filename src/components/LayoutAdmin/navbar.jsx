@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { twitter } from "assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 const NavbarAdmin = () => {
+  const [toggle, setToggle] = useState(false);
+
+  const HANDLETOGGLE = () => {
+    setToggle(!toggle);
+  };
   return (
     <div className="bg-slate-900 text-white flex justify-center">
       <div className="container">
@@ -12,6 +17,7 @@ const NavbarAdmin = () => {
           <Link className="my-auto">Dashboard / ini nanti link</Link>
           <button
             id="dropdownDividerButton"
+            onClick={HANDLETOGGLE}
             data-dropdown-toggle="dropdownDivider"
             className="flex content-center bg-sky-800 rounded-full px-4 py-2"
           >
@@ -25,7 +31,9 @@ const NavbarAdmin = () => {
           </button>
           <div
             id="dropdownDivider"
-            class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+            class={`${
+              toggle ? "block" : "hidden"
+            } z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600`}
           >
             <div class="py-1">
               <Link
