@@ -37,7 +37,7 @@ const Tips = () => {
                             Search or choose your workspace
                         </h3>
                         <p className="font-normal text-lg">
-                            Available popular workspaces and recommendations closest to you.
+                            available popular workspaces and recommendations.
                         </p>
                     </div>
                     <div className="pb-4 2xl:pb-8">

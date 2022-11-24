@@ -48,7 +48,7 @@ const Features = () => {
           <Feature
             imgUrl={fitur2}
             title="Workspace Recommendation"
-            desc="A feature that provides recommendations for the closest workspace to your current location. Of course you can choose the workspace according to what you want."
+            desc="A feature that provides recommendations for the closest workspace. Of course you can choose the workspace according to what you want."
           />
           <Feature
             imgUrl={fitur3}
