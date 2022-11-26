@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { admin, logo_black, discount, review, transaction } from "assets";
+import { logo_black } from "assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
@@ -12,18 +12,14 @@ let activeClassName =
 let notActive =
     "my-auto text-lg";
 
-const SidebarAdmin = () => {
-    const [toggle, setToggle] = useState(true);
-
-    const HANDLETOGGLE = () => {
-        setToggle(!toggle);
-        console.log(toggle);
-    };
+const SidebarAdmin = ({
+    HANDLETOGGLE, toggle
+}) => {
 
     return (
         <div className={`bg-slate-900`}>
             <div className={`bg-white min-h-screen rounded-tr-[75px]`} >
-                <div className={`${toggle ? "w-80 -translate-x-1" : "w-48 translate-x-0 "} ease-in-out duration-300 py-12`} >
+                <div className={`${toggle ? "w-80 duration-200" : "w-48 ease-in-out"} ease-in-out duration-300 py-12`} >
                     <div className="flex w-auto pl-16 mr-8">
                         <img src={logo_black} className="h-20 hover:animate-bounce-slow" alt="" />
                         <h4 className={`${toggle ? "visible" : "invisible"} w-full my-auto font-bold text-xl ml-3`}>BETTER SPACE</h4>
@@ -139,7 +135,7 @@ const SidebarAdmin = () => {
                                     </div>
                                 )}
                             </NavLink>
-                            <NavLink to={"/admin-dashboard/admin"}>
+                            {/* <NavLink to={"/admin-dashboard/admin"}>
                                 {({ isActive }) => (
                                     <div className={isActive ? activeClassName : notActive}>
                                         <div className="flex py-4 pl-16 mr-8">
@@ -154,7 +150,7 @@ const SidebarAdmin = () => {
                                         </div>
                                     </div>
                                 )}
-                            </NavLink>
+                            </NavLink> */}
                         </div>
                     </div>
                 </div>

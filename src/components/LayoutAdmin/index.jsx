@@ -1,19 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import NavbarAdmin from "./navbar";
 import SidebarAdmin from "./sidebar";
 
+
+
 const LayoutAdmin = () => {
+  const [toggle, setToggle] = useState(true);
+
+  const HANDLETOGGLE = () => {
+    setToggle(!toggle);
+    console.log(toggle);
+  };
+
   return (
     <div className="bg-slate-50">
       <div className="flex">
-        <aside className="relative">
-          <SidebarAdmin />
+        <aside className="fixed z-40">
+          <SidebarAdmin toggle={toggle} HANDLETOGGLE={HANDLETOGGLE} />
         </aside>
-        <main className="w-full flex flex-col">
-          <NavbarAdmin />
-          <div className="p-12 bg-slate-50 container text-black">
-            <div>
+        <main>
+          <div className={`${toggle ? "pl-80 duration-500" : "pl-48"} fixed w-full z-20`}>
+            <NavbarAdmin />
+          </div>
+          <div className={`${toggle ? "pl-80 duration-500" : "pl-48"} w-full pt-20 flex flex-col`}>
+            <div className="p-12 bg-slate-50 mb-4 container text-black w-full">
               {<Outlet />}
             </div>
           </div>
