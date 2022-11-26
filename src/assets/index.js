@@ -23,6 +23,10 @@ import image7 from "./img/testimonials/image7.svg";
 import image8 from "./img/testimonials/image8.svg";
 import image9 from "./img/testimonials/image9.svg";
 import image10 from "./img/testimonials/image10.svg";
+import login from "./img/login/login.svg";
 
 export { logo, logo_black, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone, LogoNavbar, BetterSpace };
+// gambar testimonials
 export { image1, image2, image3, image4, image5, image6, image7, image8, image9, image10 };
+// login
+export { login };

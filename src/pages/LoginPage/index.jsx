@@ -1,11 +1,14 @@
-import { BetterSpace } from "assets";
+import { BetterSpace, login } from "assets";
 import { Button } from "components";
 import React from "react";
 import { Link } from "react-router-dom";
 const LoginPage = () => {
   return (
     <section className="bg-gray-50 ">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div className="flex items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="mr-32">
+          <img src={login} alt="" />
+        </div>
         <div className="w-full bg-white rounded-2xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
           <Link
             href="#"
@@ -29,12 +32,10 @@ const LoginPage = () => {
                     type="text"
                     id="floating_outlined"
                     class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                  />
+                    placeholder=" " />
                   <label
                     for="floating_outlined"
-                    className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                  >
+                    className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
                     Username
                   </label>
                 </div>
