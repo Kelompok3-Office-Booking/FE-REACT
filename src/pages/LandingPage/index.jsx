@@ -7,12 +7,7 @@ import "./style.css";
 import Testimonials from "./Testimonials";
 import Tips from "./Tips";
 
-
-
-
 const LandingPage = () => {
-
-
   return (
     <div>
       <Navbar />
