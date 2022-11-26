@@ -13,9 +13,7 @@ const LayoutAdmin = () => {
         <main className="w-full flex flex-col">
           <NavbarAdmin />
           <div className="p-12 bg-slate-50 container text-black">
-            <div>
-              {<Outlet />}
-            </div>
+            <div>{<Outlet />}</div>
           </div>
         </main>
       </div>
