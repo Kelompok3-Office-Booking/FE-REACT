@@ -13,6 +13,10 @@ module.exports = {
             animation: {
                 "bounce-slow": "bounce 1s infinite",
             },
+            dropShadow: {
+                "3xl": "0 35px 35px rgba(0, 0, 0, 0.50)",
+                "4xl": ["0px 4px 30px rgba(0, 0, 0, 0.05)"],
+            },
         },
         fontFamily: {
             sans: ["Inter", "sans-serif"],
