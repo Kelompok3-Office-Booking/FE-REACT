@@ -1,15 +1,19 @@
-import { BetterSpace } from "assets";
+import { BetterSpace, login } from "assets";
 import { Button } from "components";
 import React from "react";
 import { Link } from "react-router-dom";
 const LoginPage = () => {
   return (
     <section className="bg-gray-50 ">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-2xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
+      <div className="flex items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="mr-32">
+          <img src={login} alt="" />
+        </div>
+        <div className="w-full bg-white rounded-2xl custom shadow-dark md:mt-0 sm:max-w-md xl:p-0">
           <Link
             href="#"
-            className="flex items-center justify-center mb-6 text-2xl font-bold text-gray-900 pt-10 xl:pt-20">
+            className="flex items-center justify-center mb-6 text-2xl font-bold text-gray-900 pt-10 xl:pt-20"
+          >
             <img className="w-16 h-16 mr-2" src={BetterSpace} alt="logo" />
             BETTER SPACE
           </Link>
@@ -22,7 +26,7 @@ const LoginPage = () => {
                 Lets login to manage the app
               </p>
             </div>
-            <form onSubmit={() => { }} className="space-y-4 pt-4">
+            <form onSubmit={() => {}} className="space-y-4 pt-4">
               <div>
                 <div className="relative">
                   <input

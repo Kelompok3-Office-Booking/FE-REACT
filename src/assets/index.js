@@ -23,6 +23,7 @@ import image7 from "./img/testimonials/image7.svg";
 import image8 from "./img/testimonials/image8.svg";
 import image9 from "./img/testimonials/image9.svg";
 import image10 from "./img/testimonials/image10.svg";
+import login from "./img/login/login.svg";
 import Arrow from "./img/arrow.svg";
 
 export {
@@ -41,7 +42,9 @@ export {
   mockup_phone,
   LogoNavbar,
   BetterSpace,
+  Arrow,
 };
+// gambar testimonials
 export {
   image1,
   image2,
@@ -53,5 +56,6 @@ export {
   image8,
   image9,
   image10,
-  Arrow,
 };
+// login
+export { login };
