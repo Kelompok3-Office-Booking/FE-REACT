@@ -9,16 +9,6 @@ import { Rating } from "@mui/material";
 import { testimonials } from "store/dataTestimonials";
 
 
-const items = [
-    {
-        label: 'item 1', key: 'item-1',
-    },
-    {
-        label: 'item 2', key: 'item-2'
-    },
-];
-
-
 const Card = ({ imgUrl, name, rating, date, office, comment }) => {
     return (
         <div className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
@@ -87,7 +77,7 @@ const ReviewPage = () => {
     // console.log(menu.props.items[0].name);
     console.log(filter);
     return (
-        <div className="flex flex-col mb-32 w-full">
+        <div className="flex flex-col w-full">
             <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
                 <h1 className="text-3xl font-bold my-auto">Review</h1>
                 <div className="flex content-center px-12 rounded-xl text-lg py-2">

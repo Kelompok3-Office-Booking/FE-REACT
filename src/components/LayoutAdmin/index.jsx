@@ -14,7 +14,7 @@ const LayoutAdmin = () => {
   return (
     <div className="bg-slate-50">
       <div className="flex">
-        <aside className="fixed z-40">
+        <aside className="fixed z-30">
           <SidebarAdmin toggle={toggle} HANDLETOGGLE={HANDLETOGGLE} />
         </aside>
         <main>
@@ -23,11 +23,11 @@ const LayoutAdmin = () => {
               } fixed w-full z-20`}>
             <NavbarAdmin />
           </div>
-          <div className="flex content-center w-screen justify-center">
+          <div className="flex content-center justify-center">
             <div
               className={`${toggle ? "pl-80 duration-500" : "pl-48"
-                } w-full pt-20 flex justify-center`}>
-              <div className="p-12 bg-slate-50 mb-4 container h-screen text-black w-full">
+                } pt-20 flex justify-center w-screen`}>
+              <div className="p-12 bg-slate-50 mb-4 container text-black w-full">
                 {<Outlet />}
               </div>
             </div>

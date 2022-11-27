@@ -29,9 +29,8 @@ const UserPage = () => {
         <div className="flex justify-between items-center py-4 bg-white px-4">
           <div className="my-auto flex">
             <h1 className="inline pr-4 my-auto text-base text-neutral-500">
-              ({listOfUser.length}) Record Found
+              (7) Record Found
             </h1>
-
             <button
               type="button"
               onClick={HANDLEDELETEALL}
