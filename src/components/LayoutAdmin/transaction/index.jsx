@@ -11,9 +11,11 @@ const TransactionPage = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transaction);
 
+  const [user, setUser] = [];
+
   useEffect(() => {
     dispatch(fetchTransaction());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   const HANDLEDELETE = () => {
     DeleteAlert();
@@ -22,7 +24,7 @@ const TransactionPage = () => {
     DeleteAllData();
   };
   return (
-    <>
+    <div className="min-h-screen">
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
         <div className="flex justify-between items-center py-4 bg-white px-4">
           <div className="flex">
@@ -156,7 +158,7 @@ const TransactionPage = () => {
                   </div>
                 </td>
                 <td className="py-4 px-6">{transaction.id}</td>
-                <td className="py-4 px-6">{transaction.user.fullName}</td>
+                <td className="py-4 px-6">{transaction.user?.fullName}</td>
                 <td className="py-4 px-6">{transaction.type}</td>
                 <td className="py-4 px-6">{transaction.date}</td>
                 <td className="py-4 px-6">{transaction.nominal}</td>
@@ -187,7 +189,7 @@ const TransactionPage = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 
