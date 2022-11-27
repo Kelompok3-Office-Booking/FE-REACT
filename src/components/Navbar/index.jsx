@@ -1,4 +1,4 @@
-import { BetterSpace, LogoNavbar } from "assets";
+import { BetterSpace } from "assets";
 import React, { useState } from "react";
 import { HashLink } from "react-router-hash-link";
 
@@ -52,8 +52,9 @@ const Navbar = () => {
             </svg>
           </button>
           <div
-            className={`${toggle ? "block" : "hidden"
-              } w-full md:block md:w-auto`}
+            className={`${
+              toggle ? "block" : "hidden"
+            } w-full md:block md:w-auto`}
             id="navbar-default"
           >
             <ul className="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium items-center">
