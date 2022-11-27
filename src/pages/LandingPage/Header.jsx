@@ -16,7 +16,7 @@ const Headers = () => {
         <div className="container">
           <div className="flex flex-row md:justify-center lg:px-20 lg:justify-between">
             <div data-aos="fade-up" className="py-12">
-              <h1 className="font-bold text-center md:text-start text-4xl lg:text-5xl leading-snug 2xl:text-7xl">
+              <h1 className="font-bold text-center drop-shadow-title md:text-start text-4xl lg:text-5xl leading-snug 2xl:text-7xl">
                 Find your best <br /> Workspace!
               </h1>
               <p className="text-xl py-8 text-center md:text-start font-semibold lg:w-[460px] lg:text-base 2xl:text-xl 2xl:w-[500px]">
