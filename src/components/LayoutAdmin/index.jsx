@@ -19,19 +19,17 @@ const LayoutAdmin = () => {
         </aside>
         <main>
           <div
-            className={`${
-              toggle ? "pl-80 duration-500" : "pl-48"
-            } fixed w-full z-20`}
-          >
+            className={`${toggle ? "pl-80 duration-500" : "pl-48"
+              } fixed w-full z-20`}>
             <NavbarAdmin />
           </div>
-          <div
-            className={`${
-              toggle ? "pl-80 duration-500" : "pl-48"
-            } w-full pt-20 flex flex-col`}
-          >
-            <div className="p-12 bg-slate-50 mb-4 container text-black w-full">
-              {<Outlet />}
+          <div className="flex content-center w-screen justify-center">
+            <div
+              className={`${toggle ? "pl-80 duration-500" : "pl-48"
+                } w-full pt-20 flex justify-center`}>
+              <div className="p-12 bg-slate-50 mb-4 container h-screen text-black w-full">
+                {<Outlet />}
+              </div>
             </div>
           </div>
         </main>

@@ -25,18 +25,18 @@ const TransactionPage = () => {
     <>
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
         <div className="flex justify-between items-center py-4 bg-white px-4">
-          <div>
-            <h1 className="inline pr-4 text-base text-neutral-500">
+          <div className="flex">
+            <h1 className="inline pr-4 text-base my-auto text-neutral-500">
               (7) Record Found
             </h1>
 
             <button
               type="button"
               onClick={HANDLEDELETEALL}
-              className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
             >
               <DeleteForeverIcon className="text-white" />
-              Delete Selected
+              <p className="my-auto">Delete Selected</p>
             </button>
           </div>
           <label htmlFor="table-search" className="sr-only">
