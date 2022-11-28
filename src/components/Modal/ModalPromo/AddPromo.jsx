@@ -1,7 +1,10 @@
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 
-const AddPromo = () => {
+const AddPromo = ({
+    handleChangeFromTask,
+    handleSubmit
+}) => {
 
     const [modal, setModal] = useState(false);
     const HandleModal = () => {
@@ -10,7 +13,7 @@ const AddPromo = () => {
 
     return (
         <>
-            <button onClick={HandleModal} className="flex py-2 px-12 bg-blue-600 text-white rounded-xl">
+            <button onClick={HandleModal} className="flex py-2 pl-10 pr-12 bg-blue-600 text-white rounded-xl">
                 <PlusOutlined className="mr-4 my-auto text-xl mb-1" />
                 <p className="my-auto">Add</p>
             </button>
@@ -27,7 +30,7 @@ const AddPromo = () => {
                             <div className="text-start pb-6">
                                 <h1 className="text-2xl font-bold text-gray-600">Add Promo / Voucher</h1>
                             </div>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="pb-6">
                                     <div className="relative">
                                         <input
@@ -35,6 +38,9 @@ const AddPromo = () => {
                                             id="floating_outlined"
                                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
+                                            name="voucher_code"
+                                            onChange={(ev) => handleChangeFromTask(ev)}
+                                            autoComplete="off"
                                         />
                                         <label
                                             for="floating_outlined"
@@ -50,6 +56,8 @@ const AddPromo = () => {
                                             id="floating_outlined"
                                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
+                                            name="periode"
+                                            onChange={(ev) => handleChangeFromTask(ev)}
                                         />
                                         <label
                                             for="floating_outlined"
@@ -61,10 +69,13 @@ const AddPromo = () => {
                                 <div className="pb-6">
                                     <div className="relative">
                                         <input
-                                            type="text"
+                                            type="number"
                                             id="floating_outlined"
                                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
+                                            name="nominal"
+                                            onChange={(ev) => handleChangeFromTask(ev)}
+                                            autoComplete="off"
                                         />
                                         <label
                                             for="floating_outlined"

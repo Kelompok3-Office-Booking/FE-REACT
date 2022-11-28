@@ -120,7 +120,7 @@ const UserPage = () => {
             </tr>
           </thead>
           <tbody>
-            {listOfUser.map((user) => (
+            {listOfUser?.map((user) => (
               <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
                 <td className="p-4 w-4">
                   <div className="flex items-center">

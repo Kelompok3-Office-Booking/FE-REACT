@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-export default function DeleteAlert() {
+const DeleteAlert = () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton:
@@ -38,3 +38,5 @@ export default function DeleteAlert() {
       }
     });
 }
+
+export default DeleteAlert;
