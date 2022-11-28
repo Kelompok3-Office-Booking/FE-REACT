@@ -6,7 +6,7 @@ const initialState = {
     loading: false,
 };
 
-export const fetchPromo = createAsyncThunk("fetch/transaction", async() => {
+export const fetchPromo = createAsyncThunk("fetch/promo", async() => {
     try {
         const res = await APIPromo.getAllPromo();
         return res.data.promo;
@@ -15,7 +15,7 @@ export const fetchPromo = createAsyncThunk("fetch/transaction", async() => {
     }
 });
 
-export const createPromo = createAsyncThunk("create/promo", async() => {
+export const createPromo = createAsyncThunk("create/promo", async(data) => {
     try {
         const res = await APIPromo.createPromo();
         console.log(res);
@@ -63,6 +63,7 @@ const promoSlice = createSlice({
                 state.loading = false;
             })
             .addCase(createPromo.fulfilled, (state, action) => {
+                // const { nominal, periode, voucher_code } = action.payload;
                 state.data = action.payload;
             })
             .addCase(deletePromo.fulfilled, (state, action) => {

@@ -7,6 +7,7 @@ import DeleteAlert from "components/Alert/deleteAlert";
 import ModalUpdateTransaksi from "components/Modal/ModalTransaksi";
 import { Arrow } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
+import { useSnackbar } from "@mui/base";
 const TransactionPage = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transaction);
@@ -162,7 +163,10 @@ const TransactionPage = () => {
                 <td className="py-4 px-6">{transaction.type}</td>
                 <td className="py-4 px-6">{transaction.date}</td>
                 <td className="py-4 px-6">{transaction.nominal}</td>
-                <td className="py-4 px-6">{transaction.status}</td>
+                <td id="status" className="py-4 px-6">
+                  <span
+                    className={`${transaction.status === "On Process" ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4" : transaction.status === "Confirmed" ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4" : transaction.status === "Pending" ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4" : transaction.status === "Cancelled" ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4" : "bg-black"}`}>{transaction.status}
+                  </span></td>
                 <td className="py-4 px-6 flex gap-2 items-center justify-center">
                   {/* Modal toggle */}
                   <button
@@ -192,5 +196,10 @@ const TransactionPage = () => {
     </div>
   );
 };
+
+// const status = document.getElementById("status");
+// if (status === "On Process") {
+//   status.style = "bg-black"
+// }
 
 export default TransactionPage;

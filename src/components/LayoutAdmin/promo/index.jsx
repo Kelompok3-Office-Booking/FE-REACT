@@ -1,13 +1,12 @@
 import AddPromo from "components/Modal/ModalPromo/AddPromo";
 import EditPromo from "components/Modal/ModalPromo/EditPromo";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Arrow } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import HapusPromo from "components/Modal/ModalPromo/HapusPromo";
+import DeletePromo from "components/Modal/ModalPromo/DeletePromo";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPromo } from "store/Feature/FeaturePromo/promoSlice";
-import DeleteAlert from "components/Alert/deleteAlert";
+import { fetchPromo, createPromo, deletePromo } from "store/Feature/FeaturePromo/promoSlice";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 const PromoPage = () => {
@@ -16,24 +15,44 @@ const PromoPage = () => {
     const listOfPromo = useSelector((state) => state.promo.data);
     console.log(listOfPromo);
 
+    const [data, setData] = useState({
+        voucher_code: "",
+        periode: "",
+        nominal: "",
+    })
+
+    const handleChangeFromTask = (ev) => {
+        setData({
+            ...data,
+            [ev.target.name]: ev.target.value
+        })
+    }
+
+
     useEffect(() => {
         dispatch(fetchPromo());
     }, [dispatch])
 
-    const HANDLEDELETE = () => {
-        DeleteAlert();
+    const handleDelete = (id) => {
+        dispatch(deletePromo(id));
     };
-    const HANDLEDELETEALL = () => {
+    const handleDeleteAll = () => {
         DeleteAllData();
     };
 
+    const handleSubmit = (ev) => {
+        const { nominal, periode, voucher_code } = data;
+        dispatch(createPromo({ voucher_code, nominal, periode }));
+    }
+
+    console.log(data);
     return (
         <>
             <div className="flex flex-col w-full">
                 <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
                     <h1 className="text-3xl font-bold my-auto">Voucher Promo</h1>
                     <div className="flex content-center pl-12 rounded-xl text-lg py-2">
-                        <AddPromo />
+                        <AddPromo handleChangeFromTask={handleChangeFromTask} handleSubmit={handleSubmit} />
                     </div>
                 </div>
                 <div className="mt-4 z-10">
@@ -157,7 +176,7 @@ const PromoPage = () => {
                                             >
                                                 <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
                                             </button>
-                                            <HapusPromo />
+                                            <DeletePromo handleDelete={handleDelete} idPromo={promo.id} />
                                             <EditPromo />
                                         </td>
                                     </tr>
