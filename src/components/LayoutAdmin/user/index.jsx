@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "store/Feature/FeatureUser/userSlice";
-import DeleteAlert from "components/Alert/deleteAlert";
 import { ModalUpdateUser } from "components/Modal";
 import { Arrow } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
+import DeleteAlertUser from "components/Alert/deleteAlertUser";
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const UserPage = () => {
   }, [dispatch]);
 
   const HANDLEDELETE = () => {
-    DeleteAlert();
+    DeleteAlertUser();
   };
   const HANDLEDELETEALL = () => {
     DeleteAllData();
