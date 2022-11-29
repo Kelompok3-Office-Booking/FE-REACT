@@ -10,13 +10,16 @@ import ModalUpdateTransaksi from "components/Modal/ModalTransaksi";
 import DeleteAllData from "components/Alert/deleteAllData";
 import ModalViewTransaction from "components/Modal/ModalTransaksi/viewModal";
 import THead from "./tableHeader";
+import { useSnackbar } from "@mui/base";
 const TransactionPage = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transaction);
 
+  const [user, setUser] = [];
+
   useEffect(() => {
     dispatch(fetchTransaction());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   const HANDLEDELETE = (id) => {
     DeleteAlert(id);
@@ -25,21 +28,21 @@ const TransactionPage = () => {
     DeleteAllData();
   };
   return (
-    <>
+    <div className="min-h-screen">
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
         <div className="flex justify-between items-center py-4 bg-white px-4">
-          <div>
-            <h1 className="inline pr-4 text-base text-neutral-500">
+          <div className="flex">
+            <h1 className="inline pr-4 text-base my-auto text-neutral-500">
               (7) Record Found
             </h1>
 
             <button
               type="button"
               onClick={HANDLEDELETEALL}
-              className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
             >
               <DeleteForeverIcon className="text-white" />
-              Delete Selected
+              <p className="my-auto">Delete Selected</p>
             </button>
           </div>
           <label htmlFor="table-search" className="sr-only">
@@ -93,11 +96,27 @@ const TransactionPage = () => {
                   </div>
                 </td>
                 <td className="py-4 px-6">{transaction.id}</td>
-                <td className="py-4 px-6">{transaction.user.fullName}</td>
+                <td className="py-4 px-6">{transaction.user?.fullName}</td>
                 <td className="py-4 px-6">{transaction.type}</td>
                 <td className="py-4 px-6">{transaction.date}</td>
                 <td className="py-4 px-6">{transaction.nominal}</td>
-                <td className="py-4 px-6">{transaction.status}</td>
+                <td id="status" className="py-4 px-6">
+                  <span
+                    className={`${
+                      transaction.status === "On Process"
+                        ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
+                        : transaction.status === "Confirmed"
+                        ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                        : transaction.status === "Pending"
+                        ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
+                        : transaction.status === "Cancelled"
+                        ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                        : "bg-black"
+                    }`}
+                  >
+                    {transaction.status}
+                  </span>
+                </td>
                 <td className="py-4 px-6 flex gap-2 items-center justify-center">
                   {/* Modal toggle */}
                   <ModalViewTransaction />
@@ -117,8 +136,13 @@ const TransactionPage = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
+
+// const status = document.getElementById("status");
+// if (status === "On Process") {
+//   status.style = "bg-black"
+// }
 
 export default TransactionPage;

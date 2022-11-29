@@ -7,6 +7,8 @@ import {
   ReviewPage,
   PromoPage,
   AdminPage,
+  EditOffice,
+  AddOffice
 } from "components";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
@@ -23,6 +25,8 @@ const SetupRouters = () => {
         <Route path="dashboard" index element={<DashboardPage />} />
         <Route path="user" element={<UserPage />} />
         <Route path="office" element={<OfficePage />} />
+        <Route path="editOffice" element={<EditOffice />} />
+        <Route path="addOffice" element={<AddOffice />} />
         <Route path="transaction" element={<TransactionPage />} />
         <Route path="review" element={<ReviewPage />} />
         <Route path="promo" element={<PromoPage />} />

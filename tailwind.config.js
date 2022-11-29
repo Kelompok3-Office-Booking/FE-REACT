@@ -13,7 +13,7 @@ module.exports = {
         third: "##F5F5F5",
         fourth: "#FCFCFC",
         fifth: "#E9634B",
-        sixth: "#45AF49",
+        success: "#45AF49",
       },
       animation: {
         "bounce-slow": "bounce 1s infinite",

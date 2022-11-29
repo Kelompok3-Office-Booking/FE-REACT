@@ -24,21 +24,20 @@ const UserPage = () => {
   };
 
   return (
-    <>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+    <div>
+      <div className="w-full shadow-md sm:rounded-lg">
         <div className="flex justify-between items-center py-4 bg-white px-4">
-          <div>
-            <h1 className="inline pr-4 text-base text-neutral-500">
+          <div className="my-auto flex">
+            <h1 className="inline pr-4 my-auto text-base text-neutral-500">
               (7) Record Found
             </h1>
-
             <button
               type="button"
               onClick={HANDLEDELETEALL}
-              className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
             >
               <DeleteForeverIcon className="text-white" />
-              Delete Selected
+              <p className="my-auto">Delete Selected</p>
             </button>
           </div>
           <label htmlFor="table-search" className="sr-only">
@@ -121,7 +120,7 @@ const UserPage = () => {
             </tr>
           </thead>
           <tbody>
-            {listOfUser.map((user) => (
+            {listOfUser?.map((user) => (
               <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
                 <td className="p-4 w-4">
                   <div className="flex items-center">
@@ -159,7 +158,7 @@ const UserPage = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 
