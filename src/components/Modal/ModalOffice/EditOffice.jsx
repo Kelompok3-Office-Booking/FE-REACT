@@ -7,7 +7,7 @@ const InputField = ({ name, label, placeholder, onChange, className, type = "tex
         <input
             type={type}
             id="floating_outlined"
-            className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+            className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
             placeholder={placeholder}
             name={name}
             onChange={onChange}
@@ -36,36 +36,18 @@ const EditOffice = () => {
                 <form className="bg-white rounded-2xl shadow w-full py-4 px-4 justify-between flex mt-8">
                     <div className="mx-2 mt-4 mb-4 w-1/2">
                         <div className="pb-6">
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    id="floating_outlined"
-                                    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder="Office ID"
-                                    name="office_id"
-                                />
-                                <label
-                                    for="floating_outlined"
-                                    className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-                                    Office ID
-                                </label>
-                            </div>
+                            <InputField
+                                name="office_id"
+                                label="Office ID"
+                                placeholder="Office ID"
+                            />
                         </div>
                         <div className="pb-6">
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    id="floating_outlined"
-                                    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                    placeholder="Full Name"
-                                    name=""
-                                />
-                                <label
-                                    for="floating_outlined"
-                                    className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-                                    Full Name
-                                </label>
-                            </div>
+                            <InputField
+                                name="full_name"
+                                label="Full Name"
+                                placeholder="Full Name"
+                            />
                         </div>
                         <div className="pb-6 flex-col text-start">
                             <p className="pb-4">Select Type</p>
@@ -288,44 +270,44 @@ const EditOffice = () => {
                         </div>
                         <p className="text-start mb-2">Facilities</p>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">High Speed Wifi</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">High Speed Wifi</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Avalible many charging slot</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Avalible many charging slot</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Air Conditioner in all room</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Air Conditioner in all room</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Projector to presentation</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Projector to presentation</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Free parking for your vehicle</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Free parking for your vehicle</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Snacks and drinks available</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Snacks and drinks available</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Prayer room available</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Prayer room available</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Clean toilet with water heater</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Clean toilet with water heater</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">Enter the room using the access card</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Enter the room using the access card</label>
                         </div>
                         <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-4 w-full text-start border-gray-300 rounded-lg text-normal font-normal text-gray-900 dark:text-gray-300">nice view from the window</label>
+                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">nice view from the window</label>
                         </div>
                     </div>
                 </form>

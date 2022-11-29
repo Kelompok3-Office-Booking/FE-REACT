@@ -2,6 +2,7 @@ import AddOffice from "components/Modal/ModalOffice/AddOffice";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import React from "react";
 import { Link } from "react-router-dom";
+import ViewOffice from "components/Modal/ModalOffice/ViewOffice";
 
 const OfficePage = () => {
   return (
@@ -20,7 +21,12 @@ const OfficePage = () => {
           </div>
         </div>
       </div>
-      <Link to={"/admin-dashboard/editOffice"}>Edit anjir</Link>
+      <div className="py-8">
+        <Link to={"/admin-dashboard/editOffice"}>Edit anjir</Link>
+        <button>
+          <ViewOffice />
+        </button>
+      </div>
     </>
   );
 };

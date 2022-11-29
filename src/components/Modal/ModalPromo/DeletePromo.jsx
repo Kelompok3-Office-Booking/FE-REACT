@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DeleteAlertPromo from "./DeleteAlertPromo";
 
+
 const DeletePromo = ({
-    handleDelete,
-    idPromo
+    idPromo,
+    loading,
+    setReload
 }) => {
     const [modal, setModal] = useState(false);
     const HandleModal = () => {
@@ -24,7 +26,7 @@ const DeletePromo = ({
             </button>
             {
                 modal && (
-                    <DeleteAlertPromo />
+                    <DeleteAlertPromo idPromo={idPromo} loading={loading} setReload={setReload} />
                 )
             }
         </>

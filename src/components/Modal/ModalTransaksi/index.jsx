@@ -67,24 +67,11 @@ const ModalUpdateTransaksi = () => {
                     Edit Transaction
                   </h3>
                   <div className="space-y-6">
-                    <FormControl fullWidth>
-                      <InputLabel
-                        id="demo-simple-select-label"
-                        className="bg-white"
-                      >
-                        Status Booking
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={age}
-                        label="Age"
-                        onChange={handleChange}
-                      >
-                        <MenuItem value="Reject">Reject</MenuItem>
-                        <MenuItem value="Accept">Accept</MenuItem>
-                      </Select>
-                    </FormControl>
+                    <select id="status_booking" class="bg-gray-50 border py-4 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option selected>Status Booking</option>
+                      <option value="Rccept">Accept</option>
+                      <option value="Reject">Reject</option>
+                    </select>
                   </div>
 
                   <div className="relative">

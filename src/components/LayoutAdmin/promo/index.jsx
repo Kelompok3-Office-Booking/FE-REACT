@@ -6,14 +6,15 @@ import DeleteAllData from "components/Alert/deleteAllData";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DeletePromo from "components/Modal/ModalPromo/DeletePromo";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPromo, createPromo, deletePromo } from "store/Feature/FeaturePromo/promoSlice";
+import { fetchPromo, createPromo } from "store/Feature/FeaturePromo/promoSlice";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { ContentTableLoader } from "components";
 
 const PromoPage = () => {
 
     const dispatch = useDispatch();
     const listOfPromo = useSelector((state) => state.promo.data);
-    console.log(listOfPromo);
+    // console.log(listOfPromo);
 
     const [data, setData] = useState({
         voucher_code: "",
@@ -21,21 +22,24 @@ const PromoPage = () => {
         nominal: "",
     })
 
-    const handleChangeFromTask = (ev) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleChangePromo = (ev) => {
         setData({
             ...data,
             [ev.target.name]: ev.target.value
         })
     }
 
+    const setReload = () => {
+        setLoading(true);
+    }
 
     useEffect(() => {
         dispatch(fetchPromo());
-    }, [dispatch])
+        setLoading(false);
+    }, [dispatch, loading])
 
-    const handleDelete = (id) => {
-        dispatch(deletePromo(id));
-    };
     const handleDeleteAll = () => {
         DeleteAllData();
     };
@@ -45,14 +49,14 @@ const PromoPage = () => {
         dispatch(createPromo({ voucher_code, nominal, periode }));
     }
 
-    console.log(data);
+    // console.log(data);
     return (
         <>
             <div className="flex flex-col w-full">
                 <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
                     <h1 className="text-3xl font-bold my-auto">Voucher Promo</h1>
                     <div className="flex content-center pl-12 rounded-xl text-lg py-2">
-                        <AddPromo handleChangeFromTask={handleChangeFromTask} handleSubmit={handleSubmit} />
+                        <AddPromo handleChangePromo={handleChangePromo} handleSubmit={handleSubmit} />
                     </div>
                 </div>
                 <div className="mt-4 z-10">
@@ -143,44 +147,47 @@ const PromoPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {listOfPromo?.map((promo) => (
-                                    <tr
-                                        className="bg-white border-b hover:bg-gray-50"
-                                        key={promo.id}
-                                    >
-                                        <td className="p-4 w-4">
-                                            <div className="flex items-center">
-                                                <input
-                                                    id="checkbox-table-search-1"
-                                                    type="checkbox"
-                                                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                                                />
-                                                <label
-                                                    htmlFor="checkbox-table-search-1"
-                                                    className="sr-only"
-                                                >
-                                                    checkbox
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td className="py-4 px-6 text-center">{promo.voucher_code}</td>
-                                        <td className="py-4 px-6 text-center">{promo.periode}</td>
-                                        <td className="py-4 px-6 text-center">{promo.nominal} %</td>
-                                        <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                                            {/* Modal toggle */}
-                                            <button
-                                                href="#"
-                                                type="button"
-                                                data-modal-toggle="editUserModal"
-                                                className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600"
-                                            >
-                                                <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
-                                            </button>
-                                            <DeletePromo handleDelete={handleDelete} idPromo={promo.id} />
-                                            <EditPromo />
-                                        </td>
-                                    </tr>
-                                ))}
+                                {
+                                    loading
+                                        ?
+                                        <ContentTableLoader />
+                                        :
+                                        listOfPromo?.map((promo) => (
+                                            <tr
+                                                className="bg-white border-b hover:bg-gray-50"
+                                                key={promo.id}>
+                                                <td className="p-4 w-4">
+                                                    <div className="flex items-center">
+                                                        <input
+                                                            id="checkbox-table-search-1"
+                                                            type="checkbox"
+                                                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                                                        />
+                                                        <label
+                                                            htmlFor="checkbox-table-search-1"
+                                                            className="sr-only"
+                                                        >
+                                                            checkbox
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td className="py-4 px-6 text-center">{promo.voucher_code}</td>
+                                                <td className="py-4 px-6 text-center">{promo.periode}</td>
+                                                <td className="py-4 px-6 text-center">{promo.nominal} %</td>
+                                                <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                                                    {/* Modal toggle */}
+                                                    {/* <button
+                                                        href="#"
+                                                        type="button"
+                                                        data-modal-toggle="editUserModal"
+                                                        className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600">
+                                                        <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
+                                                    </button> */}
+                                                    <DeletePromo idPromo={promo.id} loading={loading} setReload={setReload} />
+                                                    <EditPromo dataPromo={promo} />
+                                                </td>
+                                            </tr>
+                                        ))}
                             </tbody>
                         </table>
                     </div>

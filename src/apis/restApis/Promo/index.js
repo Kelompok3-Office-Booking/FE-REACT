@@ -34,7 +34,7 @@ const APIPromo = {
 
     async deletePromo(id) {
         try {
-            const response = await axiosInstance.delete(`/promo/:${id}`);
+            const response = await axiosInstance.delete(`/promo/${id}`);
             return response;
         } catch (err) {
             console.log(err);

@@ -1,6 +1,14 @@
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { deletePromo } from "store/Feature/FeaturePromo/promoSlice";
 
-const DeleteAlertPromo = () => {
+const DeleteAlertPromo = ({
+    idPromo,
+    setReload
+}) => {
+
+    const dispatch = useDispatch();
+
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton:
@@ -23,11 +31,15 @@ const DeleteAlertPromo = () => {
         .then((result) => {
             if (result.isConfirmed) {
                 try {
+                    console.log(idPromo)
+                    dispatch(deletePromo(idPromo));
+                    setReload();
                     swalWithBootstrapButtons.fire(
                         "Deleted!",
                         "Your file has been deleted.",
                         "success"
                     );
+                    return result;
                 } catch (error) {
                     return Swal.fire({
                         icon: "error",

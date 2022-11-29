@@ -11,6 +11,8 @@ import DeleteAllData from "components/Alert/deleteAllData";
 import ModalViewTransaction from "components/Modal/ModalTransaksi/viewModal";
 import THead from "./tableHeader";
 import { useSnackbar } from "@mui/base";
+
+
 const TransactionPage = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transaction);
@@ -102,17 +104,16 @@ const TransactionPage = () => {
                 <td className="py-4 px-6">{transaction.nominal}</td>
                 <td id="status" className="py-4 px-6">
                   <span
-                    className={`${
-                      transaction.status === "On Process"
-                        ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
-                        : transaction.status === "Confirmed"
+                    className={`${transaction.status === "On Process"
+                      ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
+                      : transaction.status === "Confirmed"
                         ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
                         : transaction.status === "Pending"
-                        ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
-                        : transaction.status === "Cancelled"
-                        ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                        : "bg-black"
-                    }`}
+                          ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
+                          : transaction.status === "Cancelled"
+                            ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                            : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
+                      }`}
                   >
                     {transaction.status}
                   </span>

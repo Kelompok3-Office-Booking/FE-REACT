@@ -12,13 +12,13 @@ const ModalViewTransaction = () => {
         onClick={HANDLEMODAL}
         type="button"
         data-modal-toggle="editUserModal"
-        className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600"
+        className=" p-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600"
       >
         <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
       </button>
       {/* Edit user modal */}
       {modal && (
-        <div className="flex ">
+        <div className={` transition-transform absolute`}>
           <div
             id="extralarge-modal"
             tabIndex={-1}
@@ -27,15 +27,15 @@ const ModalViewTransaction = () => {
             <div className="relative w-full max-w-lg h-full md:h-auto">
               {/* Modal content */}
               <form
-                onSubmit={() => {}}
+                onSubmit={() => { }}
                 className="relative bg-white rounded-tl-3xl rounded-bl-3xl shadow "
               >
                 {/* Modal header */}
-                <div className="p-2 rounded-t">
+                <div className="p-3 absolute rounded-t">
                   <button
                     onClick={HANDLEMODAL}
                     type="button"
-                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
+                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center ease-in-out delay-100"
                     data-modal-toggle="editUserModal"
                   >
                     <svg
@@ -53,7 +53,7 @@ const ModalViewTransaction = () => {
                   </button>
                 </div>
                 {/* Modal body */}
-                <div className="py-2 px-6 space-y-2">
+                <div className="py-8 px-6 space-y-2">
                   <div className="px-6 lg:px-8 space-y-4">
                     <h3 className="mb-4 text-xl font-medium text-gray-900 ">
                       Detail Transaction
@@ -284,7 +284,7 @@ const ModalViewTransaction = () => {
                         type="submit"
                         className="w-1/2 text-white bg-success hover:bg-green-400 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                       >
-                        Save
+                        Confirm
                       </button>
                     </div>
                   </div>

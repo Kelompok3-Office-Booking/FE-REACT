@@ -39,6 +39,7 @@ export const deletePromo = createAsyncThunk("delete/promo", async(id) => {
     try {
         const res = await APIPromo.deletePromo(id);
         console.log(res);
+        return res;
     } catch (err) {
         console.log(err);
     }

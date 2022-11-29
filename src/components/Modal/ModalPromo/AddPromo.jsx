@@ -2,7 +2,7 @@ import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 
 const AddPromo = ({
-    handleChangeFromTask,
+    handleChangePromo,
     handleSubmit
 }) => {
 
@@ -39,7 +39,7 @@ const AddPromo = ({
                                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
                                             name="voucher_code"
-                                            onChange={(ev) => handleChangeFromTask(ev)}
+                                            onChange={(ev) => handleChangePromo(ev)}
                                             autoComplete="off"
                                         />
                                         <label
@@ -57,7 +57,7 @@ const AddPromo = ({
                                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
                                             name="periode"
-                                            onChange={(ev) => handleChangeFromTask(ev)}
+                                            onChange={(ev) => handleChangePromo(ev)}
                                         />
                                         <label
                                             for="floating_outlined"
@@ -74,7 +74,7 @@ const AddPromo = ({
                                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
                                             name="nominal"
-                                            onChange={(ev) => handleChangeFromTask(ev)}
+                                            onChange={(ev) => handleChangePromo(ev)}
                                             autoComplete="off"
                                         />
                                         <label
