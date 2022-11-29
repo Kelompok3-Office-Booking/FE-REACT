@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const ModalUpdateTransaksi = () => {
   const [modal, setModal] = useState(false);
+  const [age, setAge] = useState("");
+
+  const handleChange = (e) => {
+    setAge(e.target.value);
+  };
   const HANDLEMODAL = () => {
     setModal(!modal);
   };
+
   return (
     <>
       <button
@@ -16,6 +26,7 @@ const ModalUpdateTransaksi = () => {
       >
         <CreateIcon className="text-slate-500 hover:text-white" />
       </button>
+
       {/* Edit user modal */}
       {modal && (
         <div
@@ -24,21 +35,15 @@ const ModalUpdateTransaksi = () => {
           aria-hidden="true"
           className="flex flex-row overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full"
         >
-          <div className="relative w-full max-w-2xl h-full md:h-auto">
+          <div className="relative w-full max-w-lg h-full md:h-auto">
             {/* Modal content */}
-            <form
-              action="#"
-              className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-            >
+            <form action="#" className="relative bg-white rounded-lg shadow ">
               {/* Modal header */}
-              <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Edit user
-                </h3>
+              <div className="p-2 rounded-t border-b">
                 <button
                   onClick={HANDLEMODAL}
                   type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
                   data-modal-toggle="editUserModal"
                 >
                   <svg
@@ -56,146 +61,108 @@ const ModalUpdateTransaksi = () => {
                 </button>
               </div>
               {/* Modal body */}
-              <div className="p-6 space-y-6">
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
+              <div className="py-2 px-6 space-y-6">
+                <div className="px-6 lg:px-8 space-y-4">
+                  <h3 className="mb-4 text-xl font-medium text-neutral-700 ">
+                    Edit Transaction
+                  </h3>
+                  <div className="space-y-6">
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        className="bg-white"
+                      >
+                        Status Booking
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={age}
+                        label="Age"
+                        onChange={handleChange}
+                      >
+                        <MenuItem value="Reject">Reject</MenuItem>
+                        <MenuItem value="Accept">Accept</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="floating_outlined"
+                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      placeholder=" "
+                    />
                     <label
-                      htmlFor="first-name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="floating_outlined"
+                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                     >
                       Full Name
                     </label>
+                  </div>
+
+                  <div className="relative">
                     <input
                       type="text"
-                      name="first-name"
-                      id="first-name"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Bonnie"
-                      required=""
+                      id="floating_outlined"
+                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      placeholder=" "
                     />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="last-name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="floating_outlined"
+                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                     >
-                      Gender
+                      Type
                     </label>
+                  </div>
+
+                  <div className="relative">
                     <input
                       type="text"
-                      name="last-name"
-                      id="last-name"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Green"
-                      required=""
+                      id="floating_outlined"
+                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      placeholder=" "
                     />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="floating_outlined"
+                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                     >
-                      Email
+                      Date
                     </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="example@company.com"
-                      required=""
-                    />
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="phone-number"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Phone Number
-                    </label>
-                    <input
-                      type="number"
-                      name="phone-number"
-                      id="phone-number"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="e.g. +(12)3456 789"
-                      required=""
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="department"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Department
-                    </label>
+
+                  <div className="relative">
                     <input
                       type="text"
-                      name="department"
-                      id="department"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Development"
-                      required=""
+                      id="floating_outlined"
+                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      placeholder=" "
                     />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
                     <label
-                      htmlFor="company"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      htmlFor="floating_outlined"
+                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                     >
-                      Company
+                      Status
                     </label>
-                    <input
-                      type="number"
-                      name="company"
-                      id="company"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder={123456}
-                      required=""
-                    />
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="current-password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+
+                  {/* Modal footer */}
+                  <div className="flex gap-5 ">
+                    <button
+                      type="button"
+                      className="w-1/2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-400 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-gray-500 focus:z-10 focus:ring-4 focus:ring-gray-200"
                     >
-                      Current Password
-                    </label>
-                    <input
-                      type="password"
-                      name="current-password"
-                      id="current-password"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="••••••••"
-                      required=""
-                    />
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <label
-                      htmlFor="new-password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      Reset
+                    </button>
+                    <button
+                      type="submit"
+                      className="w-1/2 text-white bg-success hover:bg-green-400 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     >
-                      New Password
-                    </label>
-                    <input
-                      type="password"
-                      name="new-password"
-                      id="new-password"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="••••••••"
-                      required=""
-                    />
+                      Save
+                    </button>
                   </div>
                 </div>
-              </div>
-              {/* Modal footer */}
-              <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                <button
-                  type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Save all
-                </button>
               </div>
             </form>
           </div>
