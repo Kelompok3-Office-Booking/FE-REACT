@@ -255,7 +255,7 @@ const ViewOffice = () => {
                                                     onClick={HandleModal}
                                                     className="w-full flex justify-center py-2 px-5 mb-2 text-sm font-medium text-gray-400 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-success hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200">
                                                     <CloseOutlined className="text-lg mb-1 mr-2" />
-                                                    <p className="my-auto">Cancel</p>
+                                                    <p className="my-auto">Close</p>
                                                 </button>
                                             </div>
                                         </div>
