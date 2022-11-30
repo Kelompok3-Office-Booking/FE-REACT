@@ -3,7 +3,7 @@ import { mockup_phone } from "assets";
 
 const Tips = () => {
     return (
-        <div className="bg-white flex justify-center py-12 lg:py-32" id="tips">
+        <div className="flex justify-center py-12 lg:py-32" id="tips">
             <div className="container flex flex-col lg:flex-row lg:content-center md:justify-around">
                 <div data-aos="zoom-in-right" className="md:w-3/4 lg:w-1/2 m-auto">
                     <img
