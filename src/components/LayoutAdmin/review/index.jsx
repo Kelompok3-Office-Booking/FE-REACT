@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { CaretDownOutlined, EyeOutlined, EyeInvisibleOutlined, SmileOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined } from '@ant-design/icons';
 // import type { PaginationProps } from 'antd';
-import { Dropdown, Menu, Space, Pagination, Select } from 'antd';
-import { Link } from "react-router-dom";
+import { Pagination, Select } from 'antd';
 import { twitter } from "assets";
 import { Rating } from "@mui/material";
 
@@ -11,7 +10,7 @@ import { testimonials } from "store/dataTestimonials";
 
 const Card = ({ imgUrl, name, rating, date, office, comment }) => {
     return (
-        <div className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
+        <div className="bg-white p-8 my-4 mx-8 drop-shadow-4xl rounded-2xl w-[520px]">
             <div className="flex justify-between">
                 <div className="flex">
                     <img src={imgUrl} className="rounded-full" alt="gambar" />
@@ -75,12 +74,12 @@ const ReviewPage = () => {
     // console.log(dataReview.data);
     // onClick={handleFilter()}
     // console.log(menu.props.items[0].name);
-    console.log(filter);
+    // console.log(filter);
     return (
         <div className="flex flex-col w-full">
             <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
-                <h1 className="text-3xl font-bold my-auto">Review</h1>
-                <div className="flex content-center px-12 rounded-xl text-lg py-2">
+                <h1 className="text-2xl font-bold my-auto">Review</h1>
+                <div className="flex content-center pl-12 rounded-xl text-lg py-2">
                     <p className="mr-4">Sort By : </p>
                     <Select
                         defaultValue="newest"
@@ -101,11 +100,11 @@ const ReviewPage = () => {
                 </div>
 
             </div>
-            <div className=" my-8 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
+            <div className=" my-4 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
                 {
                     testimonial &&
                     testimonial.length > 0 &&
-                    testimonial.slice(dataReview.minValue, dataReview.maxValue).map((review) => {
+                    testimonial.slice(dataReview.minValue, dataReview.maxValue)?.map((review) => {
                         return (
                             <Card
                                 key={review.id}
@@ -120,7 +119,7 @@ const ReviewPage = () => {
                     })
                 }
             </div>
-            <div>
+            <div className="text-start mt-4">
                 <Pagination
                     defaultCurrent={1}
                     defaultPageSize={pageSize}

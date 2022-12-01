@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { dataJakarta } from "store/dataJakarta";
 
-const InputField = ({ name, label, placeholder, onChange, className, type = "text", disabled }) => (
+
+const InputField = ({ name, label, placeholder, defaultValue, onClick, onChange, className = "border-gray-400", type = "text", disabled }) => (
     <div className="relative">
         <input
             type={type}
             id="floating_outlined"
-            className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+            className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
             placeholder={placeholder}
             name={name}
+            onClick={onClick}
+            defaultValue={defaultValue}
             onChange={onChange}
             disabled={disabled}
         />
@@ -21,9 +25,72 @@ const InputField = ({ name, label, placeholder, onChange, className, type = "tex
     </div>
 );
 
+
 const EditOffice = () => {
+    const [jakartaLits, setJakartaList] = useState(dataJakarta);
+    // const [prov, setProv] = useState([]);
+    const [citys, setCitys] = useState([]);
+
+    const [city, setCity] = useState("Central Jakarta");
+    // const [indexCity, setIndexCity] = useState();
+    const [district, setDistrict] = useState([]);
+
+    const [lat, setLat] = useState(null);
+    const [lng, setLng] = useState(null);
+    const [status, setStatus] = useState(null);
+
+    useEffect(() => {
+        setJakartaList(dataJakarta);
+        const list = [];
+        jakartaLits.map((city) => {
+            return (
+                list.push(city.city)
+            )
+        })
+        setCitys(list);
+        // Lock City
+        setDistrict(jakartaLits[0].district);
+
+    }, [dataJakarta])
+
+    const [modal, setModal] = useState(false);
+    const HandleModal = () => {
+        setModal(!modal);
+    }
+
+    const handleSelectedRegion = (evt) => {
+        const checked = evt.target.value
+        setCity(checked);
+        // console.log(checked);
+        const index = citys.indexOf(checked);
+        // setIndexCity(index);
+        setDistrict(jakartaLits[index].district);
+    }
+
+    const handleSelectedCity = (evt) => {
+        const checked = evt.target.value;
+        // setCity(checked)
+    }
 
 
+    const getLocation = () => {
+        if (!navigator.geolocation) {
+            setStatus('Geolocation is not supported by your browser');
+        } else {
+            setStatus('Locating...');
+            navigator.geolocation.getCurrentPosition((position) => {
+                setStatus(null);
+                setLat(position.coords.latitude);
+                setLng(position.coords.longitude);
+            }, () => {
+                setStatus('Unable to retrieve your location');
+            });
+        }
+    }
+
+    // console.log(indexRegion);
+    // console.log(citys);
+    // console.log(prov);
     return (
         <>
             <div className="flex flex-col w-full">
@@ -91,7 +158,7 @@ const EditOffice = () => {
                                     name="address"
                                     label="Address"
                                     placeholder="Address"
-                                    className="mb-6"
+                                    className="mb-6 border-gray-400"
                                 />
                                 <InputField
                                     name="open"
@@ -105,7 +172,7 @@ const EditOffice = () => {
                                     name="district"
                                     label="District"
                                     placeholder="District"
-                                    className="mb-6"
+                                    className="mb-6 border-gray-400"
                                 />
                                 <InputField
                                     name="close"
@@ -131,20 +198,35 @@ const EditOffice = () => {
                         </div>
                         <div className="pb-6 w-full flex justify-between">
                             <div className="w-full">
-                                <InputField
-                                    name="city"
-                                    label="City"
-                                    placeholder="City"
-                                    className=""
-                                />
+                                <select id="city" onChange={(ev) => handleSelectedRegion(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    {/* <option selected>Region</option> */}
+                                    {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
+                                    {
+                                        jakartaLits.map((city, index) => {
+                                            return (
+                                                <>
+                                                    <option value={city.city} id="regionIndex" index={index}>{city.city}</option>
+                                                </>
+                                            )
+                                        })
+
+                                    }
+                                </select>
                             </div>
                             <div className="w-full ml-8">
-                                <InputField
-                                    name="district"
-                                    label="District"
-                                    placeholder="District"
+                                <select id="city" onChange={(ev) => handleSelectedCity(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    {/* <option selected>City</option> */}
+                                    {
+                                        district.map((val, index) => {
+                                            return (
+                                                <>
+                                                    <option value={val} id="regionIndex" index={index}>{val}</option>
+                                                </>
+                                            )
+                                        })
 
-                                />
+                                    }
+                                </select>
                             </div>
                         </div>
                         <div className="pb-6 w-full">
@@ -160,7 +242,8 @@ const EditOffice = () => {
                                     name="latitude"
                                     label="Latitude"
                                     placeholder="Latitude"
-                                    className=""
+                                    onClick={getLocation}
+                                    defaultValue={lat}
                                 />
                             </div>
                             <div className="w-full ml-8">
@@ -168,6 +251,8 @@ const EditOffice = () => {
                                     name="longitude"
                                     label="Longitude"
                                     placeholder="Longitude"
+                                    onClick={getLocation}
+                                    defaultValue={lng}
                                 />
                             </div>
                         </div>
@@ -198,7 +283,6 @@ const EditOffice = () => {
                                     name="accommodate"
                                     label="Accommodate"
                                     placeholder="Accommodate"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -207,6 +291,7 @@ const EditOffice = () => {
                                     name="person"
                                     label="Person"
                                     placeholder="Person"
+                                    className="border-gray-200"
                                     disabled={true}
                                 />
                             </div>
@@ -217,7 +302,6 @@ const EditOffice = () => {
                                     name="working_desk"
                                     label="Working Desk"
                                     placeholder="Working Desk"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -226,6 +310,7 @@ const EditOffice = () => {
                                     name="desk"
                                     label="Desk"
                                     placeholder="Desk"
+                                    className="border-gray-200"
                                     disabled={true}
                                 />
                             </div>
@@ -236,7 +321,6 @@ const EditOffice = () => {
                                     name="meeting_room"
                                     label="Meeting Room"
                                     placeholder="Meeting Room"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -245,6 +329,7 @@ const EditOffice = () => {
                                     name="room"
                                     label="Room"
                                     placeholder="Room"
+                                    className="border-gray-200"
                                     disabled={true}
                                 />
                             </div>
@@ -255,7 +340,6 @@ const EditOffice = () => {
                                     name="private_room"
                                     label="Private Room"
                                     placeholder="Private Room"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -264,6 +348,7 @@ const EditOffice = () => {
                                     name="room"
                                     label="Room"
                                     placeholder="Room"
+                                    className="border-gray-200"
                                     disabled={true}
                                 />
                             </div>

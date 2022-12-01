@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { dataJakarta } from "store/dataJakarta";
 
-const InputField = ({ name, label, placeholder, onChange, className, type = "text", disabled, autoComplete = "off" }) => (
+
+const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange, className = "border-gray-400", type = "text", disabled, autoComplete = "off" }) => (
     <div className="relative">
         <input
             type={type}
             id="floating_outlined"
-            className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-400 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+            className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
             placeholder={placeholder}
             name={name}
             onChange={onChange}
             disabled={disabled}
             autoComplete={autoComplete}
+            onClick={onClick}
+            defaultValue={defaultValue}
         />
         <label
             for="floating_outlined"
@@ -23,6 +27,63 @@ const InputField = ({ name, label, placeholder, onChange, className, type = "tex
 );
 
 const AddOffice = () => {
+    const [jakartaLits, setJakartaList] = useState(dataJakarta);
+    const [citys, setCitys] = useState([]);
+
+    const [city, setCity] = useState("Central Jakarta");
+    // const [indexCity, setIndexCity] = useState();
+    const [district, setDistrict] = useState([]);
+    // const [city, setCity] = useState("");
+
+    const [lat, setLat] = useState(null);
+    const [lng, setLng] = useState(null);
+    const [status, setStatus] = useState(null);
+
+
+    useEffect(() => {
+        setJakartaList(dataJakarta);
+        const list = [];
+        jakartaLits.map((city) => {
+            return (
+                list.push(city.city)
+            )
+        })
+        setCitys(list);
+        setDistrict(jakartaLits[0].district);
+    }, [dataJakarta])
+
+    const handleSelectedRegion = (evt) => {
+        const checked = evt.target.value
+        setCity(checked);
+        console.log(checked);
+        // const index = citys.findIndex((city) => +city === region);
+        const index = citys.indexOf(checked);
+        // setIndexCity(index);
+        setDistrict(jakartaLits[index].district);
+    }
+
+    const handleSelectedCity = (evt) => {
+        const checked = evt.target.value;
+        // setCity(checked)
+    }
+
+
+    const getLocation = () => {
+        if (!navigator.geolocation) {
+            setStatus('Geolocation is not supported by your browser');
+        } else {
+            setStatus('Locating...');
+            navigator.geolocation.getCurrentPosition((position) => {
+                setStatus(null);
+                setLat(position.coords.latitude);
+                setLng(position.coords.longitude);
+            }, () => {
+                setStatus('Unable to retrieve your location');
+            });
+        }
+    }
+
+    // console.log(lat, lng);
     return (
         <>
             <div className="flex flex-col w-full">
@@ -90,7 +151,7 @@ const AddOffice = () => {
                                     name="address"
                                     label="Address"
                                     placeholder="Address"
-                                    className="mb-6"
+                                    className="mb-6 border-gray-400"
                                 />
                                 <InputField
                                     name="open"
@@ -104,7 +165,7 @@ const AddOffice = () => {
                                     name="district"
                                     label="District"
                                     placeholder="District"
-                                    className="mb-6"
+                                    className="mb-6 border-gray-400"
                                 />
                                 <InputField
                                     name="close"
@@ -130,20 +191,37 @@ const AddOffice = () => {
                         </div>
                         <div className="pb-6 w-full flex justify-between">
                             <div className="w-full">
-                                <InputField
-                                    name="city"
-                                    label="City"
-                                    placeholder="City"
-                                    className=""
-                                />
+                                <select id="city" onChange={(ev) => handleSelectedRegion(ev)} className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ">
+                                    {/* <option selected>Region</option> */}
+                                    {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
+                                    {
+                                        jakartaLits.map((city, index) => {
+                                            return (
+                                                <>
+                                                    <option className="" value={city.city} id="regionIndex" index={index}>
+                                                        <span className="">{city.city}</span>
+                                                    </option>
+                                                </>
+                                            )
+                                        })
+
+                                    }
+                                </select>
                             </div>
                             <div className="w-full ml-8">
-                                <InputField
-                                    name="district"
-                                    label="District"
-                                    placeholder="District"
+                                <select id="district" onChange={(ev) => handleSelectedCity(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    {/* <option selected>City</option> */}
+                                    {
+                                        district.map((val, index) => {
+                                            return (
+                                                <>
+                                                    <option value={val} id="regionIndex" index={index}>{val}</option>
+                                                </>
+                                            )
+                                        })
 
-                                />
+                                    }
+                                </select>
                             </div>
                         </div>
                         <div className="pb-6 w-full">
@@ -159,7 +237,8 @@ const AddOffice = () => {
                                     name="latitude"
                                     label="Latitude"
                                     placeholder="Latitude"
-                                    className=""
+                                    onClick={getLocation}
+                                    defaultValue={lat}
                                 />
                             </div>
                             <div className="w-full ml-8">
@@ -167,6 +246,8 @@ const AddOffice = () => {
                                     name="longitude"
                                     label="Longitude"
                                     placeholder="Longitude"
+                                    onClick={getLocation}
+                                    defaultValue={lng}
                                 />
                             </div>
                         </div>
@@ -197,7 +278,6 @@ const AddOffice = () => {
                                     name="accommodate"
                                     label="Accommodate"
                                     placeholder="Accommodate"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -207,6 +287,7 @@ const AddOffice = () => {
                                     label="Person"
                                     placeholder="Person"
                                     disabled={true}
+                                    className="border-gray-200"
                                 />
                             </div>
                         </div>
@@ -216,7 +297,6 @@ const AddOffice = () => {
                                     name="working_desk"
                                     label="Working Desk"
                                     placeholder="Working Desk"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -226,6 +306,7 @@ const AddOffice = () => {
                                     label="Desk"
                                     placeholder="Desk"
                                     disabled={true}
+                                    className="border-gray-200"
                                 />
                             </div>
                         </div>
@@ -235,7 +316,6 @@ const AddOffice = () => {
                                     name="meeting_room"
                                     label="Meeting Room"
                                     placeholder="Meeting Room"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -245,6 +325,7 @@ const AddOffice = () => {
                                     label="Room"
                                     placeholder="Room"
                                     disabled={true}
+                                    className="border-gray-200"
                                 />
                             </div>
                         </div>
@@ -254,7 +335,6 @@ const AddOffice = () => {
                                     name="private_room"
                                     label="Private Room"
                                     placeholder="Private Room"
-                                    className=""
                                     disabled={false}
                                 />
                             </div>
@@ -263,6 +343,7 @@ const AddOffice = () => {
                                     name="room"
                                     label="Room"
                                     placeholder="Room"
+                                    className="border-gray-200"
                                     disabled={true}
                                 />
                             </div>
@@ -310,7 +391,7 @@ const AddOffice = () => {
                         </div>
                     </div>
                 </form>
-            </div>
+            </div >
         </>
     )
 }

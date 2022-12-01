@@ -1,9 +1,9 @@
 import axiosInstance from "configs/AxiosInstance";
 
-const APIPromo = {
-    async getAllPromo() {
+const APIOffice = {
+    async getAllOffice() {
         try {
-            const response = await axiosInstance.get("/promo");
+            const response = await axiosInstance.get("/office");
             console.log(response);
             return response;
         } catch (err) {
@@ -11,9 +11,9 @@ const APIPromo = {
         }
     },
 
-    async createPromo() {
+    async createOffice() {
         try {
-            const response = await axiosInstance.post("/promo");
+            const response = await axiosInstance.post("/office");
             console.log(response);
             return response;
         } catch (err) {
@@ -21,10 +21,10 @@ const APIPromo = {
         }
     },
 
-    async updatePromo(data) {
+    async updateOffice(data) {
         try {
             const id = data.id;
-            const response = await axiosInstance.patch(`/promo/${id}`);
+            const response = await axiosInstance.patch(`/office/${id}`);
             console.log(response);
             return response;
         } catch (err) {
@@ -32,9 +32,9 @@ const APIPromo = {
         }
     },
 
-    async deletePromo(id) {
+    async deleteOffice(id) {
         try {
-            const response = await axiosInstance.delete(`/promo/${id}`);
+            const response = await axiosInstance.delete(`/office/${id}`);
             return response;
         } catch (err) {
             console.log(err);
@@ -42,4 +42,4 @@ const APIPromo = {
     },
 };
 
-export default APIPromo;
+export default APIOffice;
