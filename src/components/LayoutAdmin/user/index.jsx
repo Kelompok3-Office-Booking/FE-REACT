@@ -25,8 +25,11 @@ const UserPage = () => {
 
   return (
     <div>
-      <div className="w-full shadow-md sm:rounded-lg">
-        <div className="flex justify-between items-center py-4 bg-white px-4">
+      <div className="flex justify-between px-8 mb-4 py-6 w-full bg-white rounded-2xl shadow">
+        <h1 className="text-2xl font-bold my-auto">User</h1>
+      </div>
+      <div className="w-full shadow-md">
+        <div className="flex justify-between rounded-2xl items-center py-4 bg-white px-4">
           <div className="my-auto flex">
             <h1 className="inline pr-4 my-auto text-base text-neutral-500">
               (7) Record Found

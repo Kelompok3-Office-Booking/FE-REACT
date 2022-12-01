@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,18 +10,32 @@ import ModalUpdateTransaksi from "components/Modal/ModalTransaksi";
 import DeleteAllData from "components/Alert/deleteAllData";
 import ModalViewTransaction from "components/Modal/ModalTransaksi/viewModal";
 import THead from "./tableHeader";
+import { ContentTableLoader, EditOffice } from "components";
 import { useSnackbar } from "@mui/base";
+import { Pagination } from "antd";
 
 
 const TransactionPage = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transaction);
+  const [loading, setLoading] = useState(false);
+  const pageSize = 6;
+
+  const [dataTransaksi, setDataTransaksi] = useState({
+    minValue: 0,
+    maxValue: 20
+  })
 
   const [user, setUser] = [];
 
   useEffect(() => {
     dispatch(fetchTransaction());
-  }, [dispatch, user]);
+    setLoading(false);
+    setDataTransaksi({
+      minValue: 0,
+      maxValue: 6
+    })
+  }, [dispatch, loading, user]);
 
   const HANDLEDELETE = (id) => {
     DeleteAlert(id);
@@ -29,10 +43,25 @@ const TransactionPage = () => {
   const HANDLEDELETEALL = () => {
     DeleteAllData();
   };
+
+  const setReload = () => {
+    setLoading(true);
+  }
+
+  const handleChange = (value) => {
+    setDataTransaksi({
+      minValue: (value - 1) * pageSize,
+      maxValue: value * pageSize
+    });
+  }
+
   return (
     <div className="min-h-screen">
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
-        <div className="flex justify-between items-center py-4 bg-white px-4">
+      <div className="flex justify-between px-8 mb-4 py-6 w-full bg-white rounded-2xl shadow">
+        <h1 className="text-2xl font-bold my-auto">Transaction</h1>
+      </div>
+      <div className="overflow-x-auto relative shadow-md">
+        <div className="flex justify-between items-center rounded-2xl py-4 bg-white px-4">
           <div className="flex">
             <h1 className="inline pr-4 text-base my-auto text-neutral-500">
               (7) Record Found
@@ -77,65 +106,81 @@ const TransactionPage = () => {
         <table className="w-full text-sm text-left text-gray-500 ">
           <THead />
           <tbody>
-            {listOfTransaction.data?.map((transaction) => (
-              <tr
-                className="bg-white border-b hover:bg-gray-50"
-                key={transaction.id}
-              >
-                <td className="p-4 w-4">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-table-search-1"
-                      type="checkbox"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                    />
-                    <label
-                      htmlFor="checkbox-table-search-1"
-                      className="sr-only"
-                    >
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <td className="py-4 px-6">{transaction.id}</td>
-                <td className="py-4 px-6">{transaction.user?.fullName}</td>
-                <td className="py-4 px-6">{transaction.type}</td>
-                <td className="py-4 px-6">{transaction.date}</td>
-                <td className="py-4 px-6">{transaction.nominal}</td>
-                <td id="status" className="py-4 px-6">
-                  <span
-                    className={`${transaction.status === "On Process"
-                      ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
-                      : transaction.status === "Confirmed"
-                        ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
-                        : transaction.status === "Pending"
-                          ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
-                          : transaction.status === "Cancelled"
-                            ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                            : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
-                      }`}
+            {
+              loading
+                ?
+                <ContentTableLoader />
+                :
+                listOfTransaction &&
+                listOfTransaction.data.length > 0 &&
+                listOfTransaction.data.slice(dataTransaksi.minValue, dataTransaksi.maxValue)?.map((transaction) => (
+                  <tr
+                    className="bg-white border-b hover:bg-gray-50"
+                    key={transaction.id}
                   >
-                    {transaction.status}
-                  </span>
-                </td>
-                <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                  {/* Modal toggle */}
-                  <ModalViewTransaction />
-                  <button
-                    href="#"
-                    onClick={() => HANDLEDELETE(transaction.id)}
-                    type="button"
-                    data-modal-toggle="editUserModal"
-                    className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
-                  >
-                    <DeleteForeverIcon className="text-slate-500 hover:text-white" />
-                  </button>
-                  <ModalUpdateTransaksi />
-                </td>
-              </tr>
-            ))}
+                    <td className="p-4 w-4">
+                      <div className="flex items-center">
+                        <input
+                          id="checkbox-table-search-1"
+                          type="checkbox"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <label
+                          htmlFor="checkbox-table-search-1"
+                          className="sr-only"
+                        >
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">{transaction.id}</td>
+                    <td className="py-4 px-6">{transaction.user?.fullName}</td>
+                    <td className="py-4 px-6">{transaction.type}</td>
+                    <td className="py-4 px-6">{transaction.date}</td>
+                    <td className="py-4 px-6">{transaction.nominal}</td>
+                    <td id="status" className="py-4 px-6">
+                      <span
+                        className={`${transaction.status === "On Process"
+                          ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
+                          : transaction.status === "Confirmed"
+                            ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                            : transaction.status === "Pending"
+                              ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
+                              : transaction.status === "Cancelled"
+                                ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                                : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
+                          }`}
+                      >
+                        {transaction.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                      {/* Modal toggle */}
+                      <ModalViewTransaction />
+                      <button
+                        href="#"
+                        onClick={() => HANDLEDELETE(transaction.id)}
+                        type="button"
+                        data-modal-toggle="editUserModal"
+                        className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
+                      >
+                        <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                      </button>
+                      <ModalUpdateTransaksi />
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
+      </div>
+      <div className="mt-8 text-start">
+        <Pagination
+          defaultCurrent={1}
+          defaultPageSize={pageSize}
+          // current={dataReview.current}
+          total={listOfTransaction.data.length}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );

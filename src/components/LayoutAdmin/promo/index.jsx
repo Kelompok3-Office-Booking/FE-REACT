@@ -7,14 +7,19 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DeletePromo from "components/Modal/ModalPromo/DeletePromo";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPromo, createPromo } from "store/Feature/FeaturePromo/promoSlice";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { ContentTableLoader } from "components";
+import { Pagination, Select } from 'antd';
 
 const PromoPage = () => {
 
     const dispatch = useDispatch();
     const listOfPromo = useSelector((state) => state.promo.data);
-    // console.log(listOfPromo);
+    const pageSize = 6;
+
+    const [dataPromo, setDataPromo] = useState({
+        minValue: 0,
+        maxValue: 6
+    })
 
     const [data, setData] = useState({
         voucher_code: "",
@@ -23,6 +28,13 @@ const PromoPage = () => {
     })
 
     const [loading, setLoading] = useState(false);
+
+    const handleChange = (value) => {
+        setDataPromo({
+            minValue: (value - 1) * pageSize,
+            maxValue: value * pageSize
+        })
+    }
 
     const handleChangePromo = (ev) => {
         setData({
@@ -38,6 +50,10 @@ const PromoPage = () => {
     useEffect(() => {
         dispatch(fetchPromo());
         setLoading(false);
+        setDataPromo({
+            minValue: 0,
+            maxValue: 6
+        })
     }, [dispatch, loading])
 
     const handleDeleteAll = () => {
@@ -53,8 +69,8 @@ const PromoPage = () => {
     return (
         <>
             <div className="flex flex-col w-full">
-                <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
-                    <h1 className="text-3xl font-bold my-auto">Voucher Promo</h1>
+                <div className="flex justify-between px-8 py-2 w-full bg-white rounded-2xl shadow">
+                    <h1 className="text-2xl font-bold my-auto">Voucher Promo</h1>
                     <div className="flex content-center pl-12 rounded-xl text-lg py-2">
                         <AddPromo handleChangePromo={handleChangePromo} handleSubmit={handleSubmit} />
                     </div>
@@ -152,7 +168,8 @@ const PromoPage = () => {
                                         ?
                                         <ContentTableLoader />
                                         :
-                                        listOfPromo?.map((promo) => (
+
+                                        listOfPromo.slice(dataPromo.minValue, dataPromo.maxValue)?.map((promo) => (
                                             <tr
                                                 className="bg-white border-b hover:bg-gray-50"
                                                 key={promo.id}>
@@ -190,6 +207,15 @@ const PromoPage = () => {
                                         ))}
                             </tbody>
                         </table>
+                    </div>
+                    <div className="text-start mt-4">
+                        <Pagination
+                            defaultCurrent={1}
+                            defaultPageSize={pageSize}
+                            // current={dataReview.current}
+                            total={listOfPromo.length}
+                            onChange={handleChange}
+                        />
                     </div>
                 </div>
             </div>
