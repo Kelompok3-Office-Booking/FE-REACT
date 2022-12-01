@@ -12,35 +12,34 @@ import { Pagination } from 'antd';
 import CreateIcon from "@mui/icons-material/Create";
 
 const OfficePage = () => {
-
   const dispatch = useDispatch();
   const listOfOffice = useSelector((state) => state.office.data);
   const [loading, setLoading] = useState(false);
   const pageSize = 6;
   const [dataOffice, setDataOffice] = useState({
     minValue: 0,
-    maxValue: 20
-  })
+    maxValue: 20,
+  });
 
   useEffect(() => {
     dispatch(fetchOffice());
     setLoading(false);
     setDataOffice({
       minValue: 0,
-      maxValue: 6
-    })
-  }, [dispatch, loading])
+      maxValue: 6,
+    });
+  }, [dispatch, loading]);
 
   const setReload = () => {
     setLoading(true);
-  }
+  };
 
   const handleChange = (value) => {
     setDataOffice({
       minValue: (value - 1) * pageSize,
-      maxValue: value * pageSize
+      maxValue: value * pageSize,
     });
-  }
+  };
 
 
   return (
@@ -73,7 +72,7 @@ const OfficePage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={''}
+                  onClick={() => { }}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -176,17 +175,18 @@ const OfficePage = () => {
                 </tr>
               </thead>
               <tbody>
-                {
-                  loading
-                    ?
-                    <ContentTableLoader />
-                    :
-                    listOfOffice &&
-                    listOfOffice.length > 0 &&
-                    listOfOffice.slice(dataOffice.minValue, dataOffice.maxValue).map((office) => (
+                {loading ? (
+                  <ContentTableLoader />
+                ) : (
+                  listOfOffice &&
+                  listOfOffice.length > 0 &&
+                  listOfOffice
+                    .slice(dataOffice.minValue, dataOffice.maxValue)
+                    .map((office) => (
                       <tr
                         className="bg-white border-b hover:bg-gray-50"
-                        key={office.id}>
+                        key={office.id}
+                      >
                         <td className="p-4 w-4">
                           <div className="flex items-center">
                             <input
@@ -197,15 +197,22 @@ const OfficePage = () => {
                             />
                             <label
                               htmlFor="checkbox-table-search-1"
-                              className="sr-only">
+                              className="sr-only"
+                            >
                               checkbox
                             </label>
                           </div>
                         </td>
-                        <td className="py-4 px-6 text-center">{office.office_id}</td>
-                        <td className="py-4 px-6 text-center">{office.full_name}</td>
+                        <td className="py-4 px-6 text-center">
+                          {office.office_id}
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          {office.full_name}
+                        </td>
                         <td className="py-4 px-6 text-center">{office.type}</td>
-                        <td className="py-4 px-6 text-center">{office.price}</td>
+                        <td className="py-4 px-6 text-center">
+                          {office.price}
+                        </td>
                         <td className="py-4 px-6 text-center">{office.hour}</td>
                         <td className="py-4 px-6 text-center">{office.hour}</td>
                         <td className="py-4 px-6 flex gap-2 items-center justify-center">
@@ -218,18 +225,24 @@ const OfficePage = () => {
                                                         <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
                                                     </button> */}
                           <ViewOffice />
-                          <DeleteOffice idOffice={office.id} loading={loading} setReload={setReload} />
+                          <DeleteOffice
+                            idOffice={office.id}
+                            loading={loading}
+                            setReload={setReload}
+                          />
                           <Link to={"/admin-dashboard/editOffice"}>
                             <button
                               type="button"
                               data-modal-toggle="editUserModal"
-                              className="px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600">
+                              className="px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600"
+                            >
                               <CreateIcon className="text-slate-500 hover:text-white" />
                             </button>
                           </Link>
                         </td>
                       </tr>
-                    ))}
+                    ))
+                )}
               </tbody>
             </table>
           </div>
@@ -243,7 +256,6 @@ const OfficePage = () => {
             />
           </div>
         </div>
-
       </div>
     </>
   );

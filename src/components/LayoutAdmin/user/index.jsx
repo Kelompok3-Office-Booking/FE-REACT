@@ -10,7 +10,6 @@ import DeleteAlertUser from "components/Alert/deleteAlertUser";
 const UserPage = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
-  console.log(listOfUser);
 
   useEffect(() => {
     dispatch(fetchUser());
