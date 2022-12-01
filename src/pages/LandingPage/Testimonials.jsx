@@ -66,7 +66,7 @@ const Testimonials = () => {
         <Carousel cols={3} rows={2} gap={0} loop autoPlay>
           {testimonial.map((testi) => {
             return (
-              <Carousel.Item>
+              <Carousel.Item key={testi.id}>
                 <Card
                   key={testi.id}
                   name={testi.name}
