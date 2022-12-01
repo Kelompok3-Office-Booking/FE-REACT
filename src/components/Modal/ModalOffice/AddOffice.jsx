@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { dataRegions } from "store/dataRegions";
+import { dataJakarta } from "store/dataJakarta";
+
 
 const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange, className = "border-gray-400", type = "text", disabled, autoComplete = "off" }) => (
     <div className="relative">
@@ -26,13 +27,13 @@ const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange,
 );
 
 const AddOffice = () => {
-    const [regionLits, setRegionList] = useState(dataRegions);
-    const [prov, setProv] = useState([]);
-
-    const [region, setRegion] = useState("Aceh");
-    const [indexRegion, setIndexRegion] = useState();
+    const [jakartaLits, setJakartaList] = useState(dataJakarta);
     const [citys, setCitys] = useState([]);
-    const [city, setCity] = useState("");
+
+    const [city, setCity] = useState("Central Jakarta");
+    // const [indexCity, setIndexCity] = useState();
+    const [district, setDistrict] = useState([]);
+    // const [city, setCity] = useState("");
 
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
@@ -40,30 +41,30 @@ const AddOffice = () => {
 
 
     useEffect(() => {
-        setRegionList(dataRegions);
+        setJakartaList(dataJakarta);
         const list = [];
-        regionLits.map((prv) => {
+        jakartaLits.map((city) => {
             return (
-                list.push(prv.provinsi)
+                list.push(city.city)
             )
         })
-        setProv(list);
-        setCitys(regionLits[10].kota);
-
-    }, [dataRegions])
+        setCitys(list);
+        setDistrict(jakartaLits[0].district);
+    }, [dataJakarta])
 
     const handleSelectedRegion = (evt) => {
-        // const checked = evt.target.value
-        // setRegion(checked);
-        // console.log(checked);
-        // // const index = prov.findIndex((reg) => +reg === region);
-        // const index = prov.indexOf(checked);
-        // setIndexRegion(index);
+        const checked = evt.target.value
+        setCity(checked);
+        console.log(checked);
+        // const index = citys.findIndex((city) => +city === region);
+        const index = citys.indexOf(checked);
+        // setIndexCity(index);
+        setDistrict(jakartaLits[index].district);
     }
 
     const handleSelectedCity = (evt) => {
         const checked = evt.target.value;
-        setCity(checked)
+        // setCity(checked)
     }
 
 
@@ -190,26 +191,28 @@ const AddOffice = () => {
                         </div>
                         <div className="pb-6 w-full flex justify-between">
                             <div className="w-full">
-                                <select id="city" onChange={(ev) => handleSelectedRegion(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select id="city" onChange={(ev) => handleSelectedRegion(ev)} className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ">
                                     {/* <option selected>Region</option> */}
-                                    <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option>
-                                    {/* {
-                                        regionLits.map((region, index) => {
+                                    {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
+                                    {
+                                        jakartaLits.map((city, index) => {
                                             return (
                                                 <>
-                                                    <option value={region.provinsi} id="regionIndex" index={index}>{region.provinsi}</option>
+                                                    <option className="" value={city.city} id="regionIndex" index={index}>
+                                                        <span className="">{city.city}</span>
+                                                    </option>
                                                 </>
                                             )
                                         })
 
-                                    } */}
+                                    }
                                 </select>
                             </div>
                             <div className="w-full ml-8">
-                                <select id="city" onChange={(ev) => handleSelectedCity(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select id="district" onChange={(ev) => handleSelectedCity(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     {/* <option selected>City</option> */}
                                     {
-                                        citys.map((val, index) => {
+                                        district.map((val, index) => {
                                             return (
                                                 <>
                                                     <option value={val} id="regionIndex" index={index}>{val}</option>
@@ -388,7 +391,7 @@ const AddOffice = () => {
                         </div>
                     </div>
                 </form>
-            </div>
+            </div >
         </>
     )
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { dataRegions } from "store/dataRegions";
+import { dataJakarta } from "store/dataJakarta";
+
 
 const InputField = ({ name, label, placeholder, defaultValue, onClick, onChange, className = "border-gray-400", type = "text", disabled }) => (
     <div className="relative">
@@ -26,44 +27,49 @@ const InputField = ({ name, label, placeholder, defaultValue, onClick, onChange,
 
 
 const EditOffice = () => {
-    const [regionLits, setRegionList] = useState(dataRegions);
-    const [prov, setProv] = useState([]);
-
-    const [region, setRegion] = useState("Aceh");
-    const [indexRegion, setIndexRegion] = useState();
+    const [jakartaLits, setJakartaList] = useState(dataJakarta);
+    // const [prov, setProv] = useState([]);
     const [citys, setCitys] = useState([]);
-    const [city, setCity] = useState("");
+
+    const [city, setCity] = useState("Central Jakarta");
+    // const [indexCity, setIndexCity] = useState();
+    const [district, setDistrict] = useState([]);
 
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
-        setRegionList(dataRegions);
+        setJakartaList(dataJakarta);
         const list = [];
-        regionLits.map((prv) => {
+        jakartaLits.map((city) => {
             return (
-                list.push(prv.provinsi)
+                list.push(city.city)
             )
         })
-        setProv(list);
+        setCitys(list);
         // Lock City
-        setCitys(regionLits[10].kota);
+        setDistrict(jakartaLits[0].district);
 
-    }, [dataRegions])
+    }, [dataJakarta])
+
+    const [modal, setModal] = useState(false);
+    const HandleModal = () => {
+        setModal(!modal);
+    }
 
     const handleSelectedRegion = (evt) => {
-        // const checked = evt.target.value
-        // setRegion(checked);
+        const checked = evt.target.value
+        setCity(checked);
         // console.log(checked);
-        // const index = prov.indexOf(checked);
-        // setIndexRegion(index);
-        // setCitys(regionLits[index].kota);
+        const index = citys.indexOf(checked);
+        // setIndexCity(index);
+        setDistrict(jakartaLits[index].district);
     }
 
     const handleSelectedCity = (evt) => {
         const checked = evt.target.value;
-        setCity(checked)
+        // setCity(checked)
     }
 
 
@@ -194,24 +200,24 @@ const EditOffice = () => {
                             <div className="w-full">
                                 <select id="city" onChange={(ev) => handleSelectedRegion(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     {/* <option selected>Region</option> */}
-                                    <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option>
-                                    {/* {
-                                        regionLits.map((region, index) => {
+                                    {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
+                                    {
+                                        jakartaLits.map((city, index) => {
                                             return (
                                                 <>
-                                                    <option value={region.provinsi} id="regionIndex" index={index}>{region.provinsi}</option>
+                                                    <option value={city.city} id="regionIndex" index={index}>{city.city}</option>
                                                 </>
                                             )
                                         })
 
-                                    } */}
+                                    }
                                 </select>
                             </div>
                             <div className="w-full ml-8">
                                 <select id="city" onChange={(ev) => handleSelectedCity(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     {/* <option selected>City</option> */}
                                     {
-                                        citys.map((val, index) => {
+                                        district.map((val, index) => {
                                             return (
                                                 <>
                                                     <option value={val} id="regionIndex" index={index}>{val}</option>
