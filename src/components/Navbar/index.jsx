@@ -18,7 +18,7 @@ const Navbar = () => {
     <>
       <nav className="bg-bgPrimary px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0">
         <div className="container flex flex-wrap items-center justify-between mx-auto">
-          <HashLink smooth to="#" to={`/login`} className="flex items-center">
+          <HashLink smooth to={`/login`} className="flex items-center">
             <img
               src={BetterSpace}
               className="h-6 mr-3 sm:h-9"
@@ -52,8 +52,9 @@ const Navbar = () => {
             </svg>
           </button>
           <div
-            className={`${toggle ? "block" : "hidden"
-              } w-full md:block md:w-auto`}
+            className={`${
+              toggle ? "block" : "hidden"
+            } w-full md:block md:w-auto`}
             id="navbar-default"
           >
             <ul className="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium items-center">

@@ -4,7 +4,6 @@ const APIUser = {
   async getAllUsers() {
     try {
       const response = await axiosInstance.get("/betterspace");
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);

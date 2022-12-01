@@ -8,7 +8,6 @@ const LayoutAdmin = () => {
 
   const HANDLETOGGLE = () => {
     setToggle(!toggle);
-    console.log(toggle);
   };
 
   return (
@@ -19,14 +18,18 @@ const LayoutAdmin = () => {
         </aside>
         <main>
           <div
-            className={`${toggle ? "pl-80 duration-500" : "pl-48"
-              } fixed w-full z-20`}>
+            className={`${
+              toggle ? "pl-80 duration-500" : "pl-48"
+            } fixed w-full z-20`}
+          >
             <NavbarAdmin />
           </div>
           <div className="flex content-center justify-center">
             <div
-              className={`${toggle ? "pl-80 duration-500" : "pl-48"
-                } pt-20 flex justify-center w-screen`}>
+              className={`${
+                toggle ? "pl-80 duration-500" : "pl-48"
+              } pt-20 flex justify-center w-screen`}
+            >
               <div className="p-12 bg-slate-50 mb-4 container text-black w-full">
                 {<Outlet />}
               </div>
