@@ -14,6 +14,9 @@ module.exports = {
         fourth: "#FCFCFC",
         fifth: "#E9634B",
         success: "#45AF49",
+        sixth: "#FA6668",
+        seventh: "#63BAFF",
+        eigth: "#2943A3",
       },
       animation: {
         "bounce-slow": "bounce 1s infinite",
@@ -25,6 +28,7 @@ module.exports = {
       },
       boxShadow: {
         dark: "0px 4px 40px 2px rgba(0, 0, 0, 0.15)",
+        card: "4px 4px 16px 2px rgba(0, 0, 0, 0.2);",
       },
     },
     fontFamily: {
