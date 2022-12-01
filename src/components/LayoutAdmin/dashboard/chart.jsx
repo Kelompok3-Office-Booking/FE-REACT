@@ -51,9 +51,10 @@ const TransactionChart = () => {
   return (
     <>
       <section className="flex gap-4 mt-10">
-        <div className="w-1/2 bg-white rounded-xl shadow-card">
-          <div className="p-4">
-            <h2 className="font-bold text-2xl text-left">Transaction Chart</h2>
+        <div className="w-1/2 bg-white rounded-xl drop-shadow-4xl">
+          <div className="p-8">
+            <h2 className="font-bold text-2xl text-left pt-2">Transaction Chart</h2>
+            <hr className="w-full border-t-white border-l-white border-r-white border-2 my-2 border-b-gray-100 " />
             <div className="flex justify-between py-5">
               <div className="flex flex-wrap justify-center items-center ">
                 <DateRangeIcon className="text-blue-800" />
@@ -74,10 +75,13 @@ const TransactionChart = () => {
             <BarChart chartData={chartData} />
           </div>
         </div>
-        <div className="w-1/2 bg-white rounded-xl shadow-card">
-          <div className="p-4 pt-12">
-            <h3 className="text-left font-bold text-xl">Total Office</h3>
-            <DoughnutChart chartData={pie} />
+        <div className="w-1/2 bg-white rounded-xl drop-shadow-4xl">
+          <div className="p-8 pt-5">
+            <h3 className="text-left font-bold text-2xl pt-4">Total Office</h3>
+            <hr className="w-full border-t-white border-l-white border-r-white border-2 my-3 border-b-gray-100 " />
+            <div className="flex px-24 justify-center">
+              <DoughnutChart chartData={pie} />
+            </div>
           </div>
         </div>
       </section>
