@@ -1,5 +1,4 @@
-import AddOffice from "components/Modal/ModalOffice/AddOffice";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -7,9 +6,9 @@ import { Arrow } from "assets";
 import ViewOffice from "components/Modal/ModalOffice/ViewOffice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
-import { ContentTableLoader, EditOffice } from "components";
+import { ContentTableLoader } from "components";
 import DeleteOffice from "components/Modal/ModalOffice/DeleteOffice";
-import { Dropdown, Menu, Space, Pagination, Select } from 'antd';
+import { Pagination } from 'antd';
 import CreateIcon from "@mui/icons-material/Create";
 
 const OfficePage = () => {
@@ -42,6 +41,7 @@ const OfficePage = () => {
       maxValue: value * pageSize
     });
   }
+
 
   return (
     <>
@@ -192,6 +192,7 @@ const OfficePage = () => {
                             <input
                               id="checkbox-table-search-1"
                               type="checkbox"
+                              dataId={office.id}
                               className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                             />
                             <label

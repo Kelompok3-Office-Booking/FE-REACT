@@ -26,6 +26,19 @@ const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange,
     </div>
 );
 
+const fasilitas_office = [
+    "High Speed Wifi",
+    "Avalible many charging slot",
+    "Air Conditioner in all room",
+    "Projector to presentation",
+    "Free parking for your vehicle",
+    "Snacks and drinks available",
+    "Prayer room available",
+    "Clean toilet with water heater",
+    "Enter the room using the access card",
+    "nice view from the window"
+];
+
 const AddOffice = () => {
     const [jakartaLits, setJakartaList] = useState(dataJakarta);
     const [citys, setCitys] = useState([]);
@@ -39,6 +52,63 @@ const AddOffice = () => {
     const [lng, setLng] = useState(null);
     const [status, setStatus] = useState(null);
 
+    const [data, setData] = useState({
+        office_id: "",
+        full_name: "",
+        type: "",
+        price: 0,
+        time: "",
+        open: "",
+        close: "",
+        name: "",
+        description: "",
+        length: "",
+        city: "",
+        district: "",
+        address: "",
+        latitude: "",
+        longitude: "",
+        accommodate: "",
+        working_desk: "",
+        meeting_room: "",
+        private_room: ""
+    });
+
+    const [imageUpload, setImageUpload] = useState('');
+
+    const [officeFacility, setOfficeFacility] = useState({
+        facilities: [],
+    })
+
+    const handleChangeFacilities = (ev) => {
+        // Destructuring gess
+        const { value, checked } = ev.target;
+        const { facilities } = officeFacility;
+
+        console.log(`${value} is ${checked}`);
+
+        if (checked) {
+            setOfficeFacility({
+                facilities: [...facilities, value],
+            });
+        } else {
+            setOfficeFacility({
+                facilities: facilities.filter((ev) => ev !== value)
+            });
+        }
+    }
+
+    const onImageUpload = (ev) => {
+        const file = ev.target.files[0];
+        setImageUpload(file);
+    }
+
+    const setHandleChangeData = (ev) => {
+        setData({
+            ...data,
+            [ev.target.name]: ev.target.value
+        })
+    }
 
     useEffect(() => {
         setJakartaList(dataJakarta);
@@ -52,7 +122,7 @@ const AddOffice = () => {
         setDistrict(jakartaLits[0].district);
     }, [dataJakarta])
 
-    const handleSelectedRegion = (evt) => {
+    const handleSelectedCity = (evt) => {
         const checked = evt.target.value
         setCity(checked);
         console.log(checked);
@@ -62,9 +132,9 @@ const AddOffice = () => {
         setDistrict(jakartaLits[index].district);
     }
 
-    const handleSelectedCity = (evt) => {
+    const handleSelectedDistrict = (evt) => {
         const checked = evt.target.value;
-        // setCity(checked)
+        // setDistrict(checked)
     }
 
 
@@ -84,6 +154,9 @@ const AddOffice = () => {
     }
 
     // console.log(lat, lng);
+    // console.log(data);
+    console.log(officeFacility);
+    // console.log(imageUpload.name);
     return (
         <>
             <div className="flex flex-col w-full">
@@ -100,6 +173,7 @@ const AddOffice = () => {
                                 name="office_id"
                                 label="Office ID"
                                 placeholder="Office ID"
+                                onChange={(ev) => setHandleChangeData(ev)}
                             />
                         </div>
                         <div className="pb-6">
@@ -107,22 +181,23 @@ const AddOffice = () => {
                                 name="full_name"
                                 label="Full Name"
                                 placeholder="Full Name"
+                                onChange={(ev) => setHandleChangeData(ev)}
                             />
                         </div>
                         <div className="pb-6 flex-col text-start">
                             <p className="pb-4">Select Type</p>
                             <div className="flex">
                                 <div class="flex items-center mr-4">
-                                    <input id="inline-radio" type="radio" value="Office" name="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                    <label for="inline-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Office</label>
+                                    <input id="inline-radio" type="radio" value="Office" onChange={(ev) => setHandleChangeData(ev)} name="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="inline-radio" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Office</label>
                                 </div>
                                 <div class="flex items-center mr-4">
-                                    <input id="inline-2-radio" type="radio" value="Coworking" name="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                    <label for="inline-2-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Coworking</label>
+                                    <input id="inline-2-radio" type="radio" value="Coworking" onChange={(ev) => setHandleChangeData(ev)} name="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="inline-2-radio" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Coworking</label>
                                 </div>
                                 <div class="flex items-center mr-4">
-                                    <input id="inline-checked-radio" type="radio" value="Meeting Room" name="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                    <label for="inline-checked-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Meeting Room</label>
+                                    <input id="inline-checked-radio" type="radio" value="Meeting Room" onChange={(ev) => setHandleChangeData(ev)} name="type" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="inline-checked-radio" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Meeting Room</label>
                                 </div>
                             </div>
                         </div>
@@ -130,17 +205,19 @@ const AddOffice = () => {
                             <div className="w-full">
                                 <InputField
                                     name="price"
+                                    type="number"
                                     label="Price(Rp)"
                                     placeholder="Price(Rp)"
+                                    onChange={(ev) => setHandleChangeData(ev)}
                                 />
                             </div>
                             <div className="flex mx-auto w-full ml-8">
                                 <div class="flex items-center mx-12">
-                                    <input id="inline-radio" type="radio" value="Office" name="time" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <input id="inline-radio" type="radio" value="Office" name="time" onClick={(ev) => setHandleChangeData(ev)} onChange={(ev) => setHandleChangeData(ev)} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                     <label for="inline-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">/ hour</label>
                                 </div>
                                 <div class="flex items-center">
-                                    <input id="inline-2-radio" type="radio" value="Coworking" name="time" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <input id="inline-2-radio" type="radio" value="Coworking" name="time" onChange={(ev) => setHandleChangeData(ev)} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                     <label for="inline-2-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">/ month</label>
                                 </div>
                             </div>
@@ -148,38 +225,29 @@ const AddOffice = () => {
                         <div className="w-full flex">
                             <div className="pb-6 w-full">
                                 <InputField
-                                    name="address"
-                                    label="Address"
-                                    placeholder="Address"
-                                    className="mb-6 border-gray-400"
-                                />
-                                <InputField
                                     name="open"
                                     label="Open"
                                     placeholder="Open"
                                     type="time"
+                                    onChange={(ev) => setHandleChangeData(ev)}
                                 />
                             </div>
                             <div className="pb-6 w-full ml-8">
-                                <InputField
-                                    name="district"
-                                    label="District"
-                                    placeholder="District"
-                                    className="mb-6 border-gray-400"
-                                />
                                 <InputField
                                     name="close"
                                     label="Close"
                                     placeholder="Close"
                                     type="time"
+                                    onChange={(ev) => setHandleChangeData(ev)}
                                 />
                             </div>
                         </div>
                         <div className="pb-6 w-full">
                             <InputField
-                                name="name"
-                                label="Name"
-                                placeholder="Name"
+                                name="length"
+                                label="Length"
+                                placeholder="Length"
+                                onChange={(ev) => setHandleChangeData(ev)}
                             />
                         </div>
                         <div className="pb-6 w-full">
@@ -187,11 +255,12 @@ const AddOffice = () => {
                                 name="description"
                                 label="Description"
                                 placeholder="Description"
+                                onChange={(ev) => setHandleChangeData(ev)}
                             />
                         </div>
                         <div className="pb-6 w-full flex justify-between">
                             <div className="w-full">
-                                <select id="city" onChange={(ev) => handleSelectedRegion(ev)} className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ">
+                                <select id="city" name="city" onClick={(ev) => handleSelectedCity(ev)} onChange={(ev) => setHandleChangeData(ev)} className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ">
                                     {/* <option selected>Region</option> */}
                                     {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
                                     {
@@ -204,12 +273,11 @@ const AddOffice = () => {
                                                 </>
                                             )
                                         })
-
                                     }
                                 </select>
                             </div>
                             <div className="w-full ml-8">
-                                <select id="district" onChange={(ev) => handleSelectedCity(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select id="district" name="district" onClick={(ev) => handleSelectedDistrict(ev)} onChange={(ev) => setHandleChangeData(ev)} class="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     {/* <option selected>City</option> */}
                                     {
                                         district.map((val, index) => {
@@ -229,6 +297,7 @@ const AddOffice = () => {
                                 name="address"
                                 label="Address"
                                 placeholder="Address"
+                                onChange={(ev) => setHandleChangeData(ev)}
                             />
                         </div>
                         <div className="pb-6 w-full flex justify-between">
@@ -239,6 +308,7 @@ const AddOffice = () => {
                                     placeholder="Latitude"
                                     onClick={getLocation}
                                     defaultValue={lat}
+                                    onChange={(ev) => setHandleChangeData(ev)}
                                 />
                             </div>
                             <div className="w-full ml-8">
@@ -248,6 +318,7 @@ const AddOffice = () => {
                                     placeholder="Longitude"
                                     onClick={getLocation}
                                     defaultValue={lng}
+                                    onChange={(ev) => setHandleChangeData(ev)}
                                 />
                             </div>
                         </div>
@@ -258,7 +329,7 @@ const AddOffice = () => {
                                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                 </div>
-                                <input id="dropzone-file" type="file" className="hidden" />
+                                <input id="dropzone-file" type="file" name="path_file" onChange={(ev) => onImageUpload(ev)} className="hidden" />
                             </label>
                         </div>
                         <div className="w-full flex justify-between">
@@ -278,7 +349,8 @@ const AddOffice = () => {
                                     name="accommodate"
                                     label="Accommodate"
                                     placeholder="Accommodate"
-                                    disabled={false}
+                                    onChange={(ev) => setHandleChangeData(ev)}
+                                    type="number"
                                 />
                             </div>
                             <div className="w-1/4 ml-4">
@@ -297,7 +369,8 @@ const AddOffice = () => {
                                     name="working_desk"
                                     label="Working Desk"
                                     placeholder="Working Desk"
-                                    disabled={false}
+                                    onChange={(ev) => setHandleChangeData(ev)}
+                                    type="number"
                                 />
                             </div>
                             <div className="w-1/4 ml-4">
@@ -316,7 +389,8 @@ const AddOffice = () => {
                                     name="meeting_room"
                                     label="Meeting Room"
                                     placeholder="Meeting Room"
-                                    disabled={false}
+                                    onChange={(ev) => setHandleChangeData(ev)}
+                                    type="number"
                                 />
                             </div>
                             <div className="w-1/4 ml-4">
@@ -335,7 +409,8 @@ const AddOffice = () => {
                                     name="private_room"
                                     label="Private Room"
                                     placeholder="Private Room"
-                                    disabled={false}
+                                    onChange={(ev) => setHandleChangeData(ev)}
+                                    type="number"
                                 />
                             </div>
                             <div className="w-1/4 ml-4">
@@ -349,46 +424,17 @@ const AddOffice = () => {
                             </div>
                         </div>
                         <p className="text-start mb-2">Facilities</p>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">High Speed Wifi</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Avalible many charging slot</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Air Conditioner in all room</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Projector to presentation</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Free parking for your vehicle</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Snacks and drinks available</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Prayer room available</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Clean toilet with water heater</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">Enter the room using the access card</label>
-                        </div>
-                        <div className="flex items-center mb-2">
-                            <input id="default-checkbox" type="checkbox" value="" name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                            <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">nice view from the window</label>
-                        </div>
+                        {
+                            fasilitas_office.map((fasilitas, index) => {
+                                return (
+                                    <div className="flex items-center mb-2">
+                                        <input onChange={handleChangeFacilities} id="default-checkbox" type="checkbox" value={index} name="facilities" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label for="default-checkbox" className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300">{fasilitas}</label>
+                                    </div>
+                                )
+                            })
+                        }
+
                     </div>
                 </form>
             </div >
