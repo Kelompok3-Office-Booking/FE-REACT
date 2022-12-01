@@ -3,8 +3,8 @@ import { items, items2, items3, items4 } from "assets";
 
 const ItemsData = () => {
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl shadow-card">
+    <div className="flex gap-4 mt-2">
+      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl drop-shadow-4xl">
         <div className="flex w-full">
           <div>
             <div className="pl-2">
@@ -27,7 +27,7 @@ const ItemsData = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl shadow-card">
+      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl drop-shadow-4xl">
         <div className="flex w-full">
           <div>
             <div className="pl-2">
@@ -50,7 +50,7 @@ const ItemsData = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl shadow-card">
+      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl drop-shadow-4xl">
         <div className="flex w-full">
           <div>
             <div className="pl-2">
@@ -73,7 +73,7 @@ const ItemsData = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl shadow-card">
+      <div className="flex flex-wrap flex-row sm:flex-col justify-center items-center w-full sm:w-1/4 p-3 bg-white rounded-2xl drop-shadow-4xl">
         <div className="flex w-full">
           <div>
             <div className="pl-2">

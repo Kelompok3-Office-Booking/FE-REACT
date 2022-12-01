@@ -40,6 +40,7 @@ const DoughnutChart = ({ chartData }) => {
             labels: {
               usePointStyle: true,
             },
+            fullSize: true,
           },
         },
       }}

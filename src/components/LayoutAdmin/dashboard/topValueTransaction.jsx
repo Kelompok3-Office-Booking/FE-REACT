@@ -4,7 +4,7 @@ import React from "react";
 const TopValueTransaction = () => {
   return (
     <>
-      <section className="mt-10 flex flex-col w-[850px] bg-white rounded-3xl shadow-card">
+      <section className="mt-10 w-full flex flex-col bg-white rounded-3xl drop-shadow-4xl">
         <div className="p-6 space-y-6">
           <div>
             <h1 className="font-bold text-2xl text-left">
