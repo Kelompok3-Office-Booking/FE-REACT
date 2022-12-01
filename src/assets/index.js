@@ -25,6 +25,10 @@ import image9 from "./img/testimonials/image9.svg";
 import image10 from "./img/testimonials/image10.svg";
 import login from "./img/login/login.svg";
 import Arrow from "./img/arrow.svg";
+import items from "./img/items.svg";
+import items2 from "./img/items2.svg";
+import items3 from "./img/items3.svg";
+import items4 from "./img/items4.svg";
 
 export {
   logo,
@@ -43,6 +47,10 @@ export {
   LogoNavbar,
   BetterSpace,
   Arrow,
+  items,
+  items2,
+  items3,
+  items4,
 };
 // gambar testimonials
 export {
