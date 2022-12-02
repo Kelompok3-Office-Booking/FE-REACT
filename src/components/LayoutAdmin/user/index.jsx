@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "store/Feature/FeatureUser/userSlice";
@@ -6,14 +6,46 @@ import { ModalUpdateUser } from "components/Modal";
 import { Arrow } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
 import DeleteAlertUser from "components/Alert/deleteAlertUser";
+import { Pagination } from 'antd';
+import DeleteUser from "components/Modal/ModalUser/DeleteUser";
+import { ContentTableLoader } from "components";
 
 const UserPage = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
+  const pageSize = 6;
+
+  const [dataUser, setDataUser] = useState({
+    minValue: 0,
+    maxValue: 20,
+  })
+
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     dispatch(fetchUser());
-  }, [dispatch]);
+    setLoading(false);
+    setDataUser({
+      minValue: 0,
+      maxValue: 6,
+    })
+  }, [dispatch, loading]);
+
+  const handleSearch = (ev) => {
+    setSearch(ev.target.value);
+  }
+
+  const setReload = () => {
+    setLoading(true);
+  };
+
+  const handleChangePage = (value) => {
+    setDataUser({
+      minValue: (value - 1) * pageSize,
+      maxValue: value * pageSize,
+    })
+  }
 
   const HANDLEDELETE = () => {
     DeleteAlertUser();
@@ -21,17 +53,17 @@ const UserPage = () => {
   const HANDLEDELETEALL = () => {
     DeleteAllData();
   };
-
+  // console.log(search)
   return (
-    <div>
+    <>
       <div className="flex justify-between px-8 mb-4 py-6 w-full bg-white rounded-2xl shadow">
         <h1 className="text-2xl font-bold my-auto">User</h1>
       </div>
-      <div className="w-full shadow-md">
+      <div className="w-full shadow-md rounded-2xl">
         <div className="flex justify-between rounded-2xl items-center py-4 bg-white px-4">
-          <div className="my-auto flex">
+          <div className="my-auto flex rounded-2xl">
             <h1 className="inline pr-4 my-auto text-base text-neutral-500">
-              (7) Record Found
+              ({listOfUser.length}) Record Found
             </h1>
             <button
               type="button"
@@ -45,8 +77,8 @@ const UserPage = () => {
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
-          <div className="relative">
-            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+          <div className="relative rounded-2xl">
+            <div className="flex absolute  inset-y-0 left-0 items-center pl-3 pointer-events-none rounded-2xl">
               <svg
                 className="w-5 h-5 text-gray-500 "
                 aria-hidden="true"
@@ -64,6 +96,7 @@ const UserPage = () => {
             <input
               type="text"
               id="table-search-users"
+              onChange={(ev) => handleSearch(ev)}
               className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search for users"
             />
@@ -122,45 +155,56 @@ const UserPage = () => {
             </tr>
           </thead>
           <tbody>
-            {listOfUser?.map((user) => (
-              <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
-                <td className="p-4 w-4">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-table-search-1"
-                      type="checkbox"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
-                    />
-                    <label
-                      htmlFor="checkbox-table-search-1"
-                      className="sr-only"
-                    >
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <td className="py-4 px-6">{user.id}</td>
-                <td className="py-4 px-6">{user.fullName}</td>
-                <td className="py-4 px-6">{user.gender}</td>
-                <td className="py-4 px-6">{user.email}</td>
-                <td className="py-4 px-6 flex gap-2 items-center justify-center ">
-                  {/* Modal toggle */}
-                  <button
-                    type="button"
-                    onClick={HANDLEDELETE}
-                    data-modal-toggle="editUserModal"
-                    className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
-                  >
-                    <DeleteForeverIcon className="text-slate-500 hover:text-white" />
-                  </button>
-                  <ModalUpdateUser />
-                </td>
-              </tr>
-            ))}
+            {
+              loading
+                ?
+                <ContentTableLoader />
+                :
+                listOfUser.slice(dataUser.minValue, dataUser.maxValue)?.map((user) => (
+                  <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
+                    <td className="p-4 w-4">
+                      <div className="flex items-center">
+                        <input
+                          id="checkbox-table-search-1"
+                          type="checkbox"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
+                        />
+                        <label
+                          htmlFor="checkbox-table-search-1"
+                          className="sr-only"
+                        >
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">{user.id}</td>
+                    <td className="py-4 px-6">{user.fullName}</td>
+                    <td className="py-4 px-6">{user.gender}</td>
+                    <td className="py-4 px-6">{user.email}</td>
+                    <td className="py-4 px-6 flex gap-2 items-center justify-center ">
+                      {/* Modal toggle */}
+                      <DeleteUser
+                        idUser={user.id}
+                        loading={loading}
+                        setReload={setReload}
+                      />
+                      <ModalUpdateUser dataUser={user} />
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>
-    </div>
+      <div className="mt-8 text-start">
+        <Pagination
+          defaultCurrent={1}
+          defaultPageSize={pageSize}
+          // current={dataReview.current}
+          total={listOfUser.length}
+          onChange={handleChangePage}
+        />
+      </div>
+    </>
   );
 };
 

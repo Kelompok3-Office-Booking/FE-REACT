@@ -18,7 +18,7 @@ export const fetchPromo = createAsyncThunk("fetch/promo", async() => {
 export const createPromo = createAsyncThunk("create/promo", async(data) => {
     try {
         const res = await APIPromo.createPromo();
-        console.log(res);
+        // console.log(res);
         return res.data;
     } catch (err) {
         console.log(err);
@@ -38,7 +38,7 @@ export const updatePromo = createAsyncThunk("update/promo", async(data) => {
 export const deletePromo = createAsyncThunk("delete/promo", async(id) => {
     try {
         const res = await APIPromo.deletePromo(id);
-        console.log(res);
+        // console.log(res);
         return res;
     } catch (err) {
         console.log(err);

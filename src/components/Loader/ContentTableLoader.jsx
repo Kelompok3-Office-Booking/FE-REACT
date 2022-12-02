@@ -6,6 +6,7 @@ const ContentTableLoader = props => {
         <ContentLoader
             width={1200}
             height={400}
+            className="py-12"
             viewBox="0 0 1200 400"
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"

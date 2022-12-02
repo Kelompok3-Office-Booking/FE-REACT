@@ -10,7 +10,7 @@ import { testimonials } from "store/dataTestimonials";
 
 const Card = ({ imgUrl, name, rating, date, office, comment }) => {
     return (
-        <div className="bg-white p-8 my-4 mx-8 drop-shadow-4xl rounded-2xl w-[520px]">
+        <div className="bg-white p-8 my-4 mx-8 drop-shadow-4xl rounded-2xl w-1/3">
             <div className="flex justify-between">
                 <div className="flex">
                     <img src={imgUrl} className="rounded-full" alt="gambar" />

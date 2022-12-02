@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { deletePromo } from "store/Feature/FeaturePromo/promoSlice";
+import { deleteOffice } from "store/Feature/FeatureOffice/officeSlice";
 
 const DeleteAlertOffice = ({ idOffice, setReload }) => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const DeleteAlertOffice = ({ idOffice, setReload }) => {
     .then((result) => {
       if (result.isConfirmed) {
         try {
-          dispatch(deletePromo(idOffice));
+          dispatch(deleteOffice(idOffice));
           setReload();
           swalWithBootstrapButtons.fire(
             "Deleted!",

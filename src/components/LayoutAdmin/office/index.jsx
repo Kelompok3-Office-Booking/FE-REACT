@@ -6,15 +6,15 @@ import { Arrow } from "assets";
 import ViewOffice from "components/Modal/ModalOffice/ViewOffice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
-import { ContentTableLoader } from "components";
+import { ContentTableLoader, EditOffice } from "components";
 import DeleteOffice from "components/Modal/ModalOffice/DeleteOffice";
 import { Pagination } from 'antd';
-import CreateIcon from "@mui/icons-material/Create";
+
 
 const OfficePage = () => {
   const dispatch = useDispatch();
   const listOfOffice = useSelector((state) => state.office.data);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const pageSize = 6;
   const [dataOffice, setDataOffice] = useState({
     minValue: 0,
@@ -34,13 +34,12 @@ const OfficePage = () => {
     setLoading(true);
   };
 
-  const handleChange = (value) => {
+  const handleChangePage = (value) => {
     setDataOffice({
       minValue: (value - 1) * pageSize,
       maxValue: value * pageSize,
     });
   };
-
 
   return (
     <>
@@ -68,7 +67,7 @@ const OfficePage = () => {
             <div className="flex justify-between items-center py-4 bg-white px-4">
               <div className="flex">
                 <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-                  (7) Record Found
+                  ({listOfOffice.length}) Record Found
                 </h1>
                 <button
                   type="button"
@@ -106,145 +105,148 @@ const OfficePage = () => {
                 />
               </div>
             </div>
-            <table className="w-full text-sm text-left text-gray-500 ">
-              <thead className="text-xs text-gray-500 bg-gray-50">
-                <tr>
-                  <th scope="col" className="p-4">
-                    <div className="flex items-center">
-                      <input
-                        id="checkbox-all-search"
-                        type="checkbox"
-                        className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-secondary"
-                      />
-                      <label htmlFor="checkbox-all-search" className="sr-only">
-                        checkbox
-                      </label>
-                    </div>
-                  </th>
-                  <th scope="col" className="py-3 px-6">
-                    <div className="flex justify-center">
-                      <p className="my-auto">Office ID</p>
-                      <button>
-                        <img src={Arrow} alt="arrow" />
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" className="py-3 px-3">
-                    <div className="flex justify-center">
-                      <p className="my-auto">Name Office</p>
-                      <button>
-                        <img src={Arrow} alt="arrow" />
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" className="py-3 px-6">
-                    <div className="flex justify-center">
-                      <p className="my-auto">Type</p>
-                      <button>
-                        <img src={Arrow} alt="arrow" />
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" className="py-3 px-6">
-                    <div className="flex justify-center">
-                      <p className="my-auto">Price</p>
-                      <button>
-                        <img src={Arrow} alt="arrow" />
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" className="py-3 px-6">
-                    <div className="flex justify-center">
-                      <p className="my-auto">Capacity</p>
-                      <button>
-                        <img src={Arrow} alt="arrow" />
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" className="py-3 px-6">
-                    <div className="flex justify-center">
-                      <p className="my-auto">Total Booked</p>
-                      <button>
-                        <img src={Arrow} alt="arrow" />
-                      </button>
-                    </div>
-                  </th>
-                  <th scope="col" className="py-3 px-6 text-center">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
+            {
+              loading
+                ?
+                (
                   <ContentTableLoader />
-                ) : (
-                  listOfOffice &&
-                  listOfOffice.length > 0 &&
-                  listOfOffice
-                    .slice(dataOffice.minValue, dataOffice.maxValue)
-                    .map((office) => (
-                      <tr
-                        className="bg-white border-b hover:bg-gray-50"
-                        key={office.id}
-                      >
-                        <td className="p-4 w-4">
-                          <div className="flex items-center">
-                            <input
-                              id="checkbox-table-search-1"
-                              type="checkbox"
-                              dataId={office.id}
-                              className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                            />
-                            <label
-                              htmlFor="checkbox-table-search-1"
-                              className="sr-only"
-                            >
-                              checkbox
-                            </label>
-                          </div>
-                        </td>
-                        <td className="py-4 px-6 text-center">
-                          {office.office_id}
-                        </td>
-                        <td className="py-4 px-6 text-center">
-                          {office.full_name}
-                        </td>
-                        <td className="py-4 px-6 text-center">{office.type}</td>
-                        <td className="py-4 px-6 text-center">
-                          {office.price}
-                        </td>
-                        <td className="py-4 px-6 text-center">{office.hour}</td>
-                        <td className="py-4 px-6 text-center">{office.hour}</td>
-                        <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                          {/* Modal toggle */}
-                          {/* <button
+                )
+                :
+                (
+                  <>
+                    <table className="w-full text-sm text-left text-gray-500 ">
+
+                      <thead className="text-xs text-gray-500 bg-gray-50">
+                        <tr>
+                          <th scope="col" className="p-4">
+                            <div className="flex items-center">
+                              <input
+                                id="checkbox-all-search"
+                                type="checkbox"
+                                className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-secondary"
+                              />
+                              <label htmlFor="checkbox-all-search" className="sr-only">
+                                checkbox
+                              </label>
+                            </div>
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            <div className="flex justify-center">
+                              <p className="my-auto">Office ID</p>
+                              <button>
+                                <img src={Arrow} alt="arrow" />
+                              </button>
+                            </div>
+                          </th>
+                          <th scope="col" className="py-3 px-3">
+                            <div className="flex justify-center">
+                              <p className="my-auto">Name Office</p>
+                              <button>
+                                <img src={Arrow} alt="arrow" />
+                              </button>
+                            </div>
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            <div className="flex justify-center">
+                              <p className="my-auto">Type</p>
+                              <button>
+                                <img src={Arrow} alt="arrow" />
+                              </button>
+                            </div>
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            <div className="flex justify-center">
+                              <p className="my-auto">Price</p>
+                              <button>
+                                <img src={Arrow} alt="arrow" />
+                              </button>
+                            </div>
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            <div className="flex justify-center">
+                              <p className="my-auto">Capacity</p>
+                              <button>
+                                <img src={Arrow} alt="arrow" />
+                              </button>
+                            </div>
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            <div className="flex justify-center">
+                              <p className="my-auto">Total Booked</p>
+                              <button>
+                                <img src={Arrow} alt="arrow" />
+                              </button>
+                            </div>
+                          </th>
+                          <th scope="col" className="py-3 px-6 text-center">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          // listOfOffice &&
+                          // listOfOffice.length > 0 &&
+                          listOfOffice
+                            .slice(dataOffice.minValue, dataOffice.maxValue)
+                            .map((office) => (
+                              <tr
+                                className="bg-white border-b hover:bg-gray-50"
+                                key={office.id}
+                              >
+                                <td className="p-4 w-4">
+                                  <div className="flex items-center">
+                                    <input
+                                      id="checkbox-table-search-1"
+                                      type="checkbox"
+                                      dataid={office.id}
+                                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                                    />
+                                    <label
+                                      htmlFor="checkbox-table-search-1"
+                                      className="sr-only"
+                                    >
+                                      checkbox
+                                    </label>
+                                  </div>
+                                </td>
+                                <td className="py-4 px-6 text-center">
+                                  {office.office_id}
+                                </td>
+                                <td className="py-4 px-6 text-center">
+                                  {office.full_name}
+                                </td>
+                                <td className="py-4 px-6 text-center">{office.type}</td>
+                                <td className="py-4 px-6 text-center">
+                                  {office.price}
+                                </td>
+                                <td className="py-4 px-6 text-center">{office.hour}</td>
+                                <td className="py-4 px-6 text-center">{office.hour}</td>
+                                <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                                  {/* Modal toggle */}
+                                  {/* <button
                                                         href="#"
                                                         type="button"
                                                         data-modal-toggle="editUserModal"
                                                         className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600">
                                                         <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
                                                     </button> */}
-                          <ViewOffice />
-                          <DeleteOffice
-                            idOffice={office.id}
-                            loading={loading}
-                            setReload={setReload}
-                          />
-                          <Link to={"/admin-dashboard/editOffice"}>
-                            <button
-                              type="button"
-                              data-modal-toggle="editUserModal"
-                              className="px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600"
-                            >
-                              <CreateIcon className="text-slate-500 hover:text-white" />
-                            </button>
-                          </Link>
-                        </td>
-                      </tr>
-                    ))
-                )}
-              </tbody>
-            </table>
+                                  <ViewOffice dataDetailOffice={office} />
+                                  <DeleteOffice
+                                    idOffice={office.id}
+                                    loading={loading}
+                                    setReload={setReload}
+                                  />
+                                  <EditOffice dataDetailOffice={office} />
+                                </td>
+                              </tr>
+                            )
+                            )}
+                      </tbody>
+                    </table>
+                  </>
+                )
+            }
           </div>
           <div className="mt-8 text-start">
             <Pagination
@@ -252,7 +254,7 @@ const OfficePage = () => {
               defaultPageSize={pageSize}
               // current={dataReview.current}
               total={listOfOffice.length}
-              onChange={handleChange}
+              onChange={handleChangePage}
             />
           </div>
         </div>
