@@ -82,11 +82,11 @@ const PromoPage = () => {
             <div className="flex justify-between items-center py-4 bg-white px-4">
               <div className="flex">
                 <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-                  (7) Record Found
+                  ({listOfPromo.length}) Record Found
                 </h1>
                 <button
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -200,14 +200,6 @@ const PromoPage = () => {
                           {promo.nominal} %
                         </td>
                         <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                          {/* Modal toggle */}
-                          {/* <button
-                                                        href="#"
-                                                        type="button"
-                                                        data-modal-toggle="editUserModal"
-                                                        className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600">
-                                                        <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
-                                                    </button> */}
                           <DeletePromo
                             idPromo={promo.id}
                             loading={loading}
@@ -221,7 +213,7 @@ const PromoPage = () => {
               </tbody>
             </table>
           </div>
-          <div className="text-start mt-4">
+          <div className="text-start mt-8">
             <Pagination
               defaultCurrent={1}
               defaultPageSize={pageSize}

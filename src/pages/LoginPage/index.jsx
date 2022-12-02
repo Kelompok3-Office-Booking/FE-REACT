@@ -1,24 +1,9 @@
-import APIAuth from "apis/restApis/Auth";
 import { BetterSpace, login } from "assets";
 import { Button } from "components";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-const LoginPage = () => {
-  const navigate = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const email = formData.get("email");
-    const password = formData.get("password");
-    await APIAuth.signin({ email, password })
-      .then((result) => {
-        result.data.success && navigate("/admin-dashboard/dashboard");
-      })
-      .catch(() => {
-        alert("password or email is wrong");
-      });
-  };
+import { Link } from "react-router-dom";
 
+const LoginPage = () => {
   return (
     <section className="bg-gray-50 ">
       <div className="flex items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -42,7 +27,7 @@ const LoginPage = () => {
                 Lets login to manage the app
               </p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+            <form onSubmit={() => { }} className="space-y-4 pt-4">
               <div>
                 <div className="relative">
                   <input

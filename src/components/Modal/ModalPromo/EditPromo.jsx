@@ -1,20 +1,30 @@
 import { CloseOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
 
 const EditPromo = ({
     dataPromo,
 }) => {
     const [modal, setModal] = useState(false);
-    const HandleModal = () => {
-        setModal(!modal);
-    }
-
+    const [reset, setReset] = useState(true);
     const [data, setData] = useState({
         voucher_code: dataPromo.voucher_code,
         periode: dataPromo.periode,
         nominal: dataPromo.nominal,
     })
+
+    useEffect(() => {
+        setReset(true);
+    }, [])
+
+    const HandleModal = () => {
+        setModal(!modal);
+        setReset(true);
+    }
+
+    const handleReset = () => {
+        setReset(!reset);
+    }
 
     const handleChangeEditPromo = (ev) => {
         setData({
@@ -22,6 +32,8 @@ const EditPromo = ({
             [ev.target.name]: ev.target.value
         })
     }
+
+
 
     // console.log(data);
     return (
@@ -56,7 +68,7 @@ const EditPromo = ({
                                             placeholder=" "
                                             name="voucher_code"
                                             onChange={(ev) => handleChangeEditPromo(ev)}
-                                            defaultValue={dataPromo.voucher_code}
+                                            defaultValue={reset ? dataPromo.voucher_code : ""}
                                         />
                                         <label
                                             htmlFor="floating_outlined"
@@ -74,7 +86,7 @@ const EditPromo = ({
                                             placeholder=" "
                                             name="periode"
                                             onChange={(ev) => handleChangeEditPromo(ev)}
-                                            defaultValue={dataPromo.periode}
+                                            defaultValue={reset ? dataPromo.periode : ""}
                                         />
                                         <label
                                             htmlFor="floating_outlined"
@@ -92,7 +104,7 @@ const EditPromo = ({
                                             placeholder=" "
                                             name="nominal"
                                             onChange={(ev) => handleChangeEditPromo(ev)}
-                                            defaultValue={dataPromo.nominal}
+                                            defaultValue={reset ? dataPromo.nominal : ""}
                                         />
                                         <div className="absolute">
                                             <p className="relative -top-8 -right-[230px]">%</p>
@@ -105,8 +117,8 @@ const EditPromo = ({
                                     </div>
                                 </div>
                                 <div className="w-full flex justify-between">
-                                    <button type="reset" className="w-1/2 border-2 border-success rounded-lg text-success mr-2 hover:bg-success hover:text-white">
-                                        Reset
+                                    <button type="reset" onClick={handleReset} className="w-1/2 border-2 border-success rounded-lg text-success mr-2 hover:bg-success hover:text-white">
+                                        {reset ? "Reset" : "Cancel"}
                                     </button>
                                     <button type="submit" className="w-1/2 bg-success ml-2 text-white py-3 rounded-lg hover:bg-opacity-70">
                                         Save

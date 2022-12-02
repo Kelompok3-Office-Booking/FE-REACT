@@ -23,11 +23,15 @@ const InputField = ({ name, defaultValue, label, placeholder, onChange, classNam
     </div>
 );
 
-const ViewOffice = () => {
+const ViewOffice = ({
+    dataDetailOffice
+}) => {
     const [modal, setModal] = useState(false);
     const HandleModal = () => {
         setModal(!modal);
     }
+
+    // console.log(dataDetailOffice);
 
     return (
         <>
@@ -88,23 +92,23 @@ const ViewOffice = () => {
                                                     label="Office ID"
                                                     placeholder="Office ID"
                                                     disabled={true}
-                                                    defaultValue={"UIOIS"}
+                                                    defaultValue={dataDetailOffice.office_id}
                                                 />
                                                 <InputField
                                                     name="type"
                                                     label="Type"
                                                     placeholder="Type"
                                                     disabled={true}
-                                                    defaultValue={"HAHAHA"}
+                                                    defaultValue={dataDetailOffice.type}
                                                 />
 
                                                 <div className="col-span-2 relative">
                                                     <InputField
-                                                        name="type"
-                                                        label="Type"
-                                                        placeholder="Type"
+                                                        name="full_name"
+                                                        label="Full Name"
+                                                        placeholder="Full Name"
                                                         disabled={true}
-                                                        defaultValue={"Ini adalah namamu"}
+                                                        defaultValue={dataDetailOffice.full_name}
                                                     />
                                                 </div>
 
@@ -114,7 +118,7 @@ const ViewOffice = () => {
                                                         label={`Price / ${"hour"}`}
                                                         placeholder="Type"
                                                         disabled={true}
-                                                        defaultValue={`Rp. ${20000}`}
+                                                        defaultValue={dataDetailOffice.price}
                                                     />
                                                 </div>
                                                 <InputField
@@ -122,14 +126,14 @@ const ViewOffice = () => {
                                                     label="Address"
                                                     placeholder="Address"
                                                     disabled={true}
-                                                    defaultValue={"Address nya disini ya"}
+                                                    defaultValue={dataDetailOffice.address}
                                                 />
                                                 <InputField
                                                     name="district"
                                                     label="District"
                                                     placeholder="District"
                                                     disabled={true}
-                                                    defaultValue={"Lokasi mu"}
+                                                    defaultValue={dataDetailOffice.district}
                                                 />
                                                 <InputField
                                                     name="open"
@@ -137,15 +141,15 @@ const ViewOffice = () => {
                                                     type="time"
                                                     placeholder="Open"
                                                     disabled={true}
-                                                    defaultValue={`2022 - 12 - 01`}
+                                                    defaultValue={dataDetailOffice.open}
                                                 />
                                                 <InputField
                                                     name="close"
                                                     label="Close"
-                                                    type="close"
+                                                    type="time"
                                                     placeholder="Close"
                                                     disabled={true}
-                                                    defaultValue={`2022 - 12 - 01`}
+                                                    defaultValue={dataDetailOffice.close}
                                                 />
                                                 <div className="col-span-2 relative">
                                                     <InputField
@@ -154,7 +158,7 @@ const ViewOffice = () => {
                                                         className="h-24"
                                                         placeholder="District"
                                                         disabled={true}
-                                                        defaultValue={"Description from this office mu"}
+                                                        defaultValue={dataDetailOffice.district}
                                                     />
                                                 </div>
                                                 <InputField
@@ -162,28 +166,28 @@ const ViewOffice = () => {
                                                     label="Capacity"
                                                     placeholder="Capacity"
                                                     disabled={true}
-                                                    defaultValue={"120 Person"}
+                                                    defaultValue={dataDetailOffice.capacity}
                                                 />
                                                 <InputField
                                                     name="meeting_room"
                                                     label="Meeting Room"
                                                     placeholder="Meeting Room"
                                                     disabled={true}
-                                                    defaultValue={"12 room"}
+                                                    defaultValue={dataDetailOffice.meeting_room}
                                                 />
                                                 <InputField
                                                     name="private_room"
                                                     label="Private Room"
                                                     placeholder="Private Room"
                                                     disabled={true}
-                                                    defaultValue={"8 room"}
+                                                    defaultValue={dataDetailOffice.private_room}
                                                 />
                                                 <InputField
                                                     name="working_desk"
                                                     label="Working Desk"
                                                     placeholder="Working Desk"
                                                     disabled={true}
-                                                    defaultValue={"50 desk"}
+                                                    defaultValue={dataDetailOffice.working_desk}
                                                 />
                                                 <div className="col-span-2 relative">
                                                     <InputField
@@ -191,7 +195,7 @@ const ViewOffice = () => {
                                                         label="Facilities"
                                                         placeholder="Facilities"
                                                         disabled={true}
-                                                        defaultValue={"10 Facilities"}
+                                                        defaultValue={dataDetailOffice.facilities}
                                                     />
                                                     <p className="pt-2 text-start">{`detail fasilitas disini njir`}</p>
                                                 </div>
@@ -201,7 +205,7 @@ const ViewOffice = () => {
                                                         label="Address"
                                                         placeholder="Address"
                                                         disabled={true}
-                                                        defaultValue={"Jl. Jendral Sudirma No. 58, Kebayoran baru, South Jakarta  "}
+                                                        defaultValue={dataDetailOffice.address}
                                                     />
                                                 </div>
                                                 <InputField
@@ -209,14 +213,14 @@ const ViewOffice = () => {
                                                     label="Latitude"
                                                     placeholder="Latitude"
                                                     disabled={true}
-                                                    defaultValue={"-6.275939871233736"}
+                                                    defaultValue={dataDetailOffice.latitude}
                                                 />
                                                 <InputField
                                                     name="longitude"
                                                     label="Longitude"
                                                     placeholder="Longitude"
                                                     disabled={true}
-                                                    defaultValue={"106.82135462293893"}
+                                                    defaultValue={dataDetailOffice.longitude}
                                                 />
                                                 <div className="col-span-2 relative">
                                                     <InputField
@@ -224,7 +228,7 @@ const ViewOffice = () => {
                                                         label="Length Room"
                                                         placeholder="Length Room"
                                                         disabled={true}
-                                                        defaultValue={"30m2"}
+                                                        defaultValue={dataDetailOffice.length_room}
                                                     />
                                                 </div>
                                                 <div className="col-span-2 relative">
@@ -233,7 +237,7 @@ const ViewOffice = () => {
                                                         label="Total Booked"
                                                         placeholder="Total Booked"
                                                         disabled={true}
-                                                        defaultValue={"30m2"}
+                                                        defaultValue={dataDetailOffice.total_booked}
                                                     />
                                                 </div>
                                             </div>
