@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { EyeInvisibleOutlined } from "@ant-design/icons";
+import { CaretDownOutlined, EyeOutlined, EyeInvisibleOutlined, SmileOutlined } from '@ant-design/icons';
 // import type { PaginationProps } from 'antd';
-import { Pagination, Select } from "antd";
+import { Dropdown, Menu, Space, Pagination, Select } from 'antd';
+import { Link } from "react-router-dom";
 import { twitter } from "assets";
 import { Rating } from "@mui/material";
 
 import { testimonials } from "store/dataTestimonials";
 
-const Card = ({ imgUrl, name, rating, date, office, comment }) => 
+
+const Card = ({ imgUrl, name, rating, date, office, comment }) => {
   return (
-  <div className="bg-white p-8 my-4 mx-8 drop-shadow-4xl rounded-2xl w-[520px]">
-    <div className="flex justify-between">
-      <div className="flex">
-        <img src={imgUrl} className="rounded-full" alt="gambar" />
-        <div className="pl-4 flex flex-col text-start">
-          <p className="font-bold text-xl my-auto">{name}</p>
-          <Rating
-            name="half-rating-read"
-            defaultValue={rating}
-            precision={0.5}
-            readOnly
-          />
+    <div className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
+      <div className="flex justify-between">
+        <div className="flex">
+          <img src={imgUrl} className="rounded-full" alt="gambar" />
+          <div className="pl-4 flex flex-col text-start">
+            <p className="font-bold text-xl my-auto">{name}</p>
+            <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
+          </div>
         </div>
         <p className="text-gray-500">{date}</p>
       </div>
@@ -35,33 +33,32 @@ const Card = ({ imgUrl, name, rating, date, office, comment }) =>
         </button>
       </div>
     </div>
-  </div>
-
-);
-};
+  )
+}
 
 const ReviewPage = () => {
+
   const pageSize = 4;
   const [dataReview, setDataReview] = useState({
     minValue: 0,
-    maxValue: 2,
+    maxValue: 2
   });
   const [filter, setFilter] = useState("newest");
   const [testimonial, setTestimonial] = useState(testimonials);
-  // const TestiImage = {image1, image2, image3, image4, image5, image6, image7, image8, image9, image10}
+  // const TestiImage = { image1, image2, image3, image4, image5, image6, image7, image8, image9, image10 }
 
   useEffect(() => {
     setTestimonial(testimonials);
     setDataReview({
       minValue: 0,
-      maxValue: 4,
-    });
-  }, [testimonial]);
+      maxValue: 4
+    })
+  }, [testimonial])
 
   const handleChange = (value) => {
     setDataReview({
       minValue: (value - 1) * pageSize,
-      maxValue: value * pageSize,
+      maxValue: value * pageSize
     });
     // console.log(dataReview);
   };
@@ -71,19 +68,19 @@ const ReviewPage = () => {
     setFilter(value);
   };
 
-  // const handleFilter = ({name}) => {
+  // const handleFilter = ({ name }) => {
   //     setFilter(name);
   // }
 
   // console.log(dataReview.data);
   // onClick={handleFilter()}
   // console.log(menu.props.items[0].name);
-  // console.log(filter);
+  console.log(filter);
   return (
     <div className="flex flex-col w-full">
       <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
-        <h1 className="text-2xl font-bold my-auto">Review</h1>
-        <div className="flex content-center pl-12 rounded-xl text-lg py-2">
+        <h1 className="text-3xl font-bold my-auto">Review</h1>
+        <div className="flex content-center px-12 rounded-xl text-lg py-2">
           <p className="mr-4">Sort By : </p>
           <Select
             defaultValue="newest"
@@ -92,37 +89,38 @@ const ReviewPage = () => {
             onChange={handleFilter}
             options={[
               {
-                value: "newest",
-                label: "Newest",
+                value: 'newest',
+                label: 'Newest',
               },
               {
-                value: "oldest",
-                label: "Oldest",
+                value: 'oldest',
+                label: 'Oldest',
               },
             ]}
           />
         </div>
+
       </div>
-      <div className=" my-4 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
-        {testimonial &&
+      <div className=" my-8 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
+        {
+          testimonial &&
           testimonial.length > 0 &&
-          testimonial
-            .slice(dataReview.minValue, dataReview.maxValue)
-            ?.map((review) => {
-              return (
-                <Card
-                  key={review.id}
-                  imgUrl={twitter}
-                  name={review.name}
-                  rating={review.rating}
-                  date={"22/05/2022"}
-                  office="Equity Tower Floor 34"
-                  comment={review.comment}
-                />
-              );
-            })}
+          testimonial.slice(dataReview.minValue, dataReview.maxValue).map((review) => {
+            return (
+              <Card
+                key={review.id}
+                imgUrl={twitter}
+                name={review.name}
+                rating={review.rating}
+                date={"22/05/2022"}
+                office="Equity Tower Floor 34"
+                comment={review.comment}
+              />
+            )
+          })
+        }
       </div>
-      <div className="text-start mt-4">
+      <div>
         <Pagination
           defaultCurrent={1}
           defaultPageSize={pageSize}
@@ -132,7 +130,7 @@ const ReviewPage = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default ReviewPage;
