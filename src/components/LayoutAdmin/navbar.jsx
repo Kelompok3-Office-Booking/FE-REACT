@@ -9,15 +9,11 @@ import {
 import Auth from "utils/auth";
 const NavbarAdmin = () => {
   const [toggle, setToggle] = useState(false);
-
+  const navigate = useNavigate();
   const HANDLETOGGLE = () => {
     setToggle(!toggle);
   };
 
-  const navigate = useNavigate();
-  const handleSignout = (navigate) => {
-    Auth.signOut(navigate);
-  };
   useEffect(() => {
     setToggle(false);
   }, []);
@@ -53,7 +49,7 @@ const NavbarAdmin = () => {
               >
                 <div className="my-auto text-slate-900 py-2">
                   <button
-                    onClick={handleSignout(navigate)}
+                    onClick={() => Auth.signOut(navigate)}
                     className="inline-block relative -right-6 top-20 z-10 w-44 h-auto bg-white rounded-2xl divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 py-2 px-4 text-lg my-auto text-gray-700 hover:bg-red-700  hover:text-white dark:hover:bg-red-700 dark:text-gray-200 dark:hover:text-white font-bold"
                   >
                     <FontAwesomeIcon
