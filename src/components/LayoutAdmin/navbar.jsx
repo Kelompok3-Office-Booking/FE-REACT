@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { twitter } from "assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-
+import Auth from "utils/auth";
 const NavbarAdmin = () => {
   const [toggle, setToggle] = useState(false);
 
@@ -14,6 +14,10 @@ const NavbarAdmin = () => {
     setToggle(!toggle);
   };
 
+  const navigate = useNavigate();
+  const handleSignout = (navigate) => {
+    Auth.signOut(navigate);
+  };
   useEffect(() => {
     setToggle(false);
   }, []);
@@ -48,8 +52,8 @@ const NavbarAdmin = () => {
                 className={`${toggle ? "visible absolute" : "hidden"}`}
               >
                 <div className="my-auto text-slate-900 py-2">
-                  <Link
-                    href="#"
+                  <button
+                    onClick={handleSignout(navigate)}
                     className="inline-block relative -right-6 top-20 z-10 w-44 h-auto bg-white rounded-2xl divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 py-2 px-4 text-lg my-auto text-gray-700 hover:bg-red-700  hover:text-white dark:hover:bg-red-700 dark:text-gray-200 dark:hover:text-white font-bold"
                   >
                     <FontAwesomeIcon
@@ -57,7 +61,7 @@ const NavbarAdmin = () => {
                       icon={faRightFromBracket}
                     />
                     Logout
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
