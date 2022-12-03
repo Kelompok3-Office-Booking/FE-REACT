@@ -55,7 +55,7 @@ const LoginPage = () => {
                 Lets login to manage the app
               </p>
             </div>
-            <form onSubmit={() => { }} className="space-y-4 pt-4">
+            <form onSubmit={handleSubmit} className="space-y-4 pt-4">
               <div>
                 <div className="relative">
                   <input
