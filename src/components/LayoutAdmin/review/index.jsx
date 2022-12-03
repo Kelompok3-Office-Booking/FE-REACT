@@ -7,31 +7,37 @@ import { Rating } from "@mui/material";
 
 import { testimonials } from "store/dataTestimonials";
 
-const Card = ({ imgUrl, name, rating, date, office, comment }) => {
+const Card = ({ imgUrl, name, rating, date, office, comment }) => 
   return (
-    <div className="bg-white p-8 my-4 mx-8 drop-shadow-4xl rounded-2xl w-1/3">
-      <div className="flex justify-between">
-        <div className="flex">
-          <img src={imgUrl} className="rounded-full" alt="gambar" />
-          <div className="pl-4 flex flex-col text-start">
-            <p className="font-bold text-xl my-auto">{name}</p>
-            <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
-          </div>
-          <p className="text-gray-500">{date}</p>
+  <div className="bg-white p-8 my-4 mx-8 drop-shadow-4xl rounded-2xl w-[520px]">
+    <div className="flex justify-between">
+      <div className="flex">
+        <img src={imgUrl} className="rounded-full" alt="gambar" />
+        <div className="pl-4 flex flex-col text-start">
+          <p className="font-bold text-xl my-auto">{name}</p>
+          <Rating
+            name="half-rating-read"
+            defaultValue={rating}
+            precision={0.5}
+            readOnly
+          />
         </div>
-        <div className="my-12 text-start">
-          <h3 className="font-bold text-gray-500">{office}</h3>
-          <p className="text-gray-500">“{comment}”</p>
-        </div>
-        <div className="flex justify-end">
-          <button className="text-red-600 border-2 rounded-2xl border-red-600 px-8 py-1 flex content-center">
-            <EyeInvisibleOutlined className="text-2xl mb-1" />
-            <p className="ml-4 my-auto">Hide Comment</p>
-          </button>
-        </div>
+        <p className="text-gray-500">{date}</p>
+      </div>
+      <div className="my-12 text-start">
+        <h3 className="font-bold text-gray-500">{office}</h3>
+        <p className="text-gray-500">“{comment}”</p>
+      </div>
+      <div className="flex justify-end">
+        <button className="text-red-600 border-2 rounded-2xl border-red-600 px-8 py-1 flex content-center">
+          <EyeInvisibleOutlined className="text-2xl mb-1" />
+          <p className="ml-4 my-auto">Hide Comment</p>
+        </button>
       </div>
     </div>
-  );
+  </div>
+
+);
 };
 
 const ReviewPage = () => {

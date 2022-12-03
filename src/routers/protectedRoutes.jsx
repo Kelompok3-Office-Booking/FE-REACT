@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Auth from "utils/auth";
 
 export default function ProtectedRoute() {
@@ -6,5 +6,5 @@ export default function ProtectedRoute() {
     return <Navigate to="/admin-dashboard/dashboard" replace />;
   }
 
-  return <Navigate to="/" />;
+  return <Outlet />;
 }

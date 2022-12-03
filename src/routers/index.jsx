@@ -19,10 +19,10 @@ import ProtectedRoute from "./protectedRoutes";
 const SetupRouters = () => {
   return (
     <Routes>
-      {/* {/Landingpage Routes/} */}
+      {/*Landingpage Routes*/}
       <Route path="/" element={<LandingPage />} />
 
-      {/* {/Protected Routes/} */}
+      {/*Protected Routes*/}
       <Route
         path="/admin-dashboard"
         element={
@@ -42,14 +42,14 @@ const SetupRouters = () => {
         <Route path="admin" element={<AdminPage />} />
       </Route>
 
-      {/* {/Private Routes/} */}
+      {/*Private Routes*/}
       <Route path="login" element={<ProtectedRoute />}>
         <Route index element={<LoginPage />} />
       </Route>
 
-      {/* {/Notfound Routes/} */}
+      {/*Notfound Routes*/}
       <Route />
-    </Routes>
+    </Routes >
   );
 };
 

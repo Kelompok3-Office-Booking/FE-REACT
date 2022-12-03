@@ -9,15 +9,11 @@ import {
 import Auth from "utils/auth";
 const NavbarAdmin = () => {
   const [toggle, setToggle] = useState(false);
-
+  const navigate = useNavigate();
   const HANDLETOGGLE = () => {
     setToggle(!toggle);
   };
 
-  const navigate = useNavigate();
-  const handleSignout = (navigate) => {
-    Auth.signOut(navigate);
-  };
   useEffect(() => {
     setToggle(false);
   }, []);
