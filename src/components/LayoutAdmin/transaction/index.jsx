@@ -14,7 +14,6 @@ import { ContentTableLoader, EditOffice } from "components";
 import { useSnackbar } from "@mui/base";
 import { Pagination } from "antd";
 
-
 const TransactionPage = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transaction);
@@ -23,8 +22,8 @@ const TransactionPage = () => {
 
   const [dataTransaksi, setDataTransaksi] = useState({
     minValue: 0,
-    maxValue: 20
-  })
+    maxValue: 20,
+  });
 
   const [user, setUser] = [];
 
@@ -33,8 +32,8 @@ const TransactionPage = () => {
     setLoading(false);
     setDataTransaksi({
       minValue: 0,
-      maxValue: 6
-    })
+      maxValue: 6,
+    });
   }, [dispatch, loading, user]);
 
   const HANDLEDELETE = (id) => {
@@ -46,14 +45,14 @@ const TransactionPage = () => {
 
   const setReload = () => {
     setLoading(true);
-  }
+  };
 
   const handleChange = (value) => {
     setDataTransaksi({
       minValue: (value - 1) * pageSize,
-      maxValue: value * pageSize
+      maxValue: value * pageSize,
     });
-  }
+  };
 
   return (
     <div className="min-h-screen">
@@ -106,14 +105,14 @@ const TransactionPage = () => {
         <table className="w-full text-sm text-left text-gray-500 ">
           <THead />
           <tbody>
-            {
-              loading
-                ?
-                <ContentTableLoader />
-                :
-                listOfTransaction &&
-                listOfTransaction.data.length > 0 &&
-                listOfTransaction.data.slice(dataTransaksi.minValue, dataTransaksi.maxValue)?.map((transaction) => (
+            {loading ? (
+              <ContentTableLoader />
+            ) : (
+              listOfTransaction &&
+              listOfTransaction.data.length > 0 &&
+              listOfTransaction.data
+                .slice(dataTransaksi.minValue, dataTransaksi.maxValue)
+                ?.map((transaction) => (
                   <tr
                     className="bg-white border-b hover:bg-gray-50"
                     key={transaction.id}
@@ -140,16 +139,17 @@ const TransactionPage = () => {
                     <td className="py-4 px-6">{transaction.nominal}</td>
                     <td id="status" className="py-4 px-6">
                       <span
-                        className={`${transaction.status === "On Process"
-                          ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
-                          : transaction.status === "Confirmed"
+                        className={`${
+                          transaction.status === "On Process"
+                            ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
+                            : transaction.status === "Confirmed"
                             ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
                             : transaction.status === "Pending"
-                              ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
-                              : transaction.status === "Cancelled"
-                                ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                                : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
-                          }`}
+                            ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
+                            : transaction.status === "Cancelled"
+                            ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                            : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
+                        }`}
                       >
                         {transaction.status}
                       </span>
@@ -169,7 +169,8 @@ const TransactionPage = () => {
                       <ModalUpdateTransaksi />
                     </td>
                   </tr>
-                ))}
+                ))
+            )}
           </tbody>
         </table>
       </div>

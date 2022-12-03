@@ -3,6 +3,7 @@ import { BetterSpace, login } from "assets";
 import { Button } from "components";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 const LoginPage = () => {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -12,10 +13,21 @@ const LoginPage = () => {
     const password = formData.get("password");
     await APIAuth.signin({ email, password })
       .then((result) => {
-        result.data.success && navigate("/admin-dashboard/dashboard");
+        result && navigate("/admin-dashboard/dashboard");
+        Swal.fire({
+          icon: "success",
+          title: "Login Success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       })
-      .catch(() => {
-        alert("password or email is wrong");
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Username or Password is Wrong",
+        });
       });
   };
 
@@ -63,7 +75,7 @@ const LoginPage = () => {
               <div>
                 <div className="relative">
                   <input
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
