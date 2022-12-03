@@ -53,7 +53,7 @@ const PromoPage = () => {
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch, loading]);
+  }, [dispatch]);
 
   const handleDeleteAll = () => {
     DeleteAllData();

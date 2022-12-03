@@ -30,7 +30,7 @@ const UserPage = () => {
       minValue: 0,
       maxValue: 6,
     })
-  }, [dispatch, loading]);
+  }, [dispatch]);
 
   const handleSearch = (ev) => {
     setSearch(ev.target.value);

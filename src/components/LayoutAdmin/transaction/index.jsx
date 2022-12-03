@@ -34,7 +34,7 @@ const TransactionPage = () => {
       minValue: 0,
       maxValue: 6
     })
-  }, [dispatch, loading, user]);
+  }, [dispatch, user]);
 
   const HANDLEDELETE = (id) => {
     DeleteAlert(id);

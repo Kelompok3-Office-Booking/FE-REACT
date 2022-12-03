@@ -28,7 +28,7 @@ const OfficePage = () => {
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch, loading]);
+  }, [dispatch]);
 
   const setReload = () => {
     setLoading(true);
