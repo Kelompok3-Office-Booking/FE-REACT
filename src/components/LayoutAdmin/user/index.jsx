@@ -3,10 +3,10 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, fetchUser } from "store/Feature/FeatureUser/userSlice";
 import { ModalUpdateUser } from "components/Modal";
-import { Arrow } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
 import Swal from "sweetalert2";
 import { Pagination } from "antd";
+import TableHead from "./tableHead";
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const UserPage = () => {
   const [dataUser, setDataUser] = useState({
     minValue: 0,
     maxValue: 20,
-  })
+  });
 
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ const UserPage = () => {
     setDataUser({
       minValue: 0,
       maxValue: 6,
-    })
+    });
   }, [dispatch]);
 
   const handleChangePage = (value) => {
@@ -122,103 +122,58 @@ const UserPage = () => {
             <input
               type="text"
               id="table-search-users"
-              onChange={() => { }}
+              onChange={() => {}}
               className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search for users"
             />
           </div>
         </div>
         <table className=" w-full text-sm text-left text-gray-500 ">
-          <thead className="text-xs text-gray-500 uppercase bg-gray-50">
-            <tr>
-              <th scope="col" className="p-4">
-                <div className="flex items-center">
-                  <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                  />
-                  <label htmlFor="checkbox-all-search" className="sr-only">
-                    checkbox
-                  </label>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  User ID
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  Full Name
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  Gender
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  Email Address
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6 text-center">
-                Action
-              </th>
-            </tr>
-          </thead>
+          <TableHead />
           <tbody>
-            {listOfUser.slice(dataUser.minValue, dataUser.maxValue)?.map((user) => (
-              <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
-                <td className="p-4 w-4">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-table-search-1"
-                      type="checkbox"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
-                    />
-                    <label
-                      htmlFor="checkbox-table-search-1"
-                      className="sr-only"
+            {listOfUser
+              .slice(dataUser.minValue, dataUser.maxValue)
+              ?.map((user) => (
+                <tr
+                  className="bg-white border-b  hover:bg-gray-50"
+                  key={user.id}
+                >
+                  <td className="p-4 w-4">
+                    <div className="flex items-center">
+                      <input
+                        id="checkbox-table-search-1"
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
+                      />
+                      <label
+                        htmlFor="checkbox-table-search-1"
+                        className="sr-only"
+                      >
+                        checkbox
+                      </label>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6">{user.id}</td>
+                  <td className="py-4 px-6">{user.full_name}</td>
+                  <td className="py-4 px-6">{user.gender}</td>
+                  <td className="py-4 px-6">{user.email}</td>
+                  <td className="py-4 px-6 flex gap-2 items-center justify-center ">
+                    {/* Modal toggle */}
+                    <button
+                      type="button"
+                      onClick={() => HANDLEDELETE(user.id)}
+                      data-modal-toggle="editUserModal"
+                      className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
                     >
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <td className="py-4 px-6">{user.id}</td>
-                <td className="py-4 px-6">{user.full_name}</td>
-                <td className="py-4 px-6">{user.gender}</td>
-                <td className="py-4 px-6">{user.email}</td>
-                <td className="py-4 px-6 flex gap-2 items-center justify-center ">
-                  {/* Modal toggle */}
-                  <button
-                    type="button"
-                    onClick={() => HANDLEDELETE(user.id)}
-                    data-modal-toggle="editUserModal"
-                    className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
-                  >
-                    <DeleteForeverIcon className="text-slate-500 hover:text-white" />
-                  </button>
-                  <ModalUpdateUser dataUser={user} />
-                </td>
-              </tr>
-            ))}
-          </tbody >
-        </table >
-      </div >
+                      <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                    </button>
+                    <ModalUpdateUser dataUser={user} />
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       <div className="mt-8 text-start">
         <Pagination
           defaultCurrent={1}

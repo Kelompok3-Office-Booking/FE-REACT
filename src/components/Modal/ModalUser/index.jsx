@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
 
-const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange, className = "border-gray-400", type = "text", disabled, autoComplete = "off" }) => (
+const InputField = ({
+  name,
+  label,
+  defaultValue,
+  placeholder,
+  onClick,
+  onChange,
+  className = "border-gray-400",
+  type = "text",
+  disabled,
+  autoComplete = "off",
+}) => (
   <div className="relative">
     <input
       type={type}
@@ -17,26 +28,25 @@ const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange,
     />
     <label
       htmlFor="floating_outlined"
-      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+    >
       {label}
     </label>
   </div>
 );
 
-const ModalUpdateUser = ({
-  dataUser
-}) => {
+const ModalUpdateUser = ({ dataUser }) => {
   const [modal, setModal] = useState(false);
   const [reset, setReset] = useState(true);
   const [data, setData] = useState({
     full_name: dataUser.full_name,
     gender: dataUser.gender,
-    email: dataUser.email
-  })
+    email: dataUser.email,
+  });
 
   useEffect(() => {
     setReset(true);
-  }, [])
+  }, []);
 
   const HANDLEMODAL = () => {
     setModal(!modal);
@@ -46,15 +56,16 @@ const ModalUpdateUser = ({
   const setHandleChangeData = (ev) => {
     setData({
       ...data,
-      [ev.target.name]: ev.target.value
-    })
-  }
+      [ev.target.name]: ev.target.value,
+    });
+  };
 
   const handleReset = () => {
     setReset(!reset);
     // console.log(reset);
-  }
+  };
 
+  const handleSubmit = () => {};
   // console.log(dataUser);
   return (
     <>
@@ -76,7 +87,10 @@ const ModalUpdateUser = ({
         >
           <div className="relative w-full max-w-lg h-full md:h-auto">
             {/* Modal content */}
-            <form action="#" className="relative pb-6 bg-white rounded-lg shadow ">
+            <form
+              onSubmit={handleSubmit}
+              className="relative pb-6 bg-white rounded-lg shadow "
+            >
               {/* Modal header */}
               <div className="p-2 rounded-t border-b">
                 <button
@@ -110,7 +124,7 @@ const ModalUpdateUser = ({
                     label="Full Name"
                     placeholder="Full Name"
                     type="text"
-                    onClick={() => { }}
+                    onClick={() => {}}
                     defaultValue={reset ? dataUser.full_name : ""}
                     onChange={(ev) => setHandleChangeData(ev)}
                   />
@@ -119,7 +133,7 @@ const ModalUpdateUser = ({
                     label="Gender"
                     placeholder="Gender"
                     type="text"
-                    onClick={() => { }}
+                    onClick={() => {}}
                     defaultValue={reset ? dataUser.gender : ""}
                     onChange={(ev) => setHandleChangeData(ev)}
                   />
@@ -128,7 +142,7 @@ const ModalUpdateUser = ({
                     label="Email"
                     placeholder="Email"
                     type="email"
-                    onClick={() => { }}
+                    onClick={() => {}}
                     defaultValue={reset ? dataUser.email : ""}
                     onChange={(ev) => setHandleChangeData(ev)}
                   />
