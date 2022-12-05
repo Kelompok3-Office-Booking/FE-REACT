@@ -1,18 +1,21 @@
 import APIAuth from "apis/restApis/Auth";
 import { BetterSpace, login } from "assets";
-import { Button } from "components";
-import React from "react";
+import { Button, LoadingButton } from "components/Button";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
+    setLoading(!loading);
     e.preventDefault();
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
     await APIAuth.signin({ email, password })
       .then((result) => {
+        setLoading(false);
         result && navigate("/admin-dashboard/dashboard");
         Swal.fire({
           icon: "success",
@@ -22,6 +25,7 @@ const LoginPage = () => {
         });
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
         Swal.fire({
           icon: "error",
@@ -100,7 +104,7 @@ const LoginPage = () => {
                   </Link>
                 </p>
               </div>
-              <Button props={"Login"} />
+              {loading ? <LoadingButton /> : <Button props={"Login"} />}
             </form>
           </div>
         </div>

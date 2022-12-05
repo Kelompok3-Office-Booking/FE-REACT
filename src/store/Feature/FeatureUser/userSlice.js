@@ -4,12 +4,13 @@ import APIUser from "apis/restApis/User";
 const initialState = {
   data: [],
   loading: false,
+  token: null,
 };
 
 export const fetchUser = createAsyncThunk("fetchUser/users", async () => {
   try {
     const res = await APIUser.getAllUsers();
-    return res.data.user;
+    return res.data;
   } catch (error) {
     console.log(error);
   }
@@ -27,6 +28,7 @@ export const updateUser = createAsyncThunk("updateUser/user", async (data) => {
 export const deleteUser = createAsyncThunk("delete/user", async (id) => {
   try {
     const res = await APIUser.deleteUsers(id);
+    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -40,6 +42,7 @@ const userSlice = createSlice({
     builder
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.token = action.payload;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.data = state.data.map((val) => {

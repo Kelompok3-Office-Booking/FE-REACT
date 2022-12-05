@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "store/Feature/FeatureUser/userSlice";
+import { deleteUser, fetchUser } from "store/Feature/FeatureUser/userSlice";
 import { ModalUpdateUser } from "components/Modal";
 import { Arrow } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
-import DeleteAlertUser from "components/Alert/deleteAlertUser";
+import Swal from "sweetalert2";
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -15,8 +15,44 @@ const UserPage = () => {
     dispatch(fetchUser());
   }, [dispatch]);
 
-  const HANDLEDELETE = () => {
-    DeleteAlertUser();
+  const HANDLEDELETE = (id) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(deleteUser(id));
+            swalWithBootstrapButtons.fire(
+              "Deleted!",
+              "Your file has been deleted.",
+              "success"
+            );
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Delete is Failed ",
+            });
+          }
+        }
+      });
   };
   const HANDLEDELETEALL = () => {
     DeleteAllData();
@@ -140,14 +176,14 @@ const UserPage = () => {
                   </div>
                 </td>
                 <td className="py-4 px-6">{user.id}</td>
-                <td className="py-4 px-6">{user.fullName}</td>
+                <td className="py-4 px-6">{user.full_name}</td>
                 <td className="py-4 px-6">{user.gender}</td>
                 <td className="py-4 px-6">{user.email}</td>
                 <td className="py-4 px-6 flex gap-2 items-center justify-center ">
                   {/* Modal toggle */}
                   <button
                     type="button"
-                    onClick={HANDLEDELETE}
+                    onClick={() => HANDLEDELETE(user.id)}
                     data-modal-toggle="editUserModal"
                     className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
                   >
