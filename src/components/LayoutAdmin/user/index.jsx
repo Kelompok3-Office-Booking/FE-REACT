@@ -89,7 +89,7 @@ const UserPage = () => {
         <div className="flex justify-between rounded-2xl items-center py-4 bg-white px-4">
           <div className="my-auto flex rounded-2xl">
             <h1 className="inline pr-4 my-auto text-base text-neutral-500">
-              ({listOfUser.length}) Record Found
+              (8) Record Found
             </h1>
             <button
               type="button"
