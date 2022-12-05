@@ -5,14 +5,8 @@ import { deleteUser, fetchUser } from "store/Feature/FeatureUser/userSlice";
 import { ModalUpdateUser } from "components/Modal";
 import { Arrow } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
-<<<<<<< HEAD
-import DeleteAlertUser from "components/Alert/deleteAlertUser";
-import { Pagination } from 'antd';
-import DeleteUser from "components/Modal/ModalUser/DeleteUser";
-import { ContentTableLoader } from "components";
-=======
 import Swal from "sweetalert2";
->>>>>>> 7709e0d665df97b642004d181ea717ec2df18b34
+import { Pagination } from "antd";
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -36,25 +30,13 @@ const UserPage = () => {
     })
   }, [dispatch]);
 
-<<<<<<< HEAD
-  const handleSearch = (ev) => {
-    setSearch(ev.target.value);
-  }
-
-  const setReload = () => {
-    setLoading(true);
-  };
-
   const handleChangePage = (value) => {
     setDataUser({
       minValue: (value - 1) * pageSize,
       maxValue: value * pageSize,
-    })
-  }
+    });
+  };
 
-  const HANDLEDELETE = () => {
-    DeleteAlertUser();
-=======
   const HANDLEDELETE = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -93,7 +75,6 @@ const UserPage = () => {
           }
         }
       });
->>>>>>> 7709e0d665df97b642004d181ea717ec2df18b34
   };
   const HANDLEDELETEALL = () => {
     DeleteAllData();
@@ -141,7 +122,7 @@ const UserPage = () => {
             <input
               type="text"
               id="table-search-users"
-              onChange={(ev) => handleSearch(ev)}
+              onChange={() => { }}
               className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search for users"
             />
@@ -200,46 +181,7 @@ const UserPage = () => {
             </tr>
           </thead>
           <tbody>
-<<<<<<< HEAD
-            {
-              loading
-                ?
-                <ContentTableLoader />
-                :
-                listOfUser.slice(dataUser.minValue, dataUser.maxValue)?.map((user) => (
-                  <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
-                    <td className="p-4 w-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-table-search-1"
-                          type="checkbox"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
-                        />
-                        <label
-                          htmlFor="checkbox-table-search-1"
-                          className="sr-only"
-                        >
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">{user.id}</td>
-                    <td className="py-4 px-6">{user.fullName}</td>
-                    <td className="py-4 px-6">{user.gender}</td>
-                    <td className="py-4 px-6">{user.email}</td>
-                    <td className="py-4 px-6 flex gap-2 items-center justify-center ">
-                      {/* Modal toggle */}
-                      <DeleteUser
-                        idUser={user.id}
-                        loading={loading}
-                        setReload={setReload}
-                      />
-                      <ModalUpdateUser dataUser={user} />
-                    </td>
-                  </tr>
-                ))}
-=======
-            {listOfUser?.map((user) => (
+            {listOfUser.slice(dataUser.minValue, dataUser.maxValue)?.map((user) => (
               <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
                 <td className="p-4 w-4">
                   <div className="flex items-center">
@@ -270,14 +212,13 @@ const UserPage = () => {
                   >
                     <DeleteForeverIcon className="text-slate-500 hover:text-white" />
                   </button>
-                  <ModalUpdateUser />
+                  <ModalUpdateUser dataUser={user} />
                 </td>
               </tr>
             ))}
->>>>>>> 7709e0d665df97b642004d181ea717ec2df18b34
-          </tbody>
-        </table>
-      </div>
+          </tbody >
+        </table >
+      </div >
       <div className="mt-8 text-start">
         <Pagination
           defaultCurrent={1}

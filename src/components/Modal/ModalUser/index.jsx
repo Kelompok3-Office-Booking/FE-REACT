@@ -29,7 +29,7 @@ const ModalUpdateUser = ({
   const [modal, setModal] = useState(false);
   const [reset, setReset] = useState(true);
   const [data, setData] = useState({
-    fullName: dataUser.fullName,
+    full_name: dataUser.full_name,
     gender: dataUser.gender,
     email: dataUser.email
   })
@@ -55,7 +55,7 @@ const ModalUpdateUser = ({
     // console.log(reset);
   }
 
-  console.log(reset);
+  // console.log(dataUser);
   return (
     <>
       <button
@@ -111,7 +111,7 @@ const ModalUpdateUser = ({
                     placeholder="Full Name"
                     type="text"
                     onClick={() => { }}
-                    defaultValue={reset ? dataUser.fullName : ""}
+                    defaultValue={reset ? dataUser.full_name : ""}
                     onChange={(ev) => setHandleChangeData(ev)}
                   />
                   <InputField
