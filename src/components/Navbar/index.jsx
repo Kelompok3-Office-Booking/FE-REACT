@@ -1,5 +1,5 @@
 import { BetterSpace } from "assets";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { HashLink, NavHashLink } from "react-router-hash-link";
 import "./styles.css";
@@ -9,7 +9,7 @@ const Navbar = () => {
   const isActive = (iHash) => hash === iHash;
 
   const [toggle, setToggle] = useState(false);
-  const [navbar, setNavbar] = useState(false);
+  const [navbar, setNavbar] = useState(true);
 
   const changeBackground = () => {
     // console.log(window.scrollY);
@@ -25,6 +25,10 @@ const Navbar = () => {
   const HANDLETOGGLE = () => {
     setToggle(!toggle);
   };
+
+  useEffect(() => {
+    setNavbar(true);
+  }, [])
 
   // const handleScroll = (ev) => {
   //   console.log(window.scrollY);
