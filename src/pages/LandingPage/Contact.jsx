@@ -6,8 +6,8 @@ import {
     faHouse,
     faPhone,
     faEnvelope,
-    faCalendarDays,
     faPenToSquare,
+    faSquareEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
@@ -68,15 +68,18 @@ const Contact = () => {
                     </div>
                 </div>
                 <form className="lg:w-1/2 md:ml-12 2xl:ml-2">
+
                     <div className="bg-bgPrimary rounded-lg flex content-center my-4">
-                        <FontAwesomeIcon
-                            icon={faCalendarDays}
-                            className="h-6 p-4 text-white"
-                        />
+                        <div className="flex justify-end absolute">
+                            <FontAwesomeIcon
+                                icon={faEnvelope}
+                                className="h-6 p-4 top-0 text-white"
+                            />
+                        </div>
                         <input
                             type="text"
                             placeholder="Input your email"
-                            className="bg-bgPrimary text-white rounded-lg w-full border-0 text-lg"
+                            className="bg-bgPrimary text-white rounded-lg w-full py-4 pl-14 border-0 text-lg"
                         />
                     </div>
                     <div className="bg-bgPrimary flex-col rounded-lg flex content-center h-auto">

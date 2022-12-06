@@ -28,7 +28,6 @@ export const updateUser = createAsyncThunk("updateUser/user", async(data) => {
 export const deleteUser = createAsyncThunk("delete/user", async(id) => {
     try {
         const res = await APIUser.deleteUsers(id);
-        console.log(res.data);
         return res.data;
     } catch (error) {
         console.log(error);
