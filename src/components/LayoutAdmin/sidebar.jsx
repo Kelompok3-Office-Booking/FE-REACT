@@ -11,7 +11,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
 let activeClassName =
-  "bg-blue-500 text-white rounded-tr-full rounded-br-full mr-12";
+  "bg-secondary text-white rounded-tr-full rounded-br-full mr-12";
 
 let notActive = "my-auto text-lg";
 
@@ -56,10 +56,10 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
             <div className="absolute -right-4">
               <button
                 onClick={HANDLETOGGLE}
-                className="px-4 py-2 bg-blue-500 w-auto rounded-full"
+                className="px-4 py-2 bg-secondary w-auto rounded-full"
               >
                 <FontAwesomeIcon
-                  className="my-auto mx-auto bg-blue-500 text-white h-4"
+                  className="my-auto mx-auto bg-secondary text-white h-4"
                   icon={toggle ? faChevronLeft : faChevronRight}
                 />
               </button>

@@ -15,18 +15,19 @@ const UserPage = () => {
   const listOfUser = useSelector((state) => state.users.data);
   const pageSize = 6;
 
+  const [userList, setUserList] = useState(listOfUser);
+
   const [dataUser, setDataUser] = useState({
     minValue: 0,
     maxValue: 20,
   });
 
-  const [search, setSearch] = useState("");
+  const [searchWords, setSearchWords] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     APIUser.getAllUsers()
       .then(() => {
-        dispatch(fetchUser());
         setLoading(false);
       })
       .catch((err) => {
@@ -36,7 +37,24 @@ const UserPage = () => {
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch]);
+
+    const loweredSearchedWords = searchWords.toLowerCase();
+    const updatedUserList = [];
+    if (searchWords !== "") {
+      listOfUser.forEach((user) => {
+        const loweredUserName = user.full_name.toLowerCase();
+        const emailUser = user.email;
+        if (loweredUserName.includes(loweredSearchedWords) || emailUser.includes(loweredSearchedWords)) {
+          updatedUserList.push(user);
+        }
+      })
+      setUserList(updatedUserList);
+    } else {
+      setUserList(listOfUser);
+    }
+
+    // setUserList(listOfUser)
+  }, [dispatch, listOfUser, searchWords]);
 
   const handleChangePage = (value) => {
     setDataUser({
@@ -52,6 +70,10 @@ const UserPage = () => {
       }, 3000);
     });
     document.getElementById("demo").innerHTML = await myPromise;
+  }
+
+  const handleSearch = (ev) => {
+    setSearchWords(ev.target.value)
   }
 
   myDisplay();
@@ -140,7 +162,7 @@ const UserPage = () => {
             <input
               type="text"
               id="table-search-users"
-              onChange={() => { }}
+              onChange={(ev) => handleSearch(ev)}
               className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search for users"
             />
@@ -159,7 +181,7 @@ const UserPage = () => {
                 <TableHead />
                 <tbody>
                   {
-                    listOfUser
+                    userList
                       ?.slice(dataUser.minValue, dataUser.maxValue)
                       .map((user) => (
                         <tr
@@ -210,7 +232,7 @@ const UserPage = () => {
           defaultCurrent={1}
           defaultPageSize={pageSize}
           // current={dataReview.current}
-          total={listOfUser?.length}
+          total={userList?.length}
           onChange={handleChangePage}
         />
       </div>
