@@ -89,7 +89,7 @@ const UserPage = () => {
         <div className="flex justify-between rounded-2xl items-center py-4 bg-white px-4">
           <div className="my-auto flex rounded-2xl">
             <h1 className="inline pr-4 my-auto text-base text-neutral-500">
-              (8) Record Found
+              ({listOfUser?.length}) Record Found
             </h1>
             <button
               type="button"
@@ -132,8 +132,8 @@ const UserPage = () => {
           <TableHead />
           <tbody>
             {listOfUser
-              .slice(dataUser.minValue, dataUser.maxValue)
-              ?.map((user) => (
+              ?.slice(dataUser.minValue, dataUser.maxValue)
+              .map((user) => (
                 <tr
                   className="bg-white border-b  hover:bg-gray-50"
                   key={user.id}
@@ -179,7 +179,7 @@ const UserPage = () => {
           defaultCurrent={1}
           defaultPageSize={pageSize}
           // current={dataReview.current}
-          total={listOfUser.length}
+          total={listOfUser?.length}
           onChange={handleChangePage}
         />
       </div>
