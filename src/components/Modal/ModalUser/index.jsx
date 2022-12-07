@@ -140,8 +140,8 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
                 /> */}
                 <div className="w-full">
                   <select id="city" onChange={(ev) => setHandleChangeData(ev)} name="gender" defaultValue={dataUser.gender} className="border-2 py-3.5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="male" >male</option>
-                    <option value="female">female</option>
+                    <option value="male" >Male</option>
+                    <option value="female">Female</option>
                   </select>
                 </div>
               </div>
