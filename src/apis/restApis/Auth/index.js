@@ -6,7 +6,6 @@ const APIAuth = {
     try {
       const { email, password } = payload;
       const response = await axiosInstance.post("/login", { email, password });
-      console.log(response.data);
       Auth.storeUserInfoToCookie(response.data);
       return response.data;
     } catch (error) {

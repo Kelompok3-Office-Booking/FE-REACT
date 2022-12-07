@@ -10,7 +10,6 @@ const initialState = {
 export const fetchUsers = createAsyncThunk("fetch/users", async () => {
   try {
     const response = await APIUser.getAllUsers();
-    console.log(response);
     return response.data;
   } catch (err) {
     console.log(err);

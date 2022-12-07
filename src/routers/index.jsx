@@ -1,5 +1,4 @@
 import {
-  LayoutAdmin,
   DashboardPage,
   TransactionPage,
   UserPage,
