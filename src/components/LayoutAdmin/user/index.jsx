@@ -201,7 +201,6 @@ const UserPage = () => {
         <Pagination
           defaultCurrent={1}
           defaultPageSize={pageSize}
-          // current={dataReview.current}
           total={listOfUser?.length}
           // total={userList?.length}
           onChange={handleChangePage}
