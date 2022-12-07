@@ -82,7 +82,7 @@ const PromoPage = () => {
             <div className="flex justify-between items-center py-4 bg-white px-4">
               <div className="flex">
                 <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-                  ({listOfPromo.length}) Record Found
+                  ({listOfPromo?.length}) Record Found
                 </h1>
                 <button
                   type="button"
@@ -169,8 +169,8 @@ const PromoPage = () => {
                   <ContentTableLoader />
                 ) : (
                   listOfPromo
-                    .slice(dataPromo.minValue, dataPromo.maxValue)
-                    ?.map((promo) => (
+                    ?.slice(dataPromo.minValue, dataPromo.maxValue)
+                    .map((promo) => (
                       <tr
                         className="bg-white border-b hover:bg-gray-50"
                         key={promo.id}
@@ -218,7 +218,7 @@ const PromoPage = () => {
               defaultCurrent={1}
               defaultPageSize={pageSize}
               // current={dataReview.current}
-              total={listOfPromo.length}
+              total={listOfPromo?.length}
               onChange={handleChange}
             />
           </div>
