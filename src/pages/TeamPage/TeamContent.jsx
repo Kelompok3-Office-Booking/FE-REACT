@@ -14,7 +14,7 @@ const TeamContent = () => {
         <div className="h-full pb-32 pt-20 md:pt-32 container">
             <h1 className="pb-12 text-2xl md:text-4xl font-bold title zoomInLeft">Team React <span className="font-normal">- <span className="font-bold">Re</span>mahan Peye(k)<span className="font-bold">act</span> </span></h1>
             <div className="lg:flex justify-around pt-12">
-                <div className="flex flex-col lg:flex-row justify-center lg:pr-10 content-center">
+                <div className="flex flex-col lg:w-1/2 lg:flex-row justify-center lg:pr-10 content-center">
                     <div className="w-full md:w-1/2 my-auto mx-auto">
                         <div className="md:rounded-tr-[125px] rounded-full bg-blue-800 p-3 animate__animated animate__flipInY animate__slow">
                             <div className="md:rounded-tr-[125px] rounded-full bg-blue-400 rotate-0 hover:origin-center hover:-rotate-90 transition duration-500 ease-in-out cursor-pointer">
@@ -90,8 +90,8 @@ const TeamContent = () => {
                     </div>
                 </div>
                 <div className="invisible lg:visible flex my-auto"><hr className="h-0 lg:h-96 border-r-2 animate__fadeInDown" /></div>
-                <div className="flex flex-col lg:flex-row justify-center content-center pl-12">
-                    <div className="animate__animated animate__backInUp animate__slow w-full lg:w-1/2 py-12 md:pr-10 flex text-end flex-col justify-start text-blue-800">
+                <div className="flex flex-col lg:w-1/2 lg:flex-row justify-center content-center lg:pl-10">
+                    <div className="animate__animated animate__backInUp animate__slow w-full lg:w-1/2 py-12 md:pr-8 flex text-end flex-col justify-start text-blue-800">
                         <div className="text-xl flex justify-end">
                             <Typed
                                 loop
