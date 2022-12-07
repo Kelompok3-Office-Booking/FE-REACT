@@ -28,7 +28,7 @@ const OfficePage = () => {
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch, loading]);
+  }, [dispatch]);
 
   const setReload = () => {
     setLoading(true);
@@ -67,7 +67,7 @@ const OfficePage = () => {
             <div className="flex justify-between items-center py-4 bg-white px-4">
               <div className="flex">
                 <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-                  ({listOfOffice.length}) Record Found
+                  ({listOfOffice?.length}) Record Found
                 </h1>
                 <button
                   type="button"
@@ -188,7 +188,7 @@ const OfficePage = () => {
                           // listOfOffice &&
                           // listOfOffice.length > 0 &&
                           listOfOffice
-                            .slice(dataOffice.minValue, dataOffice.maxValue)
+                            ?.slice(dataOffice.minValue, dataOffice.maxValue)
                             .map((office) => (
                               <tr
                                 className="bg-white border-b hover:bg-gray-50"
@@ -253,7 +253,7 @@ const OfficePage = () => {
               defaultCurrent={1}
               defaultPageSize={pageSize}
               // current={dataReview.current}
-              total={listOfOffice.length}
+              total={listOfOffice?.length}
               onChange={handleChangePage}
             />
           </div>

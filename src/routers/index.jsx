@@ -8,11 +8,13 @@ import {
   PromoPage,
   AdminPage,
   EditOffice,
-  AddOffice
+  AddOffice,
 } from "components";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { LandingPage, LoginPage } from "../pages";
+import PrivateRoute from "./privateRoutes";
+import ProtectedRoute from "./protectedRoutes";
 
 const SetupRouters = () => {
   return (
@@ -21,7 +23,14 @@ const SetupRouters = () => {
       <Route path="/" element={<LandingPage />} />
 
       {/*Protected Routes*/}
-      <Route path="/admin-dashboard" element={<LayoutAdmin />}>
+      <Route
+        path="/admin-dashboard"
+        element={
+          <PrivateRoute>
+            <LayoutAdmin />
+          </PrivateRoute>
+        }
+      >
         <Route path="dashboard" index element={<DashboardPage />} />
         <Route path="user" element={<UserPage />} />
         <Route path="office" element={<OfficePage />} />
@@ -34,13 +43,13 @@ const SetupRouters = () => {
       </Route>
 
       {/*Private Routes*/}
-      <Route path="login">
+      <Route path="login" element={<ProtectedRoute />}>
         <Route index element={<LoginPage />} />
       </Route>
 
       {/*Notfound Routes*/}
       <Route />
-    </Routes>
+    </Routes >
   );
 };
 

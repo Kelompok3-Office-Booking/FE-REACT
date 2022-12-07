@@ -1,59 +1,97 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "store/Feature/FeatureUser/userSlice";
-import { ModalUpdateUser } from "components/Modal";
-import { Arrow } from "assets";
+import { deleteUser, fetchUsers } from "store/Feature/FeatureUser/userSlice";
+import ModalUpdateUser from "components/Modal/ModalUser";
 import DeleteAllData from "components/Alert/deleteAllData";
-import DeleteAlertUser from "components/Alert/deleteAlertUser";
-import { Pagination } from 'antd';
-import DeleteUser from "components/Modal/ModalUser/DeleteUser";
+import Swal from "sweetalert2";
+import { Pagination } from "antd";
+import TableHead from "./tableHead";
+import APIUser from "apis/restApis/User";
 import { ContentTableLoader } from "components";
+import DeleteUser from "components/Modal/ModalUser/DeleteUser";
 
 const UserPage = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
   const pageSize = 6;
 
+  const [userList, setUserList] = useState(listOfUser);
+
   const [dataUser, setDataUser] = useState({
     minValue: 0,
     maxValue: 20,
-  })
+  });
 
-  const [search, setSearch] = useState("");
+  const [searchWords, setSearchWords] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchUser());
-    setLoading(false);
+    dispatch(fetchUsers())
+      .then((res) => {
+        if (searchWords === "") {
+          setUserList(res.payload);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
     setDataUser({
       minValue: 0,
       maxValue: 6,
-    })
-  }, [dispatch, loading]);
+    });
 
-  const handleSearch = (ev) => {
-    setSearch(ev.target.value);
-  }
+    const loweredSearchedWords = searchWords.toLowerCase();
+    const updatedUserList = [];
+    if (searchWords !== "") {
+      listOfUser.forEach((user) => {
+        const loweredUserName = user.full_name.toLowerCase();
+        const emailUser = user.email;
+        if (loweredUserName.includes(loweredSearchedWords) || emailUser.includes(loweredSearchedWords)) {
+          updatedUserList.push(user);
+        }
+      })
+      setUserList(updatedUserList);
+      setLoading(false);
+    } else {
+      setUserList(listOfUser);
+    }
 
-  const setReload = () => {
-    setLoading(true);
-  };
+  }, [dispatch, searchWords]);
 
   const handleChangePage = (value) => {
     setDataUser({
       minValue: (value - 1) * pageSize,
       maxValue: value * pageSize,
-    })
-  }
-
-  const HANDLEDELETE = () => {
-    DeleteAlertUser();
+    });
   };
+
+  const handleSearch = (ev) => {
+    setSearchWords(ev.target.value);
+  };
+
+  const setReload = () => {
+    setLoading(true);
+    setTimeout(() => {
+      dispatch(fetchUsers())
+        .then((res) => {
+          setUserList(res.payload);
+          // setLoading(false);
+        })
+      setLoading(false)
+    }, 3000);
+    // dispatch(fetchUsers())
+    // setUserList(listOfUser);
+  };
+
   const HANDLEDELETEALL = () => {
     DeleteAllData();
   };
-  // console.log(search)
+
+  // console.log(loading);
+
   return (
     <>
       <div className="flex justify-between px-8 mb-4 py-6 w-full bg-white rounded-2xl shadow">
@@ -63,7 +101,7 @@ const UserPage = () => {
         <div className="flex justify-between rounded-2xl items-center py-4 bg-white px-4">
           <div className="my-auto flex rounded-2xl">
             <h1 className="inline pr-4 my-auto text-base text-neutral-500">
-              ({listOfUser.length}) Record Found
+              ({userList?.length}) Record Found
             </h1>
             <button
               type="button"
@@ -103,96 +141,55 @@ const UserPage = () => {
           </div>
         </div>
         <table className=" w-full text-sm text-left text-gray-500 ">
-          <thead className="text-xs text-gray-500 uppercase bg-gray-50">
-            <tr>
-              <th scope="col" className="p-4">
-                <div className="flex items-center">
-                  <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                  />
-                  <label htmlFor="checkbox-all-search" className="sr-only">
-                    checkbox
-                  </label>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  User ID
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  Full Name
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  Gender
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6">
-                <div className="flex items-center">
-                  Email Address
-                  <button>
-                    <img src={Arrow} alt="arrow" />
-                  </button>
-                </div>
-              </th>
-              <th scope="col" className="py-3 px-6 text-center">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              loading
-                ?
+
+          {
+            loading
+              ? (
                 <ContentTableLoader />
-                :
-                listOfUser.slice(dataUser.minValue, dataUser.maxValue)?.map((user) => (
-                  <tr className="bg-white border-b  hover:bg-gray-50" key={user.id}>
-                    <td className="p-4 w-4">
-                      <div className="flex items-center">
-                        <input
-                          id="checkbox-table-search-1"
-                          type="checkbox"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
-                        />
-                        <label
-                          htmlFor="checkbox-table-search-1"
-                          className="sr-only"
+              )
+              :
+              <>
+                <TableHead />
+                <tbody>
+                  {
+                    userList
+                      ?.slice(dataUser.minValue, dataUser.maxValue)
+                      .map((user) => (
+                        <tr
+                          className="bg-white border-b  hover:bg-gray-50"
+                          key={user.id}
                         >
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">{user.id}</td>
-                    <td className="py-4 px-6">{user.fullName}</td>
-                    <td className="py-4 px-6">{user.gender}</td>
-                    <td className="py-4 px-6">{user.email}</td>
-                    <td className="py-4 px-6 flex gap-2 items-center justify-center ">
-                      {/* Modal toggle */}
-                      <DeleteUser
-                        idUser={user.id}
-                        loading={loading}
-                        setReload={setReload}
-                      />
-                      <ModalUpdateUser dataUser={user} />
-                    </td>
-                  </tr>
-                ))}
-          </tbody>
+                          <td className="p-4 w-4">
+                            <div className="flex items-center">
+                              <input
+                                id="checkbox-table-search-1"
+                                type="checkbox"
+                                className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
+                              />
+                              <label
+                                htmlFor="checkbox-table-search-1"
+                                className="sr-only"
+                              >
+                                checkbox
+                              </label>
+                            </div>
+                          </td>
+                          <td className="py-4 px-6">{user.id}</td>
+                          <td className="py-4 px-6">{user.full_name}</td>
+                          <td className="py-4 px-6">{user.gender}</td>
+                          <td className="py-4 px-6">{user.email}</td>
+                          <td className="py-4 px-6 flex gap-2 items-center justify-center ">
+                            {/* Modal toggle */}
+                            <DeleteUser idUser={user.id} loading={loading} setReload={setReload} />
+                            <ModalUpdateUser dataUser={user} loading={loading} setReload={setReload} />
+                          </td>
+                        </tr>
+                      ))
+                  }
+                </tbody>
+              </>
+          }
+
         </table>
       </div>
       <div className="mt-8 text-start">
@@ -200,7 +197,8 @@ const UserPage = () => {
           defaultCurrent={1}
           defaultPageSize={pageSize}
           // current={dataReview.current}
-          total={listOfUser.length}
+          total={userList?.length}
+          // total={userList?.length}
           onChange={handleChangePage}
         />
       </div>

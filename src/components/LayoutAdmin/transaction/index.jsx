@@ -13,7 +13,6 @@ import { ContentTableLoader } from "components";
 import { Pagination } from "antd";
 import DeleteTransaction from "components/Modal/ModalTransaksi/DeleteTransaction";
 
-
 const TransactionPage = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transaction);
@@ -22,8 +21,8 @@ const TransactionPage = () => {
 
   const [dataTransaksi, setDataTransaksi] = useState({
     minValue: 0,
-    maxValue: 20
-  })
+    maxValue: 20,
+  });
 
   const [user, setUser] = [];
 
@@ -32,8 +31,8 @@ const TransactionPage = () => {
     setLoading(false);
     setDataTransaksi({
       minValue: 0,
-      maxValue: 6
-    })
+      maxValue: 6,
+    });
   }, [dispatch, loading, user]);
 
   const HANDLEDELETE = (id) => {
@@ -45,14 +44,14 @@ const TransactionPage = () => {
 
   const setReload = () => {
     setLoading(true);
-  }
+  };
 
   const handleChange = (value) => {
     setDataTransaksi({
       minValue: (value - 1) * pageSize,
-      maxValue: value * pageSize
+      maxValue: value * pageSize,
     });
-  }
+  };
 
   return (
     <div className="min-h-screen">
@@ -63,7 +62,7 @@ const TransactionPage = () => {
         <div className="flex justify-between items-center rounded-2xl py-4 bg-white px-4">
           <div className="flex">
             <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-              ({listOfTransaction.data.length}) Record Found
+              ({listOfTransaction.data?.length}) Record Found
             </h1>
 
             <button
@@ -105,14 +104,14 @@ const TransactionPage = () => {
         <table className="w-full text-sm text-left text-gray-500 ">
           <THead />
           <tbody>
-            {
-              loading
-                ?
-                <ContentTableLoader />
-                :
-                listOfTransaction &&
-                listOfTransaction.data.length > 0 &&
-                listOfTransaction.data.slice(dataTransaksi.minValue, dataTransaksi.maxValue)?.map((transaction) => (
+            {loading ? (
+              <ContentTableLoader />
+            ) : (
+              listOfTransaction &&
+              listOfTransaction.data?.length > 0 &&
+              listOfTransaction.data
+                ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
+                .map((transaction) => (
                   <tr
                     className="bg-white border-b hover:bg-gray-50"
                     key={transaction.id}
@@ -164,7 +163,8 @@ const TransactionPage = () => {
                       <ModalUpdateTransaksi />
                     </td>
                   </tr>
-                ))}
+                ))
+            )}
           </tbody>
         </table>
       </div>
@@ -173,7 +173,7 @@ const TransactionPage = () => {
           defaultCurrent={1}
           defaultPageSize={pageSize}
           // current={dataReview.current}
-          total={listOfTransaction.data.length}
+          total={listOfTransaction.data?.length}
           onChange={handleChange}
         />
       </div>

@@ -11,7 +11,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
 let activeClassName =
-  "bg-blue-500 text-white rounded-tr-full rounded-br-full mr-12";
+  "bg-secondary text-white rounded-tr-full rounded-br-full mr-12";
 
 let notActive = "my-auto text-lg";
 
@@ -20,9 +20,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
     <div className={`bg-slate-900`}>
       <div className={`bg-white min-h-screen rounded-tr-[75px]`}>
         <div
-          className={`${
-            toggle ? "w-80 duration-200" : "w-48 ease-in-out"
-          } ease-in-out duration-300 py-12`}
+          className={`${toggle ? "w-80 duration-200" : "w-48 ease-in-out"
+            } ease-in-out duration-300 py-12`}
         >
           <div className="flex w-auto pl-16 mr-8">
             <img
@@ -31,9 +30,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
               alt=""
             />
             <h4
-              className={`${
-                toggle ? "visible" : "invisible"
-              } w-full my-auto font-bold text-xl ml-3`}
+              className={`${toggle ? "visible" : "invisible"
+                } w-full my-auto font-bold text-xl ml-3`}
             >
               BETTER SPACE
             </h4>
@@ -47,9 +45,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
                   icon={faSearch}
                 />
                 <input
-                  className={`${
-                    toggle ? "visible" : "invisible"
-                  } placeholder:text-slate-400 block w-full py-2 pl-12 pr-3 shadow-sm border-0 sm:text-lg focus:outline-none focus:ring-0`}
+                  className={`${toggle ? "visible" : "invisible"
+                    } placeholder:text-slate-400 block w-full py-2 pl-12 pr-3 shadow-sm border-0 sm:text-lg focus:outline-none focus:ring-0`}
                   placeholder="Search "
                   type="text"
                   name="search"
@@ -59,10 +56,10 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
             <div className="absolute -right-4">
               <button
                 onClick={HANDLETOGGLE}
-                className="px-4 py-2 bg-blue-500 w-auto rounded-full"
+                className="px-4 py-2 bg-secondary w-auto rounded-full"
               >
                 <FontAwesomeIcon
-                  className="my-auto mx-auto bg-blue-500 text-white h-4"
+                  className="my-auto mx-auto bg-secondary text-white h-4"
                   icon={toggle ? faChevronLeft : faChevronRight}
                 />
               </button>
@@ -79,9 +76,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
                         style={{ fontSize: "32px" }}
                       />
                       <p
-                        className={`${
-                          toggle ? "visible" : "invisible"
-                        } mx-8 my-auto text-lg`}
+                        className={`${toggle ? "visible" : "invisible"
+                          } mx-8 my-auto text-lg`}
                       >
                         Dashboard
                       </p>
@@ -98,9 +94,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
                         style={{ fontSize: "32px" }}
                       />
                       <p
-                        className={`${
-                          toggle ? "visible" : "invisible"
-                        } mx-8 my-auto text-lg`}
+                        className={`${toggle ? "visible" : "invisible"
+                          } mx-8 my-auto text-lg`}
                       >
                         User
                       </p>
@@ -128,9 +123,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
                         </svg>
                       </div>
                       <p
-                        className={`${
-                          toggle ? "visible" : "invisible"
-                        } mx-8 my-auto text-lg `}
+                        className={`${toggle ? "visible" : "invisible"
+                          } mx-8 my-auto text-lg `}
                       >
                         Office
                       </p>
@@ -175,9 +169,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
                         </svg>
                       </div>
                       <p
-                        className={`${
-                          toggle ? "visible" : "invisible"
-                        } mx-8 my-auto text-lg`}
+                        className={`${toggle ? "visible" : "invisible"
+                          } mx-8 my-auto text-lg`}
                       >
                         Transaction
                       </p>
@@ -203,9 +196,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
                         </svg>
                       </div>
                       <p
-                        className={`${
-                          toggle ? "visible" : "invisible"
-                        } mx-8 my-auto text-lg`}
+                        className={`${toggle ? "visible" : "invisible"
+                          } mx-8 my-auto text-lg`}
                       >
                         Review
                       </p>
@@ -271,9 +263,8 @@ const SidebarAdmin = ({ HANDLETOGGLE, toggle }) => {
                         </svg>
                       </div>
                       <p
-                        className={`${
-                          toggle ? "visible" : "invisible"
-                        } mx-8 my-auto text-lg`}
+                        className={`${toggle ? "visible" : "invisible"
+                          } mx-8 my-auto text-lg`}
                       >
                         Promo
                       </p>

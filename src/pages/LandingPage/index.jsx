@@ -9,7 +9,7 @@ import Tips from "./Tips";
 
 const LandingPage = () => {
   return (
-    <div className="">
+    <div>
       <Navbar />
       <Headers />
       <Features />
