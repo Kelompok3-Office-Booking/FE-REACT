@@ -92,7 +92,7 @@ const Navbar = () => {
                 <NavHashLink
                   onClick={HANDLETOGGLE}
                   smooth
-                  to="#features"
+                  to="/#features"
                   style={
                     isActive("#features")
                       ? {
@@ -177,7 +177,20 @@ const Navbar = () => {
                 </NavHashLink>
               </li>
               <li>
-                <HashLink smooth to="#hero">
+                <NavHashLink
+                  onClick={HANDLETOGGLE}
+                  smooth
+                  to="/team-react"
+                  className="block py-2 pl-3 pr-4  md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                  {({ isActive }) => (
+                    <div className={isActive ? "text-blue-700 font-bold" : ""}>
+                      Team React
+                    </div>
+                  )}
+                </NavHashLink>
+              </li>
+              <li>
+                <HashLink smooth to="/#hero">
                   <button
                     type="button"
                     className="text-white bg-secondary hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0"
