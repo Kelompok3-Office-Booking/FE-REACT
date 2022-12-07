@@ -23,14 +23,7 @@ const SetupRouters = () => {
       <Route path="/" element={<LandingPage />} />
 
       {/*Protected Routes*/}
-      <Route
-        path="/admin-dashboard"
-        element={
-          <PrivateRoute>
-            <LayoutAdmin />
-          </PrivateRoute>
-        }
-      >
+      <Route path="/admin-dashboard" element={<PrivateRoute />}>
         <Route path="dashboard" index element={<DashboardPage />} />
         <Route path="user" element={<UserPage />} />
         <Route path="office" element={<OfficePage />} />
@@ -49,7 +42,7 @@ const SetupRouters = () => {
 
       {/*Notfound Routes*/}
       <Route />
-    </Routes >
+    </Routes>
   );
 };
 

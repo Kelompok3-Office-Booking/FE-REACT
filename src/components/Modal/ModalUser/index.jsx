@@ -39,9 +39,10 @@ const InputField = ({
   </div>
 );
 
-const ModalUpdateUser = ({ dataUser }) => {
+const ModalUpdateUser = ({ dataUser, setReload }) => {
   const [modal, setModal] = useState(false);
   const [reset, setReset] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     id: dataUser.id,
     full_name: dataUser.full_name,
@@ -76,6 +77,8 @@ const ModalUpdateUser = ({ dataUser }) => {
     e.preventDefault();
     try {
       dispatch(updateUser({ id, full_name, gender, email }));
+      // window.location.reload();
+      setReload();
       Swal.fire({
         icon: "success",
         title: "Success",
@@ -89,7 +92,8 @@ const ModalUpdateUser = ({ dataUser }) => {
       });
     }
   };
-  // console.log(dataUser.photo);
+
+  // console.log(data);
   return (
     <>
       <button
@@ -119,21 +123,27 @@ const ModalUpdateUser = ({ dataUser }) => {
                   label="Full Name"
                   placeholder="Full Name"
                   type="text"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   defaultValue={reset ? dataUser.full_name : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />
               </div>
               <div className="pb-6">
-                <InputField
+                {/* <InputField
                   name="gender"
                   label="Gender"
                   placeholder="Gender"
                   type="text"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   defaultValue={reset ? dataUser.gender : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
-                />
+                /> */}
+                <div className="w-full">
+                  <select id="city" onChange={(ev) => setHandleChangeData(ev)} name="gender" defaultValue={dataUser.gender} className="border-2 py-3.5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="male" >Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
               </div>
               <div className="pb-6">
                 <InputField
@@ -141,7 +151,7 @@ const ModalUpdateUser = ({ dataUser }) => {
                   label="Email"
                   placeholder="Email"
                   type="email"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   defaultValue={reset ? dataUser.email : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />

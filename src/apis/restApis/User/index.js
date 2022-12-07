@@ -1,4 +1,5 @@
 import axiosInstance from "configs/AxiosInstance";
+import Auth from "utils/auth";
 
 const APIUser = {
   async getAllUsers() {

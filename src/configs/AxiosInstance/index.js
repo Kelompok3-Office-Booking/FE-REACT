@@ -6,14 +6,22 @@ import CONST from "utils/constant";
 //   requestHandler,
 //   successHandler,
 // } from "configs/Interceptors";
-let token = Auth.getAccessToken();
 // console.log(token);
 const config = {
-    baseURL: CONST.BASE_URL,
-    headers: { Authorization: `Bearer ${token}` },
+  baseURL: CONST.BASE_URL,
 };
-
 const axiosInstance = axios.create(config);
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    config.headers["Authorization"] = `Bearer ${Auth.getAccessToken()}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // axiosInstance.interceptors.request.use((request) => requestHandler(request));
 
 // axiosInstance.interceptors.request.use(

@@ -62,7 +62,7 @@ const TransactionPage = () => {
         <div className="flex justify-between items-center rounded-2xl py-4 bg-white px-4">
           <div className="flex">
             <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-              ({listOfTransaction.data.length}) Record Found
+              ({listOfTransaction.data?.length}) Record Found
             </h1>
 
             <button
@@ -108,10 +108,10 @@ const TransactionPage = () => {
               <ContentTableLoader />
             ) : (
               listOfTransaction &&
-              listOfTransaction.data.length > 0 &&
+              listOfTransaction.data?.length > 0 &&
               listOfTransaction.data
-                .slice(dataTransaksi.minValue, dataTransaksi.maxValue)
-                ?.map((transaction) => (
+                ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
+                .map((transaction) => (
                   <tr
                     className="bg-white border-b hover:bg-gray-50"
                     key={transaction.id}
@@ -139,14 +139,14 @@ const TransactionPage = () => {
                     <td id="status" className="py-4 px-6">
                       <span
                         className={`${transaction.status === "On Process"
-                            ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
-                            : transaction.status === "Confirmed"
-                              ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
-                              : transaction.status === "Pending"
-                                ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
-                                : transaction.status === "Cancelled"
-                                  ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                                  : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
+                          ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
+                          : transaction.status === "Confirmed"
+                            ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                            : transaction.status === "Pending"
+                              ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
+                              : transaction.status === "Cancelled"
+                                ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                                : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
                           }`}
                       >
                         {transaction.status}
@@ -173,7 +173,7 @@ const TransactionPage = () => {
           defaultCurrent={1}
           defaultPageSize={pageSize}
           // current={dataReview.current}
-          total={listOfTransaction.data.length}
+          total={listOfTransaction.data?.length}
           onChange={handleChange}
         />
       </div>
