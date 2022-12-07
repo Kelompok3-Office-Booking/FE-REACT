@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { deleteUser } from "store/Feature/FeatureUser/userSlice";
 
-const DeleteAlertUser = ({ idUser, setReload }) => {
+const DeleteAlertUser = ({ idUser, setReload, setModal }) => {
     const dispatch = useDispatch();
 
     const swalWithBootstrapButtons = Swal.mixin({
@@ -29,12 +29,12 @@ const DeleteAlertUser = ({ idUser, setReload }) => {
                 try {
                     dispatch(deleteUser(idUser));
                     setReload();
+                    // setModal(false);
                     swalWithBootstrapButtons.fire(
                         "Deleted!",
                         "Your file has been deleted.",
                         "success"
                     );
-                    return result;
                 } catch (error) {
                     return Swal.fire({
                         icon: "error",

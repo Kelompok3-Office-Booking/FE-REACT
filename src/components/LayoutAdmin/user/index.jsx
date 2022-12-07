@@ -26,6 +26,15 @@ const UserPage = () => {
   const [searchWords, setSearchWords] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const [modal, setModal] = useState(false);
+  const HandleModal = () => {
+    setModal(true);
+    setTimeout(() => {
+      setModal(false)
+    }, 1000);
+    console.log(modal);
+  }
+
   useEffect(() => {
     dispatch(fetchUsers())
       .then((res) => {
@@ -180,7 +189,7 @@ const UserPage = () => {
                           <td className="py-4 px-6">{user.email}</td>
                           <td className="py-4 px-6 flex gap-2 items-center justify-center ">
                             {/* Modal toggle */}
-                            <DeleteUser idUser={user.id} loading={loading} setReload={setReload} />
+                            <DeleteUser idUser={user.id} loading={loading} setReload={setReload} modal={modal} HandleModal={HandleModal} />
                             <ModalUpdateUser dataUser={user} loading={loading} setReload={setReload} />
                           </td>
                         </tr>

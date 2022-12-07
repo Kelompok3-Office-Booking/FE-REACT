@@ -42,7 +42,6 @@ const InputField = ({
 const ModalUpdateUser = ({ dataUser, setReload }) => {
   const [modal, setModal] = useState(false);
   const [reset, setReset] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     id: dataUser.id,
     full_name: dataUser.full_name,
