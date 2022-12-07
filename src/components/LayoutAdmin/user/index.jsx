@@ -1,13 +1,11 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, fetchUsers } from "store/Feature/FeatureUser/userSlice";
+import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
 import ModalUpdateUser from "components/Modal/ModalUser";
 import DeleteAllData from "components/Alert/deleteAllData";
-import Swal from "sweetalert2";
 import { Pagination } from "antd";
 import TableHead from "./tableHead";
-import APIUser from "apis/restApis/User";
 import { ContentTableLoader } from "components";
 import DeleteUser from "components/Modal/ModalUser/DeleteUser";
 
@@ -25,6 +23,15 @@ const UserPage = () => {
 
   const [searchWords, setSearchWords] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const [modal, setModal] = useState(false);
+  const HandleModal = () => {
+    setModal(true);
+    setTimeout(() => {
+      setModal(false);
+    }, 1000);
+    console.log(modal);
+  };
 
   useEffect(() => {
     dispatch(fetchUsers())
@@ -180,6 +187,8 @@ const UserPage = () => {
                           idUser={user.id}
                           loading={loading}
                           setReload={setReload}
+                          modal={modal}
+                          HandleModal={HandleModal}
                         />
                         <ModalUpdateUser
                           dataUser={user}

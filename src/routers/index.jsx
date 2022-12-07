@@ -10,6 +10,7 @@ import {
   EditOffice,
   AddOffice,
 } from "components";
+import TeamPage from "pages/TeamPage";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { LandingPage, LoginPage } from "../pages";
@@ -21,6 +22,7 @@ const SetupRouters = () => {
     <Routes>
       {/*Landingpage Routes*/}
       <Route path="/" element={<LandingPage />} />
+      <Route path="/team-react" element={<TeamPage />} />
 
       {/*Protected Routes*/}
       <Route path="/admin-dashboard" element={<PrivateRoute />}>
