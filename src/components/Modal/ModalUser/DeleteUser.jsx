@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import DeleteAlertUser from "./DeleteAlertUser";
 
@@ -6,13 +6,14 @@ import DeleteAlertUser from "./DeleteAlertUser";
 const DeleteUser = ({
     idUser,
     loading,
-    setReload
+    setReload,
+    modal,
+    HandleModal
 }) => {
-    const [modal, setModal] = useState(false);
-    const HandleModal = () => {
-        setModal(!modal);
-        // console.log(idUser);
-    }
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <>

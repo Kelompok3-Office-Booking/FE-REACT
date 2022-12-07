@@ -2,8 +2,14 @@ import React from "react";
 import { logo, facebook, twitter, instagram } from "assets/index";
 import { HashLink } from 'react-router-hash-link';
 import { Link } from "react-router-dom";
+import { animateScroll as scroll } from 'react-scroll';
+
 
 const Footer = () => {
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
+
     return (
         <div className="bg-bgPrimary py-12 flex justify-center">
             <div className="container text-white">
@@ -54,6 +60,13 @@ const Footer = () => {
                                 to="/#contact"
                                 className="block py-2 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
                                 About us
+                            </HashLink>
+                            <HashLink
+                                smooth
+                                onClick={scrollToTop}
+                                to="/team-react"
+                                className="block py-2 my-1 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0">
+                                Team React
                             </HashLink>
                         </div>
                         <div className="text-start flex flex-col">
