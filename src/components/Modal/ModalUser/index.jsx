@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
+import { CloseOutlined } from "@ant-design/icons";
+import { updateUser } from "store/Feature/FeatureUser/userSlice";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 const InputField = ({
   name,
@@ -17,7 +21,7 @@ const InputField = ({
     <input
       type={type}
       id="floating_outlined"
-      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
       placeholder={placeholder}
       name={name}
       onChange={onChange}
@@ -39,11 +43,14 @@ const ModalUpdateUser = ({ dataUser }) => {
   const [modal, setModal] = useState(false);
   const [reset, setReset] = useState(true);
   const [data, setData] = useState({
+    id: dataUser.id,
     full_name: dataUser.full_name,
     gender: dataUser.gender,
     email: dataUser.email,
   });
 
+  const { id, full_name, gender, email } = data;
+  const dispatch = useDispatch();
   useEffect(() => {
     setReset(true);
   }, []);
@@ -65,8 +72,24 @@ const ModalUpdateUser = ({ dataUser }) => {
     // console.log(reset);
   };
 
-  const handleSubmit = () => {};
-  // console.log(dataUser);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUser({ id, full_name, gender, email }));
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Edit Users Success",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Edit Users Fail",
+      });
+    }
+  };
+  // console.log(dataUser.photo);
   return (
     <>
       <button
@@ -79,90 +102,64 @@ const ModalUpdateUser = ({ dataUser }) => {
       </button>
       {/* Edit user modal */}
       {modal && (
-        <div
-          id="editUserModal"
-          tabIndex={-1}
-          aria-hidden="true"
-          className="flex flex-row overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full"
-        >
-          <div className="relative w-full max-w-lg h-full md:h-auto">
-            {/* Modal content */}
-            <form
-              onSubmit={handleSubmit}
-              className="relative pb-6 bg-white rounded-lg shadow "
-            >
-              {/* Modal header */}
-              <div className="p-2 rounded-t border-b">
-                <button
-                  onClick={HANDLEMODAL}
-                  type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center "
-                  data-modal-toggle="editUserModal"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
+        <div className="flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full">
+          <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50 drop-shadow-4xl transform -translate-y-0 scale-125 transition-opacity transition-transform duration-300 center">
+            <div className="absolute">
+              <button onClick={HANDLEMODAL}>
+                <CloseOutlined className="relative text-xl -top-6 right-12" />
+              </button>
+            </div>
+            <div className="text-start pb-6">
+              <h1 className="text-2xl font-bold text-gray-600">Edit User</h1>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="pb-6">
+                <InputField
+                  name="full_name"
+                  label="Full Name"
+                  placeholder="Full Name"
+                  type="text"
+                  onClick={() => {}}
+                  defaultValue={reset ? dataUser.full_name : ""}
+                  onChange={(ev) => setHandleChangeData(ev)}
+                />
               </div>
-              {/* Modal body */}
-              <div className="py-2 px-6 pt-6 space-y-6">
-                <div className="px-6 lg:px-8 space-y-4">
-                  <h3 className="mb-4 text-xl font-medium text-neutral-700 ">
-                    Edit User
-                  </h3>
-                  <InputField
-                    name="fullName"
-                    label="Full Name"
-                    placeholder="Full Name"
-                    type="text"
-                    onClick={() => {}}
-                    defaultValue={reset ? dataUser.full_name : ""}
-                    onChange={(ev) => setHandleChangeData(ev)}
-                  />
-                  <InputField
-                    name="gender"
-                    label="Gender"
-                    placeholder="Gender"
-                    type="text"
-                    onClick={() => {}}
-                    defaultValue={reset ? dataUser.gender : ""}
-                    onChange={(ev) => setHandleChangeData(ev)}
-                  />
-                  <InputField
-                    name="email"
-                    label="Email"
-                    placeholder="Email"
-                    type="email"
-                    onClick={() => {}}
-                    defaultValue={reset ? dataUser.email : ""}
-                    onChange={(ev) => setHandleChangeData(ev)}
-                  />
-                  {/* Modal footer */}
-                  <div className="flex gap-5 ">
-                    <button
-                      type="reset"
-                      onClick={handleReset}
-                      className="w-1/2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-400 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-gray-500 focus:z-10 focus:ring-4 focus:ring-gray-200"
-                    >
-                      {reset ? "Reset" : "Cancel"}
-                    </button>
-                    <button
-                      type="submit"
-                      className="w-1/2 text-white mb-2 bg-success hover:bg-green-400 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </div>
+              <div className="pb-6">
+                <InputField
+                  name="gender"
+                  label="Gender"
+                  placeholder="Gender"
+                  type="text"
+                  onClick={() => {}}
+                  defaultValue={reset ? dataUser.gender : ""}
+                  onChange={(ev) => setHandleChangeData(ev)}
+                />
+              </div>
+              <div className="pb-6">
+                <InputField
+                  name="email"
+                  label="Email"
+                  placeholder="Email"
+                  type="email"
+                  onClick={() => {}}
+                  defaultValue={reset ? dataUser.email : ""}
+                  onChange={(ev) => setHandleChangeData(ev)}
+                />
+              </div>
+              <div className="w-full flex justify-between">
+                <button
+                  type="reset"
+                  onClick={handleReset}
+                  className="w-1/2 border-2 border-success rounded-lg text-success mr-2 hover:bg-success hover:text-white"
+                >
+                  {reset ? "Reset" : "Cancel"}
+                </button>
+                <button
+                  type="submit"
+                  className="w-1/2 bg-success ml-2 text-white py-3 rounded-lg hover:bg-opacity-70"
+                >
+                  Save
+                </button>
               </div>
             </form>
           </div>

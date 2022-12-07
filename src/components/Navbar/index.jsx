@@ -1,38 +1,58 @@
 import { BetterSpace } from "assets";
-import React, { useState } from "react";
-import { HashLink } from "react-router-hash-link";
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { HashLink, NavHashLink } from "react-router-hash-link";
+import "./styles.css";
 
 const Navbar = () => {
+  const { hash } = useLocation();
+  const isActive = (iHash) => hash === iHash;
+
   const [toggle, setToggle] = useState(false);
+  const [navbar, setNavbar] = useState(true);
+
+  const changeBackground = () => {
+    // console.log(window.scrollY);
+    if (window.scrollY > 0) {
+      setNavbar(false);
+    } else {
+      setNavbar(true);
+    }
+  }
+
+  window.addEventListener('scroll', changeBackground);
 
   const HANDLETOGGLE = () => {
     setToggle(!toggle);
   };
 
-  // let active =
-  //   "block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white";
-  // let notActive =
-  //   "block py-2 pl-3 pr-4 text-white hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0";
+  useEffect(() => {
+    setNavbar(true);
+  }, [])
+
+  // const handleScroll = (ev) => {
+  //   console.log(window.scrollY);
+  // }
 
   return (
     <>
-      <nav className="bg-bgPrimary px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0">
+      <nav className={`${navbar ? 'bg-white transition ease-in-out duration-300' : "transition ease-in-out duration-300 bg-bgPrimary text-white border-b border-b-slate-700 bg-opacity-90 backdrop-blur-md"} active px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0`}>
         <div className="container flex flex-wrap items-center justify-between mx-auto">
           <HashLink smooth to={`/login`} className="flex items-center">
             <img
               src={BetterSpace}
-              className="h-6 mr-3 sm:h-9"
+              className="h-6 mr-3 sm:h-12"
               alt="Flowbite Logo"
             />
-            <span className="self-center text-2xl text-white font-bold whitespace-nowrap">
+            <span className="self-center text-2xl font-bold whitespace-nowrap">
               BETTER SPACE
             </span>
           </HashLink>
-          <button
+          <butt on
             onClick={HANDLETOGGLE}
             data-collapse-toggle="navbar-default"
             type="button"
-            className="inline-flex items-center p-2 ml-3 text-sm text-gray-200 rounded-lg md:hidden hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600"
+            className={` ${navbar ? "hover:bg-gray-200" : "hover:bg-gray-600"} inline-flex items-center p-2 ml-3 text-sm text-gray-200 rounded-lg md:hidden focus:outline-none focus:ring-2 focus:ring-gray-600`}
             aria-controls="navbar-default"
             aria-expanded="false"
           >
@@ -45,16 +65,16 @@ const Navbar = () => {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
+                color={navbar ? "black" : "white"}
                 fillRule="evenodd"
                 d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
                 clipRule="evenodd"
               />
             </svg>
-          </button>
+          </butt>
           <div
-            className={`${
-              toggle ? "block" : "hidden"
-            } w-full md:block md:w-auto`}
+            className={`${toggle ? "block" : "hidden"
+              } w-full md:block md:w-auto`}
             id="navbar-default"
           >
             <ul className="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium items-center">
@@ -63,50 +83,98 @@ const Navbar = () => {
                   onClick={HANDLETOGGLE}
                   smooth
                   to="/#"
-                  className="block py-2 pl-3 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
+                  className="block py-2 pl-3 pr-4 md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
                 >
                   Home
                 </HashLink>
               </li>
               <li>
-                <HashLink
+                <NavHashLink
                   onClick={HANDLETOGGLE}
                   smooth
                   to="#features"
-                  className="block py-2 pl-3 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
+                  style={
+                    isActive("#features")
+                      ? {
+                        color: "#1d4ed8",
+                        fontWeight: "bold",
+                        // textDecoration: "underline",
+                        // margin: "12px",
+                        // marginBottom: "12px"
+                        transition: "box-shadow 0.2s ease 0s, color 0.2s ease 0"
+                      }
+                      : {}
+                  }
+                  className="block py-2 pl-3 pr-4 md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
                 >
                   Features
-                </HashLink>
+                </NavHashLink>
               </li>
               <li>
-                <HashLink
+                <NavHashLink
                   onClick={HANDLETOGGLE}
                   smooth
                   to="/#testimonials"
-                  className="block py-2 pl-3 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
+                  style={
+                    isActive("#testimonials")
+                      ? {
+                        color: "#1d4ed8",
+                        fontWeight: "bold",
+                        // textDecoration: "underline",
+                        // margin: "12px",
+                        // marginBottom: "12px"
+                        transition: "box-shadow 0.2s ease 0s, color 0.2s ease 0"
+                      }
+                      : {}
+                  }
+                  className="block py-2 pl-3 pr-4 md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
                 >
                   Testimonials
-                </HashLink>
+                </NavHashLink>
               </li>
               <li>
-                <HashLink
+                <NavHashLink
                   onClick={HANDLETOGGLE}
                   smooth
                   to="/#tips"
-                  className="block py-2 pl-3 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
+                  style={
+                    isActive("#tips")
+                      ? {
+                        color: "#1d4ed8",
+                        fontWeight: "bold",
+                        // textDecoration: "underline",
+                        // margin: "12px",
+                        // marginBottom: "12px"
+                        transition: "box-shadow 0.2s ease 0s, color 0.2s ease 0"
+                      }
+                      : {}
+                  }
+                  className="block py-2 pl-3 pr-4  md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
                 >
                   Step
-                </HashLink>
+                </NavHashLink>
               </li>
               <li>
-                <HashLink
+                <NavHashLink
                   onClick={HANDLETOGGLE}
                   smooth
                   to="/#contact"
-                  className="block py-2 pl-3 pr-4 text-white md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
+                  style={
+                    isActive("#contact")
+                      ? {
+                        color: "#1d4ed8",
+                        fontWeight: "bold",
+                        // textDecoration: "underline",
+                        // margin: "12px",
+                        // marginBottom: "12px"
+                        transition: "box-shadow 0.2s ease 0s, color 0.2s ease 0"
+                      }
+                      : {}
+                  }
+                  className="block py-2 pl-3 pr-4  md:hover:bg-transparent md:border-0 hover:text-blue-700 md:p-0"
                 >
                   About us
-                </HashLink>
+                </NavHashLink>
               </li>
               <li>
                 <HashLink smooth to="#hero">

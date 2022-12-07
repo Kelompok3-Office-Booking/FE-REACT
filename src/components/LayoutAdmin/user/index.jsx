@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, fetchUser } from "store/Feature/FeatureUser/userSlice";
-import { ModalUpdateUser } from "components/Modal";
+import { deleteUser, fetchUsers } from "store/Feature/FeatureUser/userSlice";
+import ModalUpdateUser from "components/Modal/ModalUser";
 import DeleteAllData from "components/Alert/deleteAllData";
 import Swal from "sweetalert2";
 import { Pagination } from "antd";
 import TableHead from "./tableHead";
+import APIUser from "apis/restApis/User";
+import { ContentTableLoader } from "components";
 
 const UserPage = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
   const pageSize = 6;
 
+  const [userList, setUserList] = useState(listOfUser);
+
   const [dataUser, setDataUser] = useState({
     minValue: 0,
     maxValue: 20,
   });
 
-  const [search, setSearch] = useState("");
+  const [searchWords, setSearchWords] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchUser());
-    setLoading(false);
+    dispatch(fetchUsers()).then(() => {
+      setLoading(false);
+    });
+
     setDataUser({
       minValue: 0,
       maxValue: 6,
@@ -36,7 +42,21 @@ const UserPage = () => {
       maxValue: value * pageSize,
     });
   };
+  const handleShowList = async () => {};
+  async function myDisplay() {
+    let myPromise = new Promise(function (list) {
+      setTimeout(function () {
+        ("I love You !!");
+      }, 3000);
+    });
+    document.getElementById("demo").innerHTML = await myPromise;
+  }
 
+  const handleSearch = (ev) => {
+    setSearchWords(ev.target.value);
+  };
+
+  myDisplay();
   const HANDLEDELETE = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -61,11 +81,11 @@ const UserPage = () => {
         if (result.isConfirmed) {
           try {
             dispatch(deleteUser(id));
-            swalWithBootstrapButtons.fire(
-              "Deleted!",
-              "Your file has been deleted.",
-              "success"
-            );
+            swalWithBootstrapButtons
+              .fire("Deleted!", "Your file has been deleted.", "success")
+              .then(() => {
+                window.location.reload(false);
+              });
           } catch (error) {
             return Swal.fire({
               icon: "error",
@@ -79,7 +99,6 @@ const UserPage = () => {
   const HANDLEDELETEALL = () => {
     DeleteAllData();
   };
-  // console.log(search)
   return (
     <>
       <div className="flex justify-between px-8 mb-4 py-6 w-full bg-white rounded-2xl shadow">
@@ -122,7 +141,7 @@ const UserPage = () => {
             <input
               type="text"
               id="table-search-users"
-              onChange={() => {}}
+              onChange={(ev) => handleSearch(ev)}
               className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search for users"
             />
@@ -131,46 +150,50 @@ const UserPage = () => {
         <table className=" w-full text-sm text-left text-gray-500 ">
           <TableHead />
           <tbody>
-            {listOfUser
-              ?.slice(dataUser.minValue, dataUser.maxValue)
-              .map((user) => (
-                <tr
-                  className="bg-white border-b  hover:bg-gray-50"
-                  key={user.id}
-                >
-                  <td className="p-4 w-4">
-                    <div className="flex items-center">
-                      <input
-                        id="checkbox-table-search-1"
-                        type="checkbox"
-                        className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
-                      />
-                      <label
-                        htmlFor="checkbox-table-search-1"
-                        className="sr-only"
+            {loading ? (
+              <ContentTableLoader />
+            ) : (
+              listOfUser
+                ?.slice(dataUser.minValue, dataUser.maxValue)
+                .map((user) => (
+                  <tr
+                    className="bg-white border-b  hover:bg-gray-50"
+                    key={user.id}
+                  >
+                    <td className="p-4 w-4">
+                      <div className="flex items-center">
+                        <input
+                          id="checkbox-table-search-1"
+                          type="checkbox"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
+                        />
+                        <label
+                          htmlFor="checkbox-table-search-1"
+                          className="sr-only"
+                        >
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">{user.id}</td>
+                    <td className="py-4 px-6">{user.full_name}</td>
+                    <td className="py-4 px-6">{user.gender}</td>
+                    <td className="py-4 px-6">{user.email}</td>
+                    <td className="py-4 px-6 flex gap-2 items-center justify-center ">
+                      {/* Modal toggle */}
+                      <button
+                        type="button"
+                        onClick={() => HANDLEDELETE(user.id)}
+                        data-modal-toggle="editUserModal"
+                        className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
                       >
-                        checkbox
-                      </label>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">{user.id}</td>
-                  <td className="py-4 px-6">{user.full_name}</td>
-                  <td className="py-4 px-6">{user.gender}</td>
-                  <td className="py-4 px-6">{user.email}</td>
-                  <td className="py-4 px-6 flex gap-2 items-center justify-center ">
-                    {/* Modal toggle */}
-                    <button
-                      type="button"
-                      onClick={() => HANDLEDELETE(user.id)}
-                      data-modal-toggle="editUserModal"
-                      className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
-                    >
-                      <DeleteForeverIcon className="text-slate-500 hover:text-white" />
-                    </button>
-                    <ModalUpdateUser dataUser={user} />
-                  </td>
-                </tr>
-              ))}
+                        <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                      </button>
+                      <ModalUpdateUser dataUser={user} />
+                    </td>
+                  </tr>
+                ))
+            )}
           </tbody>
         </table>
       </div>
@@ -180,6 +203,7 @@ const UserPage = () => {
           defaultPageSize={pageSize}
           // current={dataReview.current}
           total={listOfUser?.length}
+          // total={userList?.length}
           onChange={handleChangePage}
         />
       </div>

@@ -12,8 +12,8 @@ const APIUser = {
 
   async updateUsers(data) {
     try {
-      const id = data.id;
-      const response = await axiosInstance.patch(`/admin/user/${id}`, data);
+      const { id } = data;
+      const response = await axiosInstance.put(`/admin/users/${id}`, data);
       return response;
     } catch (error) {
       console.log(error);
@@ -22,10 +22,21 @@ const APIUser = {
 
   async deleteUsers(id) {
     try {
-      const response = await axiosInstance.delete(`/admin/user/${id}`);
+      const response = await axiosInstance.delete(`/admin/users/${id}`);
       return response;
     } catch (error) {
       console.log(error);
+    }
+  },
+
+  async searchUsersByEmail(email) {
+    try {
+      const response = await axiosInstance.get(
+        `/admin/users/email?search=${email}`
+      );
+      return response;
+    } catch (error) {
+      console.log(email);
     }
   },
 };

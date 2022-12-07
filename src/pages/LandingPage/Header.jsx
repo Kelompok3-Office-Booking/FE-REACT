@@ -27,12 +27,12 @@ const Headers = () => {
                 <img
                   src={googleplay}
                   alt="google-play"
-                  className="mr-4 w-32 lg:w-40 2xl:w-48"
+                  className="mr-4 w-32 lg:w-36"
                 />
                 <img
                   src={appstore}
                   alt="google-play"
-                  className="w-32 lg:w-40 2xl:w-48"
+                  className="w-32 lg:w-36"
                 />
               </div>
             </div>

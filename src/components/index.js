@@ -13,17 +13,7 @@ import EditOffice from "./Modal/ModalOffice/EditOffice";
 import AddOffice from "./Modal/ModalOffice/AddOffice";
 import ContentTableLoader from "./Loader/ContentTableLoader";
 
-export {
-  AdminPage,
-  UserPage,
-  OfficePage,
-  TransactionPage,
-  ReviewPage,
-  PromoPage,
-  DashboardPage,
-  EditOffice,
-  AddOffice,
-};
+export { AdminPage, UserPage, OfficePage, TransactionPage, ReviewPage, PromoPage, DashboardPage, EditOffice, AddOffice };
 export { Navbar, Footer, LayoutAdmin };
 
 // Loader

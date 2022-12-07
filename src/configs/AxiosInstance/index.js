@@ -7,9 +7,10 @@ import CONST from "utils/constant";
 //   successHandler,
 // } from "configs/Interceptors";
 let token = Auth.getAccessToken();
+// console.log(token);
 const config = {
-  baseURL: CONST.BASE_URL,
-  headers: { Authorization: `Bearer ${token}` },
+    baseURL: CONST.BASE_URL,
+    headers: { Authorization: `Bearer ${token}` },
 };
 
 const axiosInstance = axios.create(config);
