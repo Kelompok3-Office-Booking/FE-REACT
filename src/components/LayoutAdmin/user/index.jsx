@@ -7,6 +7,7 @@ import DeleteAllData from "components/Alert/deleteAllData";
 import { Pagination } from "antd";
 import TableHead from "./tableHead";
 import { ContentTableLoader } from "components";
+import { Helmet } from "react-helmet";
 import DeleteUser from "components/Modal/ModalUser/DeleteUser";
 
 const UserPage = () => {
@@ -123,6 +124,10 @@ const UserPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Dashboard | Users</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className="flex justify-between px-8 mb-4 py-6 w-full bg-white rounded-2xl shadow">
         <h1 className="text-2xl font-bold my-auto">User</h1>
       </div>
@@ -190,8 +195,10 @@ const UserPage = () => {
                             type="checkbox"
                             defaultValue={user.id}
                             // checked={checked1 ? true : false}
-                            // checked={isCheck.includes(index)}
+                            // checked={isCheck.includes(user.index)}
+                            // checked={isCheck.includes(user.id)}
                             checked={isCheckAll ? true : user.checked}
+                            // checked={isCheckAll ? !isCheckAll : user.checked}
                             onChange={handleClickCheck}
                             // isChecked={}
                             className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "

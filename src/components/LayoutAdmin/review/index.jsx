@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { CaretDownOutlined, EyeOutlined, EyeInvisibleOutlined, SmileOutlined } from '@ant-design/icons';
+import {
+  CaretDownOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 // import type { PaginationProps } from 'antd';
-import { Dropdown, Menu, Space, Pagination, Select } from 'antd';
+import { Dropdown, Menu, Space, Pagination, Select } from "antd";
 import { Link } from "react-router-dom";
 import { twitter } from "assets";
 import { Rating } from "@mui/material";
+import { Helmet } from "react-helmet";
 
 import { testimonials } from "store/dataTestimonials";
-
 
 const Card = ({ imgUrl, name, rating, date, office, comment }) => {
   return (
@@ -17,7 +22,12 @@ const Card = ({ imgUrl, name, rating, date, office, comment }) => {
           <img src={imgUrl} className="rounded-full" alt="gambar" />
           <div className="pl-4 flex flex-col text-start">
             <p className="font-bold text-xl my-auto">{name}</p>
-            <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
+            <Rating
+              name="half-rating-read"
+              defaultValue={rating}
+              precision={0.5}
+              readOnly
+            />
           </div>
         </div>
         <p className="text-gray-500">{date}</p>
@@ -33,15 +43,14 @@ const Card = ({ imgUrl, name, rating, date, office, comment }) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const ReviewPage = () => {
-
   const pageSize = 4;
   const [dataReview, setDataReview] = useState({
     minValue: 0,
-    maxValue: 2
+    maxValue: 2,
   });
   const [filter, setFilter] = useState("newest");
   const [testimonial, setTestimonial] = useState(testimonials);
@@ -51,14 +60,14 @@ const ReviewPage = () => {
     setTestimonial(testimonials);
     setDataReview({
       minValue: 0,
-      maxValue: 4
-    })
-  }, [testimonial])
+      maxValue: 4,
+    });
+  }, [testimonial]);
 
   const handleChange = (value) => {
     setDataReview({
       minValue: (value - 1) * pageSize,
-      maxValue: value * pageSize
+      maxValue: value * pageSize,
     });
     // console.log(dataReview);
   };
@@ -77,60 +86,65 @@ const ReviewPage = () => {
   // console.log(menu.props.items[0].name);
   console.log(filter);
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
-        <h1 className="text-3xl font-bold my-auto">Review</h1>
-        <div className="flex content-center px-12 rounded-xl text-lg py-2">
-          <p className="mr-4">Sort By : </p>
-          <Select
-            defaultValue="newest"
-            style={{ width: 140 }}
-            className="ring-0 border-0"
-            onChange={handleFilter}
-            options={[
-              {
-                value: 'newest',
-                label: 'Newest',
-              },
-              {
-                value: 'oldest',
-                label: 'Oldest',
-              },
-            ]}
+    <>
+      <Helmet>
+        <title>Dashboard | Reviews</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
+      <div className="flex flex-col w-full">
+        <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
+          <h1 className="text-3xl font-bold my-auto">Review</h1>
+          <div className="flex content-center px-12 rounded-xl text-lg py-2">
+            <p className="mr-4">Sort By : </p>
+            <Select
+              defaultValue="newest"
+              style={{ width: 140 }}
+              className="ring-0 border-0"
+              onChange={handleFilter}
+              options={[
+                {
+                  value: "newest",
+                  label: "Newest",
+                },
+                {
+                  value: "oldest",
+                  label: "Oldest",
+                },
+              ]}
+            />
+          </div>
+        </div>
+        <div className=" my-8 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
+          {testimonial &&
+            testimonial.length > 0 &&
+            testimonial
+              .slice(dataReview.minValue, dataReview.maxValue)
+              .map((review) => {
+                return (
+                  <Card
+                    key={review.id}
+                    imgUrl={twitter}
+                    name={review.name}
+                    rating={review.rating}
+                    date={"22/05/2022"}
+                    office="Equity Tower Floor 34"
+                    comment={review.comment}
+                  />
+                );
+              })}
+        </div>
+        <div>
+          <Pagination
+            defaultCurrent={1}
+            defaultPageSize={pageSize}
+            // current={dataReview.current}
+            total={testimonial.length}
+            onChange={handleChange}
           />
         </div>
-
       </div>
-      <div className=" my-8 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
-        {
-          testimonial &&
-          testimonial.length > 0 &&
-          testimonial.slice(dataReview.minValue, dataReview.maxValue).map((review) => {
-            return (
-              <Card
-                key={review.id}
-                imgUrl={twitter}
-                name={review.name}
-                rating={review.rating}
-                date={"22/05/2022"}
-                office="Equity Tower Floor 34"
-                comment={review.comment}
-              />
-            )
-          })
-        }
-      </div>
-      <div>
-        <Pagination
-          defaultCurrent={1}
-          defaultPageSize={pageSize}
-          // current={dataReview.current}
-          total={testimonial.length}
-          onChange={handleChange}
-        />
-      </div>
-    </div>
-  )
-}
+    </>
+  );
+};
 
 export default ReviewPage;

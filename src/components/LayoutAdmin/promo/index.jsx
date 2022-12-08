@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPromo, createPromo } from "store/Feature/FeaturePromo/promoSlice";
 import { ContentTableLoader } from "components";
 import { Pagination, Select } from "antd";
+import { Helmet } from "react-helmet";
 
 const PromoPage = () => {
   const dispatch = useDispatch();
@@ -67,6 +68,10 @@ const PromoPage = () => {
   // console.log(data);
   return (
     <>
+      <Helmet>
+        <title>Dashboard | Promo</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className="flex flex-col w-full">
         <div className="flex justify-between px-8 py-2 w-full bg-white rounded-2xl shadow">
           <h1 className="text-2xl font-bold my-auto">Voucher Promo</h1>
@@ -86,7 +91,7 @@ const PromoPage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />

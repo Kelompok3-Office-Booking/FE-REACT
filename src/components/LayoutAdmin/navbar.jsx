@@ -8,12 +8,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Auth from "utils/auth";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
 const NavbarAdmin = () => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
   const HANDLETOGGLE = () => {
     setToggle(!toggle);
   };
+
+  let location = useLocation();
+  const data = location.pathname.substring(17);
+  const capitalize = data.charAt(0).toUpperCase() + data.slice(1);
 
   const handleLogout = () => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -25,7 +30,6 @@ const NavbarAdmin = () => {
       },
       buttonsStyling: false,
     });
-
     swalWithBootstrapButtons
       .fire({
         title: "Logout?",
@@ -62,7 +66,9 @@ const NavbarAdmin = () => {
       <div className="bg-bgPrimary text-white flex justify-center">
         <div className="container">
           <nav className="flex justify-between my-4">
-            <Link className="my-auto">Dashboard / ini nanti link</Link>
+            <Link className="my-auto font-normal">
+              Dashboard <span className="text-[#808080]">/ {capitalize}</span>
+            </Link>
             <div className="flex flex-col">
               <button
                 id="dropdownDividerButton"
