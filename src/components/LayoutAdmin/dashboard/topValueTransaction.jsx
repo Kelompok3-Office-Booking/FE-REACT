@@ -1,9 +1,14 @@
 import { items } from "assets";
 import React from "react";
+import { Helmet } from "react-helmet";
 
 const TopValueTransaction = () => {
   return (
     <>
+      <Helmet>
+        <title>Dashboard</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <section className="mt-10 w-full flex flex-col bg-white rounded-3xl drop-shadow-4xl">
         <div className="p-6 space-y-6">
           <div>

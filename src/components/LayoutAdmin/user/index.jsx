@@ -7,6 +7,7 @@ import DeleteAllData from "components/Alert/deleteAllData";
 import { Pagination } from "antd";
 import TableHead from "./tableHead";
 import { ContentTableLoader } from "components";
+import { Helmet } from "react-helmet";
 import DeleteUser from "components/Modal/ModalUser/DeleteUser";
 
 const UserPage = () => {
@@ -102,6 +103,10 @@ const UserPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Dashboard | Users</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className="flex justify-between px-8 mb-4 py-6 w-full bg-white rounded-2xl shadow">
         <h1 className="text-2xl font-bold my-auto">User</h1>
       </div>
