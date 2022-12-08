@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
@@ -10,25 +10,58 @@ import { ContentTableLoader } from "components";
 import { Helmet } from "react-helmet";
 import DeleteUser from "components/Modal/ModalUser/DeleteUser";
 
+const useSortableData = (items, config = null) => {
+  const [sortConfig, setSortConfig] = useState(config);
+
+  const sortedItems = useMemo(() => {
+    let sortableItems = [...items];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [items, sortConfig]);
+
+  const requestSort = key => {
+    let direction = 'ascending';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  }
+
+  return { items: sortedItems, requestSort };
+}
+
 const UserPage = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
   const pageSize = 6;
-
   const [userList, setUserList] = useState(listOfUser);
-
+  const { items, requestSort, sortConfig } = useSortableData(userList);
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
-
   const [dataUser, setDataUser] = useState({
     minValue: 0,
     maxValue: 20,
   });
-
   const [searchWords, setSearchWords] = useState("");
   const [loading, setLoading] = useState(true);
-
   const [modal, setModal] = useState(false);
+
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
@@ -120,8 +153,6 @@ const UserPage = () => {
     DeleteAllData();
   };
 
-  console.log(isCheck);
-
   return (
     <>
       <Helmet>
@@ -179,9 +210,9 @@ const UserPage = () => {
             <ContentTableLoader />
           ) : (
             <>
-              <TableHead handleSelectAll={handleSelectAll} isChecked={isCheckAll} />
+              <TableHead handleSelectAll={handleSelectAll} isChecked={isCheckAll} requestSort={requestSort} getClassNamesFor={getClassNamesFor} />
               <tbody>
-                {userList
+                {items
                   ?.slice(dataUser.minValue, dataUser.maxValue)
                   .map((user, index) => (
                     <tr

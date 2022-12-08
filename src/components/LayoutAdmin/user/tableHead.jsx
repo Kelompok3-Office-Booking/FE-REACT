@@ -1,6 +1,6 @@
 import React from "react";
 import { Arrow } from "assets";
-const TableHead = ({ handleSelectAll, isChecked }) => {
+const TableHead = ({ handleSelectAll, isChecked, getClassNamesFor, requestSort }) => {
   return (
     <thead className="text-xs text-gray-500 uppercase bg-gray-50">
       <tr>
@@ -21,7 +21,10 @@ const TableHead = ({ handleSelectAll, isChecked }) => {
         <th scope="col" className="py-3 px-6">
           <div className="flex items-center">
             User ID
-            <button>
+            <button
+              onClick={() => requestSort('id')}
+              className={getClassNamesFor('id')}
+            >
               <img src={Arrow} alt="arrow" />
             </button>
           </div>
@@ -29,7 +32,10 @@ const TableHead = ({ handleSelectAll, isChecked }) => {
         <th scope="col" className="py-3 px-6">
           <div className="flex items-center">
             Full Name
-            <button>
+            <button
+              onClick={() => requestSort('full_name')}
+              className={getClassNamesFor('full_name')}
+            >
               <img src={Arrow} alt="arrow" />
             </button>
           </div>
@@ -37,7 +43,10 @@ const TableHead = ({ handleSelectAll, isChecked }) => {
         <th scope="col" className="py-3 px-6">
           <div className="flex items-center">
             Gender
-            <button>
+            <button
+              onClick={() => requestSort('gender')}
+              className={getClassNamesFor('gender')}
+            >
               <img src={Arrow} alt="arrow" />
             </button>
           </div>
@@ -45,7 +54,10 @@ const TableHead = ({ handleSelectAll, isChecked }) => {
         <th scope="col" className="py-3 px-6">
           <div className="flex items-center">
             Email Address
-            <button>
+            <button
+              onClick={() => requestSort('email')}
+              className={getClassNamesFor('email')}
+            >
               <img src={Arrow} alt="arrow" />
             </button>
           </div>
