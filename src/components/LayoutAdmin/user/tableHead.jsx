@@ -1,6 +1,6 @@
 import React from "react";
 import { Arrow } from "assets";
-const TableHead = () => {
+const TableHead = ({ handleSelectAll, isChecked }) => {
   return (
     <thead className="text-xs text-gray-500 uppercase bg-gray-50">
       <tr>
@@ -9,6 +9,8 @@ const TableHead = () => {
             <input
               id="checkbox-all-search"
               type="checkbox"
+              onChange={handleSelectAll}
+              checked={isChecked}
               className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
             />
             <label htmlFor="checkbox-all-search" className="sr-only">

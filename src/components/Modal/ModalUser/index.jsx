@@ -5,23 +5,12 @@ import { updateUser } from "store/Feature/FeatureUser/userSlice";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
-const InputField = ({
-  name,
-  label,
-  defaultValue,
-  placeholder,
-  onClick,
-  onChange,
-  className = "border-gray-400",
-  type = "text",
-  disabled,
-  autoComplete = "off",
-}) => (
+const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange, className = "border-gray-300", type = "text", disabled, autoComplete = "off" }) => (
   <div className="relative">
     <input
       type={type}
       id="floating_outlined"
-      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
       placeholder={placeholder}
       name={name}
       onChange={onChange}
@@ -32,8 +21,7 @@ const InputField = ({
     />
     <label
       htmlFor="floating_outlined"
-      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-    >
+      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
       {label}
     </label>
   </div>
@@ -106,7 +94,7 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
       {/* Edit user modal */}
       {modal && (
         <div className="flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full">
-          <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50 drop-shadow-4xl transform -translate-y-0 scale-125 transition-opacity transition-transform duration-300 center">
+          <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50  transform -translate-y-0 scale-125 transition-transform duration-300 center">
             <div className="absolute">
               <button onClick={HANDLEMODAL}>
                 <CloseOutlined className="relative text-xl -top-6 right-12" />

@@ -16,6 +16,9 @@ const UserPage = () => {
 
   const [userList, setUserList] = useState(listOfUser);
 
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [isCheck, setIsCheck] = useState([]);
+
   const [dataUser, setDataUser] = useState({
     minValue: 0,
     maxValue: 20,
@@ -25,6 +28,24 @@ const UserPage = () => {
   const [loading, setLoading] = useState(true);
 
   const [modal, setModal] = useState(false);
+
+  const handleSelectAll = () => {
+    setIsCheckAll(!isCheckAll);
+    setIsCheck(userList.map(user => user.id));
+    if (isCheckAll) {
+      setIsCheck([]);
+    }
+  }
+
+  const handleClickCheck = (ev) => {
+    // setIsCheckAll(!isCheckAll);
+    const { id, checked } = ev.target;
+    setIsCheck([...isCheck, id]);
+    if (!checked) {
+      setIsCheck(isCheck.filter(item => item !== id));
+    }
+  }
+
   const HandleModal = () => {
     setModal(true);
     setTimeout(() => {
@@ -98,7 +119,7 @@ const UserPage = () => {
     DeleteAllData();
   };
 
-  // console.log(loading);
+  console.log(isCheck);
 
   return (
     <>
@@ -153,11 +174,11 @@ const UserPage = () => {
             <ContentTableLoader />
           ) : (
             <>
-              <TableHead />
+              <TableHead handleSelectAll={handleSelectAll} isChecked={isCheckAll} />
               <tbody>
                 {userList
                   ?.slice(dataUser.minValue, dataUser.maxValue)
-                  .map((user) => (
+                  .map((user, index) => (
                     <tr
                       className="bg-white border-b  hover:bg-gray-50"
                       key={user.id}
@@ -165,8 +186,14 @@ const UserPage = () => {
                       <td className="p-4 w-4">
                         <div className="flex items-center">
                           <input
-                            id="checkbox-table-search-1"
+                            id={user.id}
                             type="checkbox"
+                            defaultValue={user.id}
+                            // checked={checked1 ? true : false}
+                            // checked={isCheck.includes(index)}
+                            checked={isCheckAll ? true : user.checked}
+                            onChange={handleClickCheck}
+                            // isChecked={}
                             className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
                           />
                           <label

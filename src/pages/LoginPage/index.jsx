@@ -45,6 +45,7 @@ const LoginPage = () => {
         <div className="w-full bg-white rounded-2xl custom shadow-dark md:mt-0 sm:max-w-md xl:p-0">
           <Link
             href="#"
+            to="/"
             className="flex items-center justify-center mb-6 text-2xl font-bold text-gray-900 pt-10 xl:pt-20"
           >
             <img className="w-16 h-16 mr-2" src={BetterSpace} alt="logo" />
