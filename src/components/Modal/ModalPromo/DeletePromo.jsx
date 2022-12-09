@@ -6,13 +6,10 @@ import DeleteAlertPromo from "./DeleteAlertPromo";
 const DeletePromo = ({
     idPromo,
     loading,
-    setReload
+    setReload,
+    modal,
+    HandleModal
 }) => {
-    const [modal, setModal] = useState(false);
-    const HandleModal = () => {
-        setModal(!modal);
-    }
-
     return (
         <>
             <button

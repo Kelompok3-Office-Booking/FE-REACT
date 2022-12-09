@@ -11,10 +11,6 @@ const DeleteUser = ({
     HandleModal
 }) => {
 
-    useEffect(() => {
-
-    }, [])
-
     return (
         <>
             <button

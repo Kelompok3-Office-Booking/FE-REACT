@@ -1,15 +1,35 @@
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchPromo, createPromo } from "store/Feature/FeaturePromo/promoSlice";
 
-const AddPromo = ({
-    handleChangePromo,
-    handleSubmit
-}) => {
+const AddPromo = () => {
+    const dispatch = useDispatch();
+
+    const [data, setData] = useState({
+        voucher_code: "",
+        periode: "",
+        nominal: "",
+    });
 
     const [modal, setModal] = useState(false);
+
+
+    const handleChangePromo = (ev) => {
+        setData({
+            ...data,
+            [ev.target.name]: ev.target.value,
+        });
+    };
+
     const HandleModal = () => {
         setModal(!modal);
     }
+
+    const handleSubmit = (ev) => {
+        const { nominal, periode, voucher_code } = data;
+        dispatch(createPromo({ voucher_code, nominal, periode }));
+    };
 
     return (
         <>

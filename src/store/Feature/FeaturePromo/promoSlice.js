@@ -50,8 +50,18 @@ const promoSlice = createSlice({
     initialState,
     extraReducers(builder) {
         builder
+            .addCase(fetchPromo.pending, (state, action) => {
+                state.status = "loading";
+            })
             .addCase(fetchPromo.fulfilled, (state, action) => {
+                state.status = "succeeded";
                 state.data = action.payload;
+            })
+            .addCase(fetchPromo.rejected, (state, action) => {
+                state.status = "failed";
+            })
+            .addCase(updatePromo.pending, (state, action) => {
+                state.status = "loading";
             })
             .addCase(updatePromo.fulfilled, (state, action) => {
                 state.data = state.data.map((val) => {
@@ -63,13 +73,29 @@ const promoSlice = createSlice({
                 state.currentDetail = action.payload;
                 state.loading = false;
             })
+            .addCase(updatePromo.rejected, (state, action) => {
+                state.status = "failed";
+            })
+            .addCase(createPromo.pending, (state, action) => {
+                state.status = "loading";
+            })
             .addCase(createPromo.fulfilled, (state, action) => {
+                state.status = "succeeded";
                 // const { nominal, periode, voucher_code } = action.payload;
                 state.data = action.payload;
             })
+            .addCase(createPromo.rejected, (state, action) => {
+                state.status = "failed";
+            })
+            .addCase(deletePromo.pending, (state, action) => {
+                state.status = "loading";
+            })
             .addCase(deletePromo.fulfilled, (state, action) => {
-                state.fetchStatus = !state.fetchStatus;
+                state.status = "succeeded";
                 state.data = state.data.filter((item) => item.id !== action.payload.id);
+            })
+            .addCase(deletePromo.rejected, (state, action) => {
+                state.status = "failed";
             });
     },
 });

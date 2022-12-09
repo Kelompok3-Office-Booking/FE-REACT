@@ -1,6 +1,7 @@
 import { CloseOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
+import { useDispatch } from "react-redux";
 
 const EditPromo = ({
     dataPromo,
@@ -12,6 +13,9 @@ const EditPromo = ({
         periode: dataPromo.periode,
         nominal: dataPromo.nominal,
     })
+
+    const { voucher_code, periode, nominal } = data;
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setReset(true);
@@ -33,7 +37,10 @@ const EditPromo = ({
         })
     }
 
-
+    const handleSubmit = (ev) => {
+        <>
+        </>
+    }
 
     // console.log(data);
     return (
@@ -49,7 +56,7 @@ const EditPromo = ({
             {
                 modal && (
                     <div className="flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full">
-                        <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50 drop-shadow-4xl transform -translate-y-0 scale-125 transition-opacity transition-transform duration-300 center">
+                        <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50 transform -translate-y-0 scale-125 transition-transform duration-300 center">
                             <div className="absolute">
                                 <button onClick={HandleModal}>
                                     <CloseOutlined className="relative text-xl -top-6 right-12" />
@@ -58,7 +65,7 @@ const EditPromo = ({
                             <div className="text-start pb-6">
                                 <h1 className="text-2xl font-bold text-gray-600">Edit Promo</h1>
                             </div>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="pb-6">
                                     <div className="relative">
                                         <input
