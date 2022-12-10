@@ -5,7 +5,10 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Arrow } from "assets";
 import ViewOffice from "components/Modal/ModalOffice/ViewOffice";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
+import {
+  fetchOffice,
+  OfficesSelectors,
+} from "store/Feature/FeatureOffice/officeSlice";
 import { ContentTableLoader, EditOffice } from "components";
 import { Helmet } from "react-helmet";
 import DeleteOffice from "components/Modal/ModalOffice/DeleteOffice";
@@ -13,7 +16,7 @@ import { Pagination } from "antd";
 
 const OfficePage = () => {
   const dispatch = useDispatch();
-  const listOfOffice = useSelector((state) => state.office.data);
+  const listOfOffice = useSelector(OfficesSelectors.selectAll);
   const [loading, setLoading] = useState(true);
   const pageSize = 6;
   const [dataOffice, setDataOffice] = useState({
@@ -212,22 +215,22 @@ const OfficePage = () => {
                               </div>
                             </td>
                             <td className="py-4 px-6 text-center">
-                              {office.office_id}
+                              {office.id}
+                            </td>
+                            <td className="py-4 px-6">{office.title}</td>
+                            <td className="py-4 px-6 ">{office.office_type}</td>
+                            <td className="py-4 px-6 text-center">
+                              {office.price} /Hour
                             </td>
                             <td className="py-4 px-6 text-center">
-                              {office.full_name}
+                              {office.office_length} Person
                             </td>
                             <td className="py-4 px-6 text-center">
-                              {office.type}
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {office.price}
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {office.hour}
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {office.hour}
+                              <img
+                                src={office.images[0]}
+                                alt="test"
+                                className="max-w-[20px]"
+                              />
                             </td>
                             <td className="py-4 px-6 flex gap-2 items-center justify-center">
                               {/* Modal toggle */}
@@ -244,7 +247,7 @@ const OfficePage = () => {
                                 loading={loading}
                                 setReload={setReload}
                               />
-                              <EditOffice dataDetailOffice={office} />
+                              {/* <EditOffice dataDetailOffice={office} /> */}
                             </td>
                           </tr>
                         ))
