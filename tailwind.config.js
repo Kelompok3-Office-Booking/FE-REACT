@@ -14,6 +14,7 @@ module.exports = {
                 sixth: "#FA6668",
                 seventh: "#63BAFF",
                 eigth: "#2943A3",
+                ten: "#EDEFF7",
             },
             animation: {
                 "bounce-slow": "bounce 1s infinite",
