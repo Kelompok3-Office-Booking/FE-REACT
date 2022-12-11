@@ -6,12 +6,10 @@ import DeleteAlertOffice from "./DeleteAlertOffice";
 const DeleteOffice = ({
     idOffice,
     loading,
-    setReload
+    setReload,
+    modal,
+    HandleModal
 }) => {
-    const [modal, setModal] = useState(false);
-    const HandleModal = () => {
-        setModal(!modal);
-    }
 
     return (
         <>
