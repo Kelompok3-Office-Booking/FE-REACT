@@ -35,6 +35,10 @@ const OfficePage = () => {
 
   const setReload = () => {
     setLoading(true);
+    setTimeout(() => {
+      dispatch(fetchOffice());
+      setLoading(false);
+    }, 3000);
   };
 
   const handleChangePage = (value) => {
