@@ -315,7 +315,7 @@ const OfficePage = () => {
                               modal={modal}
                               HandleModal={HandleModal}
                             />
-                            {/* <EditOffice dataDetailOffice={office} /> */}
+                            <EditOffice dataDetailOffice={office} />
                           </td>
                         </tr>
                       ))}
@@ -335,10 +335,7 @@ const OfficePage = () => {
           </div>
         </div>
       </div>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-      />
+      <Toaster position="bottom-left" reverseOrder={false} />
     </>
   );
 };
