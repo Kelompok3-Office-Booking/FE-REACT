@@ -465,7 +465,7 @@ const AddOffice = () => {
               </button>
             </div>
           </div>
-          <div className="mx-12 w-1/2">
+          <div className="mx-2 ml-8 w-1/2">
             <p className="text-start mb-2 mt-4">Capacity</p>
             <div className="pb-6 w-full flex justify-between">
               <div className="w-3/4">

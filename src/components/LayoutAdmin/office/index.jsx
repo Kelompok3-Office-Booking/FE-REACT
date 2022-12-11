@@ -14,6 +14,7 @@ import { Helmet } from "react-helmet";
 import DeleteOffice from "components/Modal/ModalOffice/DeleteOffice";
 import { Pagination } from "antd";
 import TableHead from "./tableHead";
+import { Toaster } from "react-hot-toast";
 
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -334,6 +335,10 @@ const OfficePage = () => {
           </div>
         </div>
       </div>
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+      />
     </>
   );
 };

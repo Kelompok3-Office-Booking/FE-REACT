@@ -9,6 +9,7 @@ import TableHead from "./tableHead";
 import { ContentTableLoader } from "components";
 import { Helmet } from "react-helmet";
 import DeleteUser from "components/Modal/ModalUser/DeleteUser";
+import { Toaster } from "react-hot-toast";
 
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -278,6 +279,10 @@ const UserPage = () => {
           onChange={handleChangePage}
         />
       </div>
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+      />
     </>
   );
 };

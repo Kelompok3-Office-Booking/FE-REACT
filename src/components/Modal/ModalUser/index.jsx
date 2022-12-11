@@ -4,6 +4,25 @@ import { CloseOutlined } from "@ant-design/icons";
 import { updateUser } from "store/Feature/FeatureUser/userSlice";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import toast, { Toaster } from 'react-hot-toast';
+import CloseIcon from '@mui/icons-material/Close';
+import { checkbox } from "assets";
+
+const ToastCustom = () => {
+  return (
+    <div id="toast-success" class="flex items-center p-4 mb-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+      <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+        <span class="sr-only">Check icon</span>
+      </div>
+      <div class="ml-3 text-sm font-normal">Item moved successfully.</div>
+      <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+      </button>
+    </div>
+  )
+}
 
 const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange, className = "border-gray-300", type = "text", disabled, autoComplete = "off" }) => (
   <div className="relative">
@@ -70,7 +89,42 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
         icon: "success",
         title: "Success",
         text: "Edit Users Success",
+        showConfirmButton: false,
+        timer: 1000
       });
+      toast.custom((t) => (
+        <div
+          className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
+            } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={checkbox}
+                  alt=""
+                />
+              </div>
+              <div className="ml-3 flex-col text-start">
+                <p className="text-sm font-bold text-success">
+                  Success
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  Successfully Updated
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+            >
+              <CloseIcon />
+            </button>
+          </div>
+        </div>
+      ))
     } catch (error) {
       Swal.fire({
         icon: "error",

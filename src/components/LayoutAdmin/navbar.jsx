@@ -43,10 +43,14 @@ const NavbarAdmin = () => {
         if (result.isConfirmed) {
           try {
             Auth.signOut(navigate);
-            swalWithBootstrapButtons.fire(
-              "Logout!",
-              "Logout Success",
-              "success"
+            Swal.fire(
+              {
+                icon: "success",
+                title: "Logout!",
+                text: "Logout Success",
+                showConfirmButton: false,
+                timer: 1200
+              }
             );
           } catch (error) {
             return Swal.fire({
