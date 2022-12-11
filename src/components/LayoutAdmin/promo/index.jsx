@@ -12,6 +12,7 @@ import { Pagination, Select } from "antd";
 import { Helmet } from "react-helmet";
 import TableHead from "./tableHead";
 import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
+import { Toaster } from "react-hot-toast";
 
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -284,6 +285,10 @@ const PromoPage = () => {
           </div>
         </div>
       </div>
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+      />
     </>
   );
 };
