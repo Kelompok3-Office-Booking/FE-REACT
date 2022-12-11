@@ -136,8 +136,7 @@ const TeamContent = () => {
                 </div>
               </div>
               <div className="py-4">
-                "Kalau yang lain bisa, kenapa harus saya ?, karena yang lain
-                tidak bisa seperti saya" hahaha canda
+                "Hidup itu, kalau nggk gini ya gitu. mudah bukan?"
               </div>
             </div>
           </div>

@@ -2,18 +2,26 @@ import React, { useEffect } from "react";
 import { items, items2, items3, items4 } from "assets";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
+import { fetchOffice, OfficesSelectors } from "store/Feature/FeatureOffice/officeSlice";
 
 
 const ItemsData = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
+  const listOfOffice = useSelector(OfficesSelectors.selectAll);
 
   useEffect(() => {
     dispatch(fetchUsers())
       .catch((err) => {
         console.log(err);
+      });
+
+    dispatch(fetchOffice())
+      .catch((err) => {
+        console.log(err);
       })
   }, [])
+
 
   return (
     <div className="flex gap-4 mt-2">
@@ -49,7 +57,7 @@ const ItemsData = () => {
           </div>
           <div className="flex flex-col items-start justify-center pl-3">
             <div>
-              <h1 className="font-bold text-3xl">303</h1>
+              <h1 className="font-bold text-3xl">{listOfOffice?.length}</h1>
               <p className="text-base font-normal text-neutral-400 text-left">
                 Office
               </p>

@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Arrow } from "assets";
@@ -13,32 +13,138 @@ import { ContentTableLoader, EditOffice } from "components";
 import { Helmet } from "react-helmet";
 import DeleteOffice from "components/Modal/ModalOffice/DeleteOffice";
 import { Pagination } from "antd";
+import TableHead from "./tableHead";
+
+const useSortableData = (items, config = null) => {
+  const [sortConfig, setSortConfig] = useState(config);
+
+  const sortedItems = useMemo(() => {
+    let sortableItems = [...items];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [items, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  return { items: sortedItems, requestSort };
+};
 
 const OfficePage = () => {
   const dispatch = useDispatch();
   const listOfOffice = useSelector(OfficesSelectors.selectAll);
-  const [loading, setLoading] = useState(true);
+  const [officeList, setOfficeList] = useState(listOfOffice);
+  const { items, requestSort, sortConfig } = useSortableData(officeList);
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [isCheck, setIsCheck] = useState([]);
   const pageSize = 6;
   const [dataOffice, setDataOffice] = useState({
     minValue: 0,
     maxValue: 20,
   });
+  const [searchWords, setSearchWords] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
+
+  const handleSelectAll = () => {
+    setIsCheckAll(!isCheckAll);
+    setIsCheck(officeList.map((office) => office.id));
+    if (isCheckAll) {
+      setIsCheck([]);
+    }
+  };
+
+  const handleClickCheck = (ev) => {
+    // setIsCheckAll(!isCheckAll);
+    const { id, checked } = ev.target;
+    setIsCheck([...isCheck, id]);
+    if (!checked) {
+      setIsCheck(isCheck.filter((item) => item !== id));
+    }
+  };
+
+  const HandleModal = () => {
+    setModal(true);
+    setTimeout(() => {
+      setModal(false);
+    }, 1000);
+    console.log(modal);
+  };
 
   useEffect(() => {
-    dispatch(fetchOffice());
-    setLoading(false);
+    dispatch(fetchOffice())
+      .then((res) => {
+        if (searchWords === "") {
+          setOfficeList(res.payload);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     setDataOffice({
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch]);
+
+    const loweredSearchedWords = searchWords.toLowerCase();
+    const updatedOfficeList = [];
+    if (searchWords !== "") {
+      listOfOffice.forEach((office) => {
+        const loweredOfficeName = office.title.toLowerCase();
+        const typeOffice = office.office_type;
+        if (
+          loweredOfficeName.includes(loweredSearchedWords) ||
+          typeOffice.includes(loweredSearchedWords)
+        ) {
+          updatedOfficeList.push(office);
+        }
+      });
+      setOfficeList(updatedOfficeList);
+      setLoading(false);
+    } else {
+      setOfficeList(listOfOffice);
+    }
+  }, [dispatch, searchWords]);
 
   const setReload = () => {
     setLoading(true);
     setTimeout(() => {
-      dispatch(fetchOffice());
+      dispatch(fetchOffice()).then((res) => {
+        setOfficeList(res.payload);
+        // setLoading(false);
+      });
       setLoading(false);
     }, 3000);
+    // dispatch(fetchUsers())
+    // setUserList(listOfUser);
   };
 
   const handleChangePage = (value) => {
@@ -46,6 +152,10 @@ const OfficePage = () => {
       minValue: (value - 1) * pageSize,
       maxValue: value * pageSize,
     });
+  };
+
+  const handleSearch = (ev) => {
+    setSearchWords(ev.target.value);
   };
 
   return (
@@ -78,7 +188,7 @@ const OfficePage = () => {
             <div className="flex justify-between items-center py-4 bg-white px-4">
               <div className="flex">
                 <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-                  ({listOfOffice?.length}) Record Found
+                  ({officeList?.length}) Record Found
                 </h1>
                 <button
                   type="button"
@@ -111,162 +221,114 @@ const OfficePage = () => {
                 <input
                   type="text"
                   id="table-search-users"
+                  onChange={(ev) => handleSearch(ev)}
                   className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Search for users"
                 />
               </div>
             </div>
-            {loading ? (
-              <ContentTableLoader />
-            ) : (
-              <>
-                <table className="w-full text-sm text-left text-gray-500 ">
-                  <thead className="text-xs text-gray-500 bg-gray-50">
-                    <tr>
-                      <th scope="col" className="p-4">
-                        <div className="flex items-center">
-                          <input
-                            id="checkbox-all-search"
-                            type="checkbox"
-                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-secondary"
-                          />
-                          <label
-                            htmlFor="checkbox-all-search"
-                            className="sr-only"
-                          >
-                            checkbox
-                          </label>
-                        </div>
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        <div className="flex justify-center">
-                          <p className="my-auto">Office ID</p>
-                          <button>
-                            <img src={Arrow} alt="arrow" />
-                          </button>
-                        </div>
-                      </th>
-                      <th scope="col" className="py-3 px-3">
-                        <div className="flex justify-center">
-                          <p className="my-auto">Name Office</p>
-                          <button>
-                            <img src={Arrow} alt="arrow" />
-                          </button>
-                        </div>
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        <div className="flex justify-center">
-                          <p className="my-auto">Type</p>
-                          <button>
-                            <img src={Arrow} alt="arrow" />
-                          </button>
-                        </div>
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        <div className="flex justify-center">
-                          <p className="my-auto">Price</p>
-                          <button>
-                            <img src={Arrow} alt="arrow" />
-                          </button>
-                        </div>
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        <div className="flex justify-center">
-                          <p className="my-auto">Capacity</p>
-                          <button>
-                            <img src={Arrow} alt="arrow" />
-                          </button>
-                        </div>
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        <div className="flex justify-center">
-                          <p className="my-auto">Total Booked</p>
-                          <button>
-                            <img src={Arrow} alt="arrow" />
-                          </button>
-                        </div>
-                      </th>
-                      <th scope="col" className="py-3 px-6 text-center">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
+            <table className="w-full text-sm text-left text-gray-500 ">
+              {loading ? (
+                <ContentTableLoader />
+              ) : (
+                <>
+                  <TableHead
+                    handleSelectAll={handleSelectAll}
+                    isChecked={isCheckAll}
+                    requestSort={requestSort}
+                    getClassNamesFor={getClassNamesFor}
+                  />
                   <tbody>
-                    {
-                      // listOfOffice &&
-                      // listOfOffice.length > 0 &&
-                      listOfOffice
-                        ?.slice(dataOffice.minValue, dataOffice.maxValue)
-                        .map((office) => (
-                          <tr
-                            className="bg-white border-b hover:bg-gray-50"
-                            key={office.id}
-                          >
-                            <td className="p-4 w-4">
-                              <div className="flex items-center">
-                                <input
-                                  id="checkbox-table-search-1"
-                                  type="checkbox"
-                                  dataid={office.id}
-                                  className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                                />
-                                <label
-                                  htmlFor="checkbox-table-search-1"
-                                  className="sr-only"
-                                >
-                                  checkbox
-                                </label>
-                              </div>
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {office.id}
-                            </td>
-                            <td className="py-4 px-6">{office.title}</td>
-                            <td className="py-4 px-6 ">{office.office_type}</td>
-                            <td className="py-4 px-6 text-center">
-                              {office.price} /Hour
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {office.office_length} Person
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              <img
-                                src={office.images[0]}
-                                alt="test"
-                                className="max-w-[20px]"
+                    {items
+                      ?.slice(dataOffice.minValue, dataOffice.maxValue)
+                      .map((office) => (
+                        <tr
+                          className="bg-white border-b hover:bg-gray-50"
+                          key={office.id}
+                        >
+                          <td className="p-4 w-4">
+                            <div className="flex items-center">
+                              <input
+                                id="checkbox-table-search-1"
+                                type="checkbox"
+                                dataid={office.id}
+                                checked={isCheckAll ? true : office.checked}
+                                onChange={handleClickCheck}
+                                className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                               />
-                            </td>
-                            <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                              {/* Modal toggle */}
-                              {/* <button
+                              <label
+                                htmlFor="checkbox-table-search-1"
+                                className="sr-only"
+                              >
+                                checkbox
+                              </label>
+                            </div>
+                          </td>
+                          <td className="py-4 px-6 text-center">{office.id}</td>
+                          <td className="py-4 px-6">{office.title}</td>
+                          <td className="py-4 px-6 ">{office.office_type}</td>
+                          <td className="py-4 px-6 text-center">
+                            {office.price} /Hour
+                          </td>
+                          <td className="py-4 px-6 text-center">
+                            {office.office_length} Person
+                          </td>
+                          <td className="py-4 px-6 text-center">
+                            {office.accommodate}
+                            {/* <div className="flex">
+                                <img
+                                  src={office.images[0]}
+                                  alt="test"
+                                  className="max-w-[40px] mx-1 rounded-lg "
+                                />
+                                <img
+                                  src={office.images[1]}
+                                  alt="test"
+                                  className="max-w-[40px] mx-1 rounded-lg"
+                                />
+                                <img
+                                  src={office.images[2]}
+                                  alt="test"
+                                  className="max-w-[40px] mx-1 rounded-lg"
+                                />
+                                <img
+                                  src={office.images[3]}
+                                  alt="test"
+                                  className="max-w-[40px] mx-1 rounded-lg"
+                                /></div> */}
+                          </td>
+                          <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                            {/* Modal toggle */}
+                            {/* <button
                                                         href="#"
                                                         type="button"
                                                         data-modal-toggle="editUserModal"
                                                         className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-blue-600">
                                                         <RemoveRedEyeIcon className="text-slate-500 hover:text-white" />
                                                     </button> */}
-                              <ViewOffice dataDetailOffice={office} />
-                              <DeleteOffice
-                                idOffice={office.id}
-                                loading={loading}
-                                setReload={setReload}
-                              />
-                              {/* <EditOffice dataDetailOffice={office} /> */}
-                            </td>
-                          </tr>
-                        ))
-                    }
+                            <ViewOffice dataDetailOffice={office} />
+                            <DeleteOffice
+                              idOffice={office.id}
+                              loading={loading}
+                              setReload={setReload}
+                              modal={modal}
+                              HandleModal={HandleModal}
+                            />
+                            {/* <EditOffice dataDetailOffice={office} /> */}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
-                </table>
-              </>
-            )}
+                </>
+              )}
+            </table>
           </div>
           <div className="mt-8 text-start">
             <Pagination
               defaultCurrent={1}
               defaultPageSize={pageSize}
               // current={dataReview.current}
-              total={listOfOffice?.length}
+              total={officeList?.length}
               onChange={handleChangePage}
             />
           </div>
