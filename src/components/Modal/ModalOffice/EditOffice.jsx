@@ -160,6 +160,7 @@ const EditOffice = ({ dataDetailOffice }) => {
   };
 
   console.log(data);
+  console.log(dataDetailOffice.office_type);
   return (
     <>
       <button
@@ -225,7 +226,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                           value="Office"
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
-                          checked={
+                          defaultChecked={
                             dataDetailOffice.office_type === "Office"
                               ? true
                               : undefined
@@ -246,8 +247,8 @@ const EditOffice = ({ dataDetailOffice }) => {
                           value="Coworking"
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
-                          checked={
-                            dataDetailOffice.office_type === "Coworking"
+                          defaultChecked={
+                            dataDetailOffice.office_type === "Coworking Space"
                               ? true
                               : undefined
                           }
@@ -267,7 +268,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                           value="Meeting Room"
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
-                          checked={
+                          defaultChecked={
                             dataDetailOffice.office_type === "Meeting Room"
                               ? true
                               : undefined
