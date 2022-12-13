@@ -26,7 +26,7 @@ const InputField = ({
       defaultValue={defaultValue}
     />
     <label
-      for="floating_outlined"
+      htmlFor="floating_outlined"
       className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
     >
       {label}
@@ -39,8 +39,6 @@ const ViewOffice = ({ dataDetailOffice }) => {
   const HandleModal = () => {
     setModal(!modal);
   };
-
-  // console.log(dataDetailOffice);
 
   return (
     <>
@@ -56,7 +54,9 @@ const ViewOffice = ({ dataDetailOffice }) => {
 
       {/* Modal View */}
       {modal && (
-        <div className={` transition-transform duration-1000 delay-700 ease-in-out flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-20 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full`}>
+        <div
+          className={` transition-transform duration-1000 delay-700 ease-in-out flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-20 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full`}
+        >
           <div
             id="extralarge-modal"
             tabIndex={-1}
@@ -65,7 +65,7 @@ const ViewOffice = ({ dataDetailOffice }) => {
             <div className="relative w-full max-w-lg h-full md:h-auto">
               {/* Modal content */}
               <form
-                onSubmit={() => { }}
+                onSubmit={() => {}}
                 className="relative bg-white rounded-tl-3xl rounded-bl-3xl shadow "
               >
                 {/* Modal header */}
@@ -205,7 +205,7 @@ const ViewOffice = ({ dataDetailOffice }) => {
                           label="Facilities"
                           placeholder="Facilities"
                           disabled={true}
-                          defaultValue={`${dataDetailOffice.facilities_desc.length} Facilities`}
+                          defaultValue={`${dataDetailOffice.facility_model.length} Facilities`}
                         />
                         <p className="pt-2 text-start">{`detail fasilitas disini njir`}</p>
                       </div>
@@ -252,10 +252,10 @@ const ViewOffice = ({ dataDetailOffice }) => {
                       </div>
                     </div>
                     <div>
-                      <div class="flex items-center justify-center w-full">
+                      <div className="flex items-center justify-center w-full">
                         <label
-                          for="dropzone-file"
-                          class="flex flex-wrap items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                          htmlFor="dropzone-file"
+                          className="flex flex-wrap items-center justify-center w-full h-auto border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                         >
                           <div className="gap-6">
                             <div className="flex justify-between py-2">

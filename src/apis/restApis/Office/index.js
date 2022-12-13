@@ -12,6 +12,7 @@ const APIOffice = {
 
   async createOffice(data) {
     try {
+      console.log(data);
       const response = await axiosInstance.post("/admin/offices/create", data);
       console.log(response);
       return response;
