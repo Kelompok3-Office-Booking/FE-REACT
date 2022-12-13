@@ -48,7 +48,9 @@ const EditOffice = ({ dataDetailOffice }) => {
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
-
+  const checked = dataDetailOffice.facility_model.map(
+    (val) => val.facilities_id
+  );
   const [data, setData] = useState({
     id: dataDetailOffice.id,
     title: dataDetailOffice.title,
@@ -64,19 +66,22 @@ const EditOffice = ({ dataDetailOffice }) => {
     time: dataDetailOffice.time,
     lat: dataDetailOffice.lat,
     lng: dataDetailOffice.lng,
-    accomodate: dataDetailOffice.accomodate,
+    accomodate: dataDetailOffice.accommodate,
     working_desk: dataDetailOffice.working_desk,
     meeting_room: dataDetailOffice.meeting_room,
     private_room: dataDetailOffice.private_room,
     images: dataDetailOffice.images,
-    facilities_id: dataDetailOffice.facilities_id,
-    facilities_desc: dataDetailOffice.facilities_desc,
+    facilities_id: dataDetailOffice.facility_model.map(
+      (val) => val.facilities_id
+    ),
+    facilities_desc: dataDetailOffice.facility_model.map(
+      (val) => val.facilities_desc
+    ),
     distance: dataDetailOffice.distance,
     rate: dataDetailOffice.rate,
   });
 
   const [imageUpload, setImageUpload] = useState("");
-  console.log(dataDetailOffice.facilities_id);
   const [officeFacility, setOfficeFacility] = useState({
     facilities: [],
   });
@@ -158,9 +163,6 @@ const EditOffice = ({ dataDetailOffice }) => {
   const HandleModal = () => {
     setModal(!modal);
   };
-
-  console.log(data);
-  console.log(dataDetailOffice.office_type);
   return (
     <>
       <button
@@ -590,12 +592,8 @@ const EditOffice = ({ dataDetailOffice }) => {
                   <p className="text-start mb-2">Facilities</p>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[0] === "1"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
+                      defaultChecked={checked[0] === "1" ? true : undefined}
                       id="default-checkbox"
                       type="checkbox"
                       value="1"
@@ -611,12 +609,8 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[1] === "2"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
+                      defaultChecked={checked[1] === "2" ? true : undefined}
                       id="default-checkbox"
                       type="checkbox"
                       value="2"
@@ -632,13 +626,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[2] === "3"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[2] === "3" ? true : undefined}
                       type="checkbox"
                       value="3"
                       name="facilities"
@@ -653,13 +643,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[3] === "4"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[3] === "4" ? true : undefined}
                       type="checkbox"
                       value="4"
                       name="facilities"
@@ -674,13 +660,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[4] === "5"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[4] === "5" ? true : undefined}
                       type="checkbox"
                       value="5"
                       name="facilities"
@@ -695,13 +677,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[5] === "6"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[5] === "6" ? true : undefined}
                       type="checkbox"
                       value="6"
                       name="facilities"
@@ -716,13 +694,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[6] === "7"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[6] === "7" ? true : undefined}
                       type="checkbox"
                       value="7"
                       name="facilities"
@@ -737,13 +711,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[7] === "8"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[7] === "8" ? true : undefined}
                       type="checkbox"
                       value="8"
                       name="facilities"
@@ -758,13 +728,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[8] === "9"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[8] === "9" ? true : undefined}
                       type="checkbox"
                       value="9"
                       name="facilities"
@@ -779,13 +745,9 @@ const EditOffice = ({ dataDetailOffice }) => {
                   </div>
                   <div className="flex items-center mb-2">
                     <input
-                      defaultChecked={
-                        dataDetailOffice.facilities_id[9] === "10"
-                          ? true
-                          : undefined
-                      }
                       onChange={handleChangeFacilities}
                       id="default-checkbox"
+                      defaultChecked={checked[9] === "10" ? true : undefined}
                       type="checkbox"
                       value="10"
                       name="facilities"

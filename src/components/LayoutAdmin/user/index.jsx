@@ -19,10 +19,10 @@ const useSortableData = (items, config = null) => {
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
+          return sortConfig.direction === "ascending" ? -1 : 1;
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
+          return sortConfig.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
@@ -30,16 +30,20 @@ const useSortableData = (items, config = null) => {
     return sortableItems;
   }, [items, sortConfig]);
 
-  const requestSort = key => {
-    let direction = 'ascending';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
     }
     setSortConfig({ key, direction });
-  }
+  };
 
   return { items: sortedItems, requestSort };
-}
+};
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -66,27 +70,26 @@ const UserPage = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(userList.map(user => user.id));
+    setIsCheck(userList.map((user) => user.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
-  }
+  };
 
   const handleClickCheck = (ev) => {
     // setIsCheckAll(!isCheckAll);
     const { id, checked } = ev.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== id));
+      setIsCheck(isCheck.filter((item) => item !== id));
     }
-  }
+  };
 
   const HandleModal = () => {
     setModal(true);
     setTimeout(() => {
       setModal(false);
     }, 1000);
-    console.log(modal);
   };
 
   useEffect(() => {
@@ -211,7 +214,12 @@ const UserPage = () => {
             <ContentTableLoader />
           ) : (
             <>
-              <TableHead handleSelectAll={handleSelectAll} isChecked={isCheckAll} requestSort={requestSort} getClassNamesFor={getClassNamesFor} />
+              <TableHead
+                handleSelectAll={handleSelectAll}
+                isChecked={isCheckAll}
+                requestSort={requestSort}
+                getClassNamesFor={getClassNamesFor}
+              />
               <tbody>
                 {items
                   ?.slice(dataUser.minValue, dataUser.maxValue)
@@ -279,10 +287,7 @@ const UserPage = () => {
           onChange={handleChangePage}
         />
       </div>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-      />
+      <Toaster position="bottom-left" reverseOrder={false} />
     </>
   );
 };

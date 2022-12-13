@@ -95,7 +95,6 @@ const OfficePage = () => {
     setTimeout(() => {
       setModal(false);
     }, 1000);
-    console.log(modal);
   };
 
   useEffect(() => {

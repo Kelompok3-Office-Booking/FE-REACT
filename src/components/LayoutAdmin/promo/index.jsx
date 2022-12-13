@@ -22,10 +22,10 @@ const useSortableData = (items, config = null) => {
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
+          return sortConfig.direction === "ascending" ? -1 : 1;
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
+          return sortConfig.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
@@ -33,16 +33,20 @@ const useSortableData = (items, config = null) => {
     return sortableItems;
   }, [items, sortConfig]);
 
-  const requestSort = key => {
-    let direction = 'ascending';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
     }
     setSortConfig({ key, direction });
-  }
+  };
 
   return { items: sortedItems, requestSort };
-}
+};
 
 const PromoPage = () => {
   const dispatch = useDispatch();
@@ -87,20 +91,20 @@ const PromoPage = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(promoList.map(promo => promo.id));
+    setIsCheck(promoList.map((promo) => promo.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
-  }
+  };
 
   const handleClickCheck = (ev) => {
     // setIsCheckAll(!isCheckAll);
     const { id, checked } = ev.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== id));
+      setIsCheck(isCheck.filter((item) => item !== id));
     }
-  }
+  };
 
   const handleSearch = (ev) => {
     setSearchWords(ev.target.value);
@@ -111,7 +115,6 @@ const PromoPage = () => {
     setTimeout(() => {
       setModal(false);
     }, 1000);
-    console.log(modal);
   };
 
   useEffect(() => {
@@ -181,7 +184,7 @@ const PromoPage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -217,58 +220,64 @@ const PromoPage = () => {
               </div>
             </div>
             <table className="w-full text-sm text-left text-gray-500 ">
-
               {loading ? (
                 <ContentTableLoader />
               ) : (
                 <>
-                  <TableHead handleSelectAll={handleSelectAll} isChecked={isCheckAll} requestSort={requestSort} getClassNamesFor={getClassNamesFor} />
+                  <TableHead
+                    handleSelectAll={handleSelectAll}
+                    isChecked={isCheckAll}
+                    requestSort={requestSort}
+                    getClassNamesFor={getClassNamesFor}
+                  />
                   <tbody>
-                    {
-                      items
-                        ?.slice(dataPromo.minValue, dataPromo.maxValue)
-                        .map((promo) => (
-                          <tr
-                            className="bg-white border-b hover:bg-gray-50"
-                            key={promo.id}
-                          >
-                            <td className="p-4 w-4">
-                              <div className="flex items-center">
-                                <input
-                                  id="checkbox-table-search-1"
-                                  type="checkbox"
-                                  className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                                />
-                                <label
-                                  htmlFor="checkbox-table-search-1"
-                                  className="sr-only"
-                                >
-                                  checkbox
-                                </label>
-                              </div>
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {promo.full_name}
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {promo.email}
-                            </td>
-                            <td className="py-4 px-6 text-center">
-                              {promo.id} %
-                            </td>
-                            <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                              <DeletePromo
-                                idPromo={promo.id}
-                                loading={loading}
-                                setReload={setReload}
-                                modal={modal}
-                                HandleModal={HandleModal}
+                    {items
+                      ?.slice(dataPromo.minValue, dataPromo.maxValue)
+                      .map((promo) => (
+                        <tr
+                          className="bg-white border-b hover:bg-gray-50"
+                          key={promo.id}
+                        >
+                          <td className="p-4 w-4">
+                            <div className="flex items-center">
+                              <input
+                                id="checkbox-table-search-1"
+                                type="checkbox"
+                                className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                               />
-                              <EditPromo dataPromo={promo} loading={loading} setReload={setReload} />
-                            </td>
-                          </tr>
-                        ))
-                    }
+                              <label
+                                htmlFor="checkbox-table-search-1"
+                                className="sr-only"
+                              >
+                                checkbox
+                              </label>
+                            </div>
+                          </td>
+                          <td className="py-4 px-6 text-center">
+                            {promo.full_name}
+                          </td>
+                          <td className="py-4 px-6 text-center">
+                            {promo.email}
+                          </td>
+                          <td className="py-4 px-6 text-center">
+                            {promo.id} %
+                          </td>
+                          <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                            <DeletePromo
+                              idPromo={promo.id}
+                              loading={loading}
+                              setReload={setReload}
+                              modal={modal}
+                              HandleModal={HandleModal}
+                            />
+                            <EditPromo
+                              dataPromo={promo}
+                              loading={loading}
+                              setReload={setReload}
+                            />
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </>
               )}
@@ -285,10 +294,7 @@ const PromoPage = () => {
           </div>
         </div>
       </div>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-      />
+      <Toaster position="bottom-left" reverseOrder={false} />
     </>
   );
 };
