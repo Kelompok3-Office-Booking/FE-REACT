@@ -1,8 +1,36 @@
 import { items } from "assets";
-import React from "react";
+import { ContentTableLoader } from "components";
+import jsConvert from "js-convert-case";
+import React, { useEffect, useState } from "react";
+import CurrencyFormat from "react-currency-format";
 import { Helmet } from "react-helmet";
+import { useDispatch } from "react-redux";
+import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
 
-const TopValueTransaction = () => {
+const TopValueTransaction = ({
+  dispatch,
+  listOfTransaction
+}) => {
+  const [topValueList, setValueList] = useState(listOfTransaction);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    dispatch(fetchTransaction())
+      .then((res) => {
+        const updateTopValueTransaksi = [];
+        listOfTransaction.forEach((transaksi) => {
+          if (transaksi.price > 10000) {
+            updateTopValueTransaksi.push(transaksi);
+          }
+        })
+        setValueList(updateTopValueTransaksi)
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [])
+
   return (
     <>
       <Helmet>
@@ -19,86 +47,60 @@ const TopValueTransaction = () => {
           <div>
             <div className="overflow-x-auto relative">
               <table className="w-full text-sm text-left text-gray-500 space-y-6 ">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
-                  <tr>
-                    <th scope="col" className="py-3 px-6 rounded-l-2xl">
-                      Photo
-                    </th>
-                    <th scope="col" className="py-3 px-6">
-                      Name
-                    </th>
-                    <th scope="col" className="py-3 px-6">
-                      Price
-                    </th>
-                    <th scope="col" className="py-3 px-6">
-                      Office Name
-                    </th>
-                    <th scope="col" className="py-3 px-6">
-                      Type
-                    </th>
-                    <th scope="col" className="py-3 px-6 rounded-r-2xl">
-                      Date
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white font-medium text-neutral-500">
-                    <td className="py-4 px-6 font-medium  whitespace-nowrap ">
-                      <img
-                        src={items}
-                        className="rounded-full max-w-[40px]"
-                        alt="img"
-                      />
-                    </td>
-                    <td className="py-4 px-6">Sliver</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">$2999</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">Data</td>
-                  </tr>
-                  <tr className="bg-white font-medium text-neutral-500">
-                    <td className="py-4 px-6 font-medium  whitespace-nowrap ">
-                      <img
-                        src={items}
-                        className="rounded-full max-w-[40px]"
-                        alt="img"
-                      />
-                    </td>
-                    <td className="py-4 px-6">Sliver</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">$2999</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">Data</td>
-                  </tr>
-                  <tr className="bg-white font-medium text-neutral-500">
-                    <td className="py-4 px-6 font-medium  whitespace-nowrap ">
-                      <img
-                        src={items}
-                        className="rounded-full max-w-[40px]"
-                        alt="img"
-                      />
-                    </td>
-                    <td className="py-4 px-6">Sliver</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">$2999</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">Data</td>
-                  </tr>
-                  <tr className="bg-white font-medium text-neutral-500">
-                    <td className="py-4 px-6 font-medium  whitespace-nowrap ">
-                      <img
-                        src={items}
-                        className="rounded-full max-w-[40px]"
-                        alt="img"
-                      />
-                    </td>
-                    <td className="py-4 px-6">Sliver</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">$2999</td>
-                    <td className="py-4 px-6">Laptop</td>
-                    <td className="py-4 px-6">Data</td>
-                  </tr>
-                </tbody>
+                {
+                  loading
+                    ?
+                    <ContentTableLoader />
+                    :
+                    <>
+                      <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
+                        <tr>
+                          <th scope="col" className="py-3 px-6 rounded-l-2xl">
+                            Photo
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            Name
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            Price
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            Office Name
+                          </th>
+                          <th scope="col" className="py-3 px-6">
+                            Type
+                          </th>
+                          <th scope="col" className="py-3 px-6 rounded-r-2xl">
+                            Date
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          topValueList
+                            ?.slice(0, 5).map((transaksi) => (
+                              <tr className="bg-white font-medium text-neutral-500">
+                                <td className="py-4 px-6 font-medium  whitespace-nowrap ">
+                                  <img
+                                    src={items}
+                                    className="rounded-full max-w-[40px]"
+                                    alt="img"
+                                  />
+                                </td>
+                                <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.user.full_name)}</td>
+                                <td className="py-4 px-6">
+                                  <CurrencyFormat value={transaksi.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => <div>{value}</div>} />
+                                </td>
+                                <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.office.office_name)}</td>
+                                <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.office.office_type)}</td>
+                                <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.check_in.date)}</td>
+                              </tr>
+                            ))
+                        }
+
+                      </tbody>
+                    </>
+                }
               </table>
             </div>
           </div>

@@ -1,12 +1,9 @@
 import axios from "axios";
+import Cookies from "js-cookie";
+import { Navigate } from "react-router-dom";
 import Auth from "utils/auth";
 import CONST from "utils/constant";
-// import {
-//   errorHandler,
-//   requestHandler,
-//   successHandler,
-// } from "configs/Interceptors";
-// console.log(token);
+
 const config = {
     baseURL: CONST.BASE_URL,
 };
@@ -22,10 +19,34 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// axiosInstance.interceptors.request.use((request) => requestHandler(request));
+axios.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    function(error) {
+        const originalRequest = error.config;
+        if (error.response.status === 401) {
+            Navigate("/login");
+            return Promise.reject(error);
+        }
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            const refreshToken = Cookies.setToken("refresh");
+            return axios
+                .post("/login", {
+                    refresh_token: refreshToken,
+                })
+                .then((res) => {
+                    if (res.status === 201) {
+                        // Cookies.setToken(res.data);
+                        Cookies.set("token", res.data);
+                        config.headers["Authorization"] = `Bearer ${Auth.getAccessToken()}`;
+                        return axios(originalRequest);
+                    }
+                });
+        }
+        return Promise.reject(error);
+    }
+);
 
-// axiosInstance.interceptors.request.use(
-//   (response) => successHandler(response),
-//   (error) => errorHandler(error)
-// );
 export default axiosInstance;

@@ -10,14 +10,42 @@ const TransactionChart = () => {
   const dispatch = useDispatch();
   const listOfOffice = useSelector((state) => state.office.data);
   const [officeList, setOfficeList] = useState();
-
   const [coworkCount, setCoworkCount] = useState(1);
   const [meetingCount, setMeetingCount] = useState(1);
   const [officeCount, setOfficeCount] = useState(1);
 
-  const updatedCoworkList = [];
-  const updateMeetingList = [];
-  const updatedOfficeList = [];
+  useEffect(() => {
+    dispatch(fetchOffice())
+      .then((res) => {
+        setOfficeList(res.payload);
+        const updatedCoworkList = [];
+        const updateMeetingList = [];
+        const updatedOfficeList = [];
+        listOfOffice.forEach((office) => {
+          const loweredOfficeType = office.office_type.toLowerCase();
+          if (
+            loweredOfficeType.includes("coworking space")
+          ) {
+            updatedCoworkList.push(office);
+          } else if (
+            loweredOfficeType.includes("meeting room")
+          ) {
+            updateMeetingList.push(office);
+          } else if (
+            loweredOfficeType.includes("office")
+          ) {
+            updatedOfficeList.push(office);
+          }
+        });
+        setCoworkCount(updatedCoworkList?.length);
+        setMeetingCount(updateMeetingList?.length);
+        setOfficeCount(updatedOfficeList?.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [dispatch]);
+
 
   const [pie, setPie] = useState({
     labels: ["Cooworking Space", "Meeting Room", "Office Building"],
@@ -30,41 +58,6 @@ const TransactionChart = () => {
       },
     ],
   });
-
-  useEffect(() => {
-    dispatch(fetchOffice())
-      .then((res) => {
-        setOfficeList(res.payload);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    listOfOffice.forEach((office) => {
-      const loweredOfficeType = office.office_type.toLowerCase();
-      if (
-        loweredOfficeType.includes("coworking space")
-      ) {
-        updatedCoworkList.push(office);
-        setCoworkCount(updatedCoworkList?.length);
-        // console.log(updatedCoworkList)
-      } else if (
-        loweredOfficeType.includes("meeting room")
-      ) {
-        updateMeetingList.push(office);
-        setMeetingCount(updateMeetingList?.length);
-        // console.log(updateMeetingList)
-      } else if (
-        loweredOfficeType.includes("office")
-      ) {
-        updatedOfficeList.push(office);
-        setOfficeCount(updatedOfficeList?.length);
-        // console.log(updatedOfficeList)
-      }
-    });
-  }, [dispatch]);
-
-
 
   const [chartData, setChartData] = useState({
     labels: Data.map((data) => data.day),
@@ -98,6 +91,7 @@ const TransactionChart = () => {
       },
     ],
   });
+  // console.log(coworkCount)
   return (
     <>
       <section className="flex gap-4 mt-10">
