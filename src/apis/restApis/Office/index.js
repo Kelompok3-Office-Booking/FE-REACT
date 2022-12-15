@@ -13,7 +13,11 @@ const APIOffice = {
   async createOffice(data) {
     try {
       console.log(data);
-      const response = await axiosInstance.post("/admin/offices/create", data);
+      const response = await axiosInstance.post("/admin/offices/create", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log(response);
       return response;
     } catch (err) {

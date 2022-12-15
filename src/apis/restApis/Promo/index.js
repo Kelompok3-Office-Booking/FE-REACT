@@ -20,7 +20,7 @@ const APIPromo = {
 
     async createPromo() {
         try {
-            const response = await axiosInstance.post("/promo");
+            const response = await axiosInstance.post("https://stirred-rhino-39.hasura.app/api/rest/promo", config);
             console.log(response);
             return response;
         } catch (err) {
@@ -31,7 +31,7 @@ const APIPromo = {
     async updatePromo(data) {
         try {
             const id = data.id;
-            const response = await axiosInstance.patch(`https://stirred-rhino-39.hasura.app/api/rest/promo/${id}`, config);
+            const response = await axios.patch(`https://stirred-rhino-39.hasura.app/api/rest/promo/${id}`, config);
             console.log(response);
             return response;
         } catch (err) {
@@ -41,7 +41,7 @@ const APIPromo = {
 
     async deletePromo(id) {
         try {
-            const response = await axiosInstance.delete(`https://stirred-rhino-39.hasura.app/api/rest/promo/${id}`, config);
+            const response = await axios.delete(`https://stirred-rhino-39.hasura.app/api/rest/promo/${id}`, config);
             return response;
         } catch (err) {
             console.log(err);

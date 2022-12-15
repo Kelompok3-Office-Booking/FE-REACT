@@ -1,15 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
+import { deleteUser, fetchUsers } from "store/Feature/FeatureUser/userSlice";
 import ModalUpdateUser from "components/Modal/ModalUser";
 import DeleteAllData from "components/Alert/deleteAllData";
 import { Pagination } from "antd";
 import TableHead from "./tableHead";
 import { ContentTableLoader } from "components";
 import { Helmet } from "react-helmet";
-import DeleteUser from "components/Modal/ModalUser/DeleteUser";
-import { Toaster } from "react-hot-toast";
+import CloseIcon from '@mui/icons-material/Close';
+import { toast, Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
+import { checkbox } from "assets";
 
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -77,7 +79,6 @@ const UserPage = () => {
   };
 
   const handleClickCheck = (ev) => {
-    // setIsCheckAll(!isCheckAll);
     const { id, checked } = ev.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
@@ -145,17 +146,94 @@ const UserPage = () => {
     setTimeout(() => {
       dispatch(fetchUsers()).then((res) => {
         setUserList(res.payload);
-        // setLoading(false);
       });
       setLoading(false);
     }, 3000);
-    // dispatch(fetchUsers())
-    // setUserList(listOfUser);
   };
 
   const HANDLEDELETEALL = () => {
     DeleteAllData();
   };
+
+  const handleDelete = (id) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: `Are you sure?`,
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(deleteUser(id));
+            // setModal(false);
+            setReload();
+            Swal.fire(
+              {
+                icon: "success",
+                title: `Deleted!`,
+                text: "Your data has been deleted.",
+                showConfirmButton: false,
+                timer: 1200
+              }
+            );
+            setReload();
+            toast.custom((t) => (
+              <div
+                className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                <div className="flex-1 w-0 p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5">
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={checkbox}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-3 flex-col text-start">
+                      <p className="text-sm font-bold text-success">
+                        Success
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500">
+                        Successfully Deleted
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex border-gray-200">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              </div>
+            ))
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Delete is Failed ",
+            });
+          }
+        }
+      });
+  }
 
   return (
     <>
@@ -234,13 +312,8 @@ const UserPage = () => {
                             id={user.id}
                             type="checkbox"
                             defaultValue={user.id}
-                            // checked={checked1 ? true : false}
-                            // checked={isCheck.includes(user.index)}
-                            // checked={isCheck.includes(user.id)}
                             checked={isCheckAll ? true : user.checked}
-                            // checked={isCheckAll ? !isCheckAll : user.checked}
                             onChange={handleClickCheck}
-                            // isChecked={}
                             className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
                           />
                           <label
@@ -256,14 +329,15 @@ const UserPage = () => {
                       <td className="py-4 px-6">{user.gender}</td>
                       <td className="py-4 px-6">{user.email}</td>
                       <td className="py-4 px-6 flex gap-2 items-center justify-center ">
-                        {/* Modal toggle */}
-                        <DeleteUser
-                          idUser={user.id}
-                          loading={loading}
-                          setReload={setReload}
-                          modal={modal}
-                          HandleModal={HandleModal}
-                        />
+                        <button
+                          href="#"
+                          onClick={() => handleDelete(user.id)}
+                          type="button"
+                          data-modal-toggle="editUserModal"
+                          className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
+                        >
+                          <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                        </button>
                         <ModalUpdateUser
                           dataUser={user}
                           loading={loading}
@@ -281,9 +355,7 @@ const UserPage = () => {
         <Pagination
           defaultCurrent={1}
           defaultPageSize={pageSize}
-          // current={dataReview.current}
           total={userList?.length}
-          // total={userList?.length}
           onChange={handleChangePage}
         />
       </div>

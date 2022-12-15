@@ -1,18 +1,18 @@
 import AddPromo from "components/Modal/ModalPromo/AddPromo";
 import EditPromo from "components/Modal/ModalPromo/EditPromo";
 import React, { useEffect, useMemo, useState } from "react";
-import { Arrow } from "assets";
+import { Arrow, checkbox } from "assets";
 import DeleteAllData from "components/Alert/deleteAllData";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import DeletePromo from "components/Modal/ModalPromo/DeletePromo";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPromo, createPromo } from "store/Feature/FeaturePromo/promoSlice";
+import { fetchPromo, createPromo, deletePromo } from "store/Feature/FeaturePromo/promoSlice";
 import { ContentTableLoader } from "components";
 import { Pagination, Select } from "antd";
 import { Helmet } from "react-helmet";
 import TableHead from "./tableHead";
-import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
-import { Toaster } from "react-hot-toast";
+import CloseIcon from '@mui/icons-material/Close';
+import { toast, Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -60,10 +60,8 @@ const PromoPage = () => {
     minValue: 0,
     maxValue: 20,
   });
-
   const [searchWords, setSearchWords] = useState("");
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState(false);
 
   const getClassNamesFor = (name) => {
     if (!sortConfig) {
@@ -98,7 +96,6 @@ const PromoPage = () => {
   };
 
   const handleClickCheck = (ev) => {
-    // setIsCheckAll(!isCheckAll);
     const { id, checked } = ev.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
@@ -108,13 +105,6 @@ const PromoPage = () => {
 
   const handleSearch = (ev) => {
     setSearchWords(ev.target.value);
-  };
-
-  const HandleModal = () => {
-    setModal(true);
-    setTimeout(() => {
-      setModal(false);
-    }, 1000);
   };
 
   useEffect(() => {
@@ -160,8 +150,85 @@ const PromoPage = () => {
     DeleteAllData();
   };
 
-  // console.log(promoList);
-  // console.log(searchWords);
+  const handleDelete = (id) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(deletePromo(id));
+            setReload();
+            Swal.fire(
+              {
+                icon: "success",
+                title: `Deleted!`,
+                text: "Your data has been deleted.",
+                showConfirmButton: false,
+                timer: 1200
+              }
+            );
+            toast.custom((t) => (
+              <div
+                className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                <div className="flex-1 w-0 p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5">
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={checkbox}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-3 flex-col text-start">
+                      <p className="text-sm font-bold text-success">
+                        Success
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500">
+                        Successfully Deleted
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex border-gray-200">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              </div>
+            ))
+            return result;
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Delete is Failed ",
+            });
+          }
+        }
+      });
+  }
+
   return (
     <>
       <Helmet>
@@ -243,6 +310,9 @@ const PromoPage = () => {
                               <input
                                 id="checkbox-table-search-1"
                                 type="checkbox"
+                                dataid={promo.id}
+                                checked={isCheckAll ? true : promo.checked}
+                                onChange={handleClickCheck}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                               />
                               <label
@@ -266,13 +336,15 @@ const PromoPage = () => {
                             {promo.nominal} %
                           </td>
                           <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                            <DeletePromo
-                              idPromo={promo.id}
-                              loading={loading}
-                              setReload={setReload}
-                              modal={modal}
-                              HandleModal={HandleModal}
-                            />
+                            <button
+                              href="#"
+                              onClick={() => handleDelete(promo.id)}
+                              type="button"
+                              data-modal-toggle="editUserModal"
+                              className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
+                            >
+                              <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                            </button>
                             <EditPromo
                               dataPromo={promo}
                               loading={loading}
