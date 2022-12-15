@@ -1,6 +1,6 @@
 export const dataJakarta = [
   {
-    city: "Central Jakarta",
+    city: "central jakarta",
     district: [
       "Cempaka Putih",
       "Gambir",
@@ -13,7 +13,7 @@ export const dataJakarta = [
     ],
   },
   {
-    city: "South Jakarta",
+    city: "south jakarta",
     district: [
       "Cilandak",
       "Jagakarsa",
@@ -28,7 +28,7 @@ export const dataJakarta = [
     ],
   },
   {
-    city: "West Jakarta",
+    city: "west jakarta",
     district: [
       "Cengkareng",
       "Grogol",
@@ -41,7 +41,7 @@ export const dataJakarta = [
     ],
   },
   {
-    city: "East Jakarta",
+    city: "east jakarta",
     district: [
       "Cakung",
       "Cipayung",
@@ -56,7 +56,7 @@ export const dataJakarta = [
     ],
   },
   {
-    city: "Thousand Islands",
+    city: "thousand islands",
     district: ["Kep. Seribu Selatan", "Kep. Seribu Utara"],
   },
 ];

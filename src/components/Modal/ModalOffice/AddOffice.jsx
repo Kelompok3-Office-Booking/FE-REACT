@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { dataJakarta } from "store/dataJakarta";
+import { useDispatch, useSelector } from "react-redux";
+import { createOffice } from "store/Feature/FeatureOffice/officeSlice";
+import Swal from "sweetalert2";
 
 const InputField = ({
   name,
@@ -27,6 +30,7 @@ const InputField = ({
       autoComplete={autoComplete}
       onClick={onClick}
       defaultValue={defaultValue}
+      required
     />
     <label
       htmlFor="floating_outlined"
@@ -51,73 +55,129 @@ const fasilitas_office = [
 ];
 
 const AddOffice = () => {
+  const imageTypeRegex = /image\/(jpg|jpeg)/gm;
+
+  const dispatch = useDispatch();
+  const navitage = useNavigate();
+
+  const listOfOffice = useSelector((state) => state.office.data);
   const [jakartaLits, setJakartaList] = useState(dataJakarta);
   const [citys, setCitys] = useState([]);
-
   const [city, setCity] = useState("Central Jakarta");
-  // const [indexCity, setIndexCity] = useState();
   const [district, setDistrict] = useState([]);
-  // const [city, setCity] = useState("");
-
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [images, setImages] = useState([]);
+  const [facilities_id, setFacilitiesId] = useState([]);
+
+  const handleChangeFacilities = (ev) => {
+    const { value, checked } = ev.target;
+    if (checked) {
+      for (let i = 0; i < ev.target.value.length; i++) {
+        facilities_id.push(value[i]);
+      }
+      setFacilitiesId(facilities_id);
+      let facilitiesId = "";
+      facilities_id.forEach((val, i) => {
+        if (i === facilities_id.length - 1) {
+          facilitiesId += val;
+        } else {
+          facilitiesId += `${val},`;
+        }
+      });
+      setData({ ...data, facilities_id: facilitiesId });
+    } else {
+      for (let i = 0; i < facilities_id.length; i++) {
+        if (facilities_id[i] === value[i]) {
+          facilities_id.splice(i, value[i]);
+          i--;
+        }
+      }
+    }
+  };
+
+  const handleUploadImages = (e) => {
+    const { files } = e.target;
+    const validImageFiles = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.match(imageTypeRegex)) {
+        validImageFiles.push(file);
+      }
+    }
+    if (validImageFiles.length) {
+      setImageFiles(validImageFiles);
+      return;
+    }
+    alert("Selected images are not of valid type!");
+  };
+
+  useEffect(() => {
+    const fileReaders = [];
+    let isCancel = false;
+    if (imageFiles.length) {
+      const promises = imageFiles.map((file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReaders.push(fileReader);
+          fileReader.onload = (e) => {
+            const { result } = e.target;
+            if (result) {
+              resolve(result);
+            }
+          };
+          fileReader.onabort = () => {
+            reject(new Error("File reading aborted"));
+          };
+          fileReader.onerror = () => {
+            reject(new Error("Failed to read file"));
+          };
+          fileReader.readAsDataURL(file);
+        });
+      });
+      Promise.all(promises)
+        .then((images) => {
+          if (!isCancel) {
+            setImages(images);
+            setData({ ...data, images: images });
+          }
+        })
+        .catch((reason) => {
+          console.log(reason);
+        });
+    }
+    return () => {
+      isCancel = true;
+      fileReaders.forEach((fileReader) => {
+        if (fileReader.readyState === 1) {
+          fileReader.abort();
+        }
+      });
+    };
+  }, [imageFiles]);
 
   const [data, setData] = useState({
-    office_id: "",
-    full_name: "",
-    type: "",
-    price: 0,
-    time: "",
-    open: "",
-    close: "",
-    name: "",
+    title: "",
     description: "",
-    length: "",
-    city: "",
-    district: "",
-    address: "",
-    latitude: "",
-    longitude: "",
+    office_type: "",
+    office_length: "",
+    price: "",
+    open_hour: "",
+    close_hour: "",
+    lat: "",
+    lng: "",
     accommodate: "",
     working_desk: "",
     meeting_room: "",
     private_room: "",
+    city: "",
+    district: "",
+    address: "",
+    images: [],
+    facilities_id: "",
   });
-
-  const [imageUpload, setImageUpload] = useState([]);
-
-  const [officeFacility, setOfficeFacility] = useState({
-    facilities: [],
-  });
-
-  const handleChangeFacilities = (ev) => {
-    // Destructuring gess
-    const { value, checked } = ev.target;
-    const { facilities } = officeFacility;
-
-    console.log(`${value} is ${checked}`);
-
-    if (checked) {
-      setOfficeFacility({
-        facilities: [...facilities, value],
-      });
-    } else {
-      setOfficeFacility({
-        facilities: facilities.filter((ev) => ev !== value),
-      });
-    }
-  };
-
-  const onImageUpload = (ev) => {
-    const imageUpload = [];
-    for (let i = 0; i < ev.target.files.length; i++) {
-      imageUpload.push(ev.target.files[i]);
-    }
-    setImageUpload(imageUpload);
-    console.log(imageUpload);
-  };
-
   const handleChangeData = (ev) => {
     setData({
       ...data,
@@ -125,29 +185,15 @@ const AddOffice = () => {
     });
   };
 
-  const handleSelectedRegion = (evt) => {
-    const checked = evt.target.value;
-    setCity(checked);
-    console.log(checked);
-    // const index = citys.findIndex((city) => +city === region);
-    const index = citys.indexOf(checked);
-    // setIndexCity(index);
-    setDistrict(jakartaLits[index].district);
-  };
-
   const handleSelectedCity = (evt) => {
     const checked = evt.target.value;
     setCity(checked);
-    console.log(checked);
-    // const index = citys.findIndex((city) => +city === region);
     const index = citys.indexOf(checked);
-    // setIndexCity(index);
     setDistrict(jakartaLits[index].district);
   };
 
   const handleSelectedDistrict = (evt) => {
     const checked = evt.target.value;
-    // setDistrict(checked)
   };
 
   const getLocation = () => {
@@ -167,11 +213,68 @@ const AddOffice = () => {
       );
     }
   };
+  useEffect(() => {
+    setJakartaList(dataJakarta);
+    const list = [];
+    jakartaLits.map((city) => {
+      return list.push(city.city);
+    });
+    setCitys(list);
+    setDistrict(jakartaLits[0].district);
+  }, [dataJakarta]);
+  const preventMinus = (e) => {
+    if (e.code === "Minus") {
+      e.preventDefault();
+    }
+  };
 
-  // console.log(lat, lng);
-  // console.log(data);
-  console.log(data);
-  // console.log(imageUpload.name);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("office_type", data.office_type);
+    formData.append("office_length", data.office_length);
+    formData.append("price", data.price);
+    formData.append("open_hour", data.open_hour);
+    formData.append("close_hour", data.close_hour);
+    formData.append("lat", data.lat);
+    formData.append("lng", data.lng);
+    formData.append("accommodate", data.accommodate);
+    formData.append("working_desk", data.working_desk);
+    formData.append("meeting_room", data.meeting_room);
+    formData.append("private_room", data.private_room);
+    formData.append("city", data.city);
+    formData.append("district", data.district);
+    formData.append("address", data.address);
+    formData.append("facilities_id", data.facilities_id);
+    imageFiles.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    try {
+      dispatch(createOffice(formData));
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Add Office Success",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      setTimeout(() => {
+        navitage("/admin-dashboard/office");
+      }, 1500);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Add Office Failed",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col w-full">
@@ -181,22 +284,27 @@ const AddOffice = () => {
           </Link>
           <h1 className="text-2xl font-bold my-auto">Add Office</h1>
         </div>
-        <form className="bg-white rounded-2xl shadow w-full py-4 px-4 justify-between flex mt-8">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl shadow w-full py-4 px-4 justify-between flex mt-8"
+        >
           <div className="mx-2 mt-4 mb-4 w-1/2">
             <div className="pb-6">
               <InputField
                 name="office_id"
                 label="Office ID"
                 placeholder="Office ID"
+                disabled={true}
                 onChange={(ev) => handleChangeData(ev)}
               />
             </div>
             <div className="pb-6">
               <InputField
-                name="full_name"
+                name="title"
                 label="Full Name"
                 placeholder="Full Name"
                 onChange={(ev) => handleChangeData(ev)}
+                required
               />
             </div>
             <div className="pb-6 flex-col text-start">
@@ -206,9 +314,9 @@ const AddOffice = () => {
                   <input
                     id="inline-radio"
                     type="radio"
-                    value="Office"
+                    value="office"
                     onChange={(ev) => handleChangeData(ev)}
-                    name="type"
+                    name="office_type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -222,9 +330,9 @@ const AddOffice = () => {
                   <input
                     id="inline-2-radio"
                     type="radio"
-                    value="Coworking"
+                    value="coworking space"
                     onChange={(ev) => handleChangeData(ev)}
-                    name="type"
+                    name="office_type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -238,9 +346,9 @@ const AddOffice = () => {
                   <input
                     id="inline-checked-radio"
                     type="radio"
-                    value="Meeting Room"
+                    value="meeting room"
                     onChange={(ev) => handleChangeData(ev)}
-                    name="type"
+                    name="office_type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -259,6 +367,8 @@ const AddOffice = () => {
                   type="number"
                   label="Price(Rp)"
                   placeholder="Price(Rp)"
+                  min="0"
+                  onKeyPress={preventMinus}
                   onChange={(ev) => handleChangeData(ev)}
                 />
               </div>
@@ -268,15 +378,13 @@ const AddOffice = () => {
                     id="inline-radio"
                     type="radio"
                     value="month"
-                    name="time"
-                    onChange={(ev) => handleChangeData(ev)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="inline-radio"
                     className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
-                    / month
+                    / hour
                   </label>
                 </div>
                 <div className="flex items-center">
@@ -284,8 +392,6 @@ const AddOffice = () => {
                     id="inline-2-radio"
                     type="radio"
                     value="month"
-                    name="time"
-                    onChange={(ev) => handleChangeData(ev)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -300,7 +406,7 @@ const AddOffice = () => {
             <div className="w-full flex">
               <div className="pb-6 w-full">
                 <InputField
-                  name="open"
+                  name="open_hour"
                   label="Open"
                   placeholder="Open"
                   type="time"
@@ -309,7 +415,7 @@ const AddOffice = () => {
               </div>
               <div className="pb-6 w-full ml-8">
                 <InputField
-                  name="close"
+                  name="close_hour"
                   label="Close"
                   placeholder="Close"
                   type="time"
@@ -319,7 +425,7 @@ const AddOffice = () => {
             </div>
             <div className="pb-6 w-full">
               <InputField
-                name="length"
+                name="office_length"
                 label="Length"
                 placeholder="Length"
                 onChange={(ev) => handleChangeData(ev)}
@@ -348,8 +454,8 @@ const AddOffice = () => {
                     return (
                       <option
                         value={city.city}
-                        id="regionIndex"
                         key={index}
+                        id="regionIndex"
                         index={index}
                       >
                         {city.city}
@@ -393,7 +499,7 @@ const AddOffice = () => {
             <div className="pb-6 w-full flex justify-between">
               <div className="w-full">
                 <InputField
-                  name="latitude"
+                  name="lat"
                   label="Latitude"
                   placeholder="Latitude"
                   onClick={getLocation}
@@ -403,7 +509,7 @@ const AddOffice = () => {
               </div>
               <div className="w-full ml-8">
                 <InputField
-                  name="longitude"
+                  name="lng"
                   label="Longitude"
                   placeholder="Longitude"
                   onClick={getLocation}
@@ -417,37 +523,54 @@ const AddOffice = () => {
                 htmlFor="dropzone-file"
                 className="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
               >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <svg
-                    aria-hidden="true"
-                    className="w-10 h-10 mb-3 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                    ></path>
-                  </svg>
-                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span> or
-                    drag and drop
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG, JPG or GIF (MAX. 800x400px)
-                  </p>
-                </div>
                 <input
                   id="dropzone-file"
                   type="file"
-                  name="image"
-                  onChange={(ev) => onImageUpload(ev)}
+                  name="images"
+                  accept="image/jpg, image/jpeg"
+                  multiple
+                  onChange={(e) => handleUploadImages(e)}
                   className="hidden"
                 />
+
+                {images.length > 0 ? (
+                  <div className="flex items-center gap-2">
+                    {images.map((image, index) => (
+                      <div key={index}>
+                        <img
+                          src={image}
+                          className="max-w-[90px]"
+                          alt="preview"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      aria-hidden="true"
+                      className="w-10 h-10 mb-3 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      ></path>
+                    </svg>
+                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      JPG or JPEG (MAX. 800x400px)
+                    </p>
+                  </div>
+                )}
               </label>
             </div>
             <div className="w-full flex justify-between">
@@ -555,8 +678,8 @@ const AddOffice = () => {
                     onChange={handleChangeFacilities}
                     id="default-checkbox"
                     type="checkbox"
-                    value={index}
-                    name="facilities"
+                    value={index + 1}
+                    name="facilities_id"
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
