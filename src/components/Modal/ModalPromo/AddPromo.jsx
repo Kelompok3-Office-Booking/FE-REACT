@@ -27,8 +27,14 @@ const AddPromo = () => {
     }
 
     const handleSubmit = (ev) => {
-        const { nominal, periode, voucher_code } = data;
-        dispatch(createPromo({ voucher_code, nominal, periode }));
+        // const { nominal, periode, voucher_code } = data;
+        dispatch(createPromo({
+            objects: {
+                voucher_code: data.voucher_code,
+                periode: data.periode,
+                nominal: data.nominal,
+            }
+        }));
     };
 
     return (

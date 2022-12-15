@@ -3,6 +3,7 @@ import { items, items2, items3, items4 } from "assets";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
 import { fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
+import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
 
 const ItemsData = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,10 @@ const ItemsData = () => {
     });
 
     dispatch(fetchOffice()).catch((err) => {
+      console.log(err);
+    });
+
+    dispatch(fetchTransaction()).catch((err) => {
       console.log(err);
     });
   }, []);

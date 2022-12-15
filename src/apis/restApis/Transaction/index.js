@@ -12,7 +12,7 @@ const APITransaction = {
     async updateTransaction(data) {
         try {
             const id = data.id;
-            const response = await axiosInstance.patch(`admin/transactions/${id}`, data);
+            const response = await axiosInstance.put(`admin/transactions/details/${id}`, data);
             return response;
         } catch (error) {
             console.log(error);

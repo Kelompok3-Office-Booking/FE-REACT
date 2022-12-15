@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
+import { fetchTransaction, updateTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
+import Swal from "sweetalert2";
+import { toast } from "react-hot-toast";
+import CloseIcon from '@mui/icons-material/Close';
+import { checkbox } from "assets";
+
 
 const InputField = ({
   name,
@@ -36,16 +41,84 @@ const InputField = ({
   </div>
 );
 
-const ModalUpdateTransaksi = ({ dataTransaksi }) => {
+const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
+  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
-  const [status, setStatus] = useState("");
+  const [data, setData] = useState({
+    id: dataTransaksi.id,
+    status: dataTransaksi.status,
+  });
+  // const [status, setStatus] = useState("");
 
-  const handleChangeStatus = (e) => {
-    setStatus(e.target.value);
+  const { id, status } = data;
+  const handleChangeStatus = (ev) => {
+    setData({
+      ...data,
+      [ev.target.name]: ev.target.value,
+    });
+    console.log(ev.target.value);
   };
+
   const HANDLEMODAL = () => {
     setModal(!modal);
   };
+
+  const handleUpdateStatus = (e) => {
+    e.preventDefault();
+    try {
+      // dispatch(updateUser({ id, full_name, gender, email }));
+      // window.location.reload();
+      dispatch(updateTransaction(data));
+      setReload();
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Edit Transaction Success",
+        showConfirmButton: false,
+        timer: 1000
+      });
+      toast.custom((t) => (
+        <div
+          className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
+            } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={checkbox}
+                  alt=""
+                />
+              </div>
+              <div className="ml-3 flex-col text-start">
+                <p className="text-sm font-bold text-success">
+                  Success
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  Successfully Updated
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+            >
+              <CloseIcon />
+            </button>
+          </div>
+        </div>
+      ))
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Edit Transaction Fail",
+      });
+    }
+
+  }
 
   // console.log(status);
   return (
@@ -69,7 +142,7 @@ const ModalUpdateTransaksi = ({ dataTransaksi }) => {
         >
           <div className="relative w-full max-w-lg h-full md:h-auto">
             {/* Modal content */}
-            <form action="#" className="relative bg-white pb-6 rounded-lg shadow ">
+            <div className="relative bg-white pb-6 rounded-lg shadow ">
               {/* Modal header */}
               <div className="p-2 rounded-t border-b">
                 <button
@@ -93,13 +166,13 @@ const ModalUpdateTransaksi = ({ dataTransaksi }) => {
                 </button>
               </div>
               {/* Modal body */}
-              <div className="py-2 px-6 space-y-6">
+              <form onSubmit={handleUpdateStatus} className="py-2 px-6 space-y-6">
                 <div className="px-6 lg:px-8 space-y-4">
                   <h3 className="mb-4 text-xl font-medium text-neutral-700 ">
                     Edit Transaction
                   </h3>
                   <div className="space-y-6">
-                    <select id="status_booking" onChange={(ev) => handleChangeStatus(ev)} class="border-2 py-4 border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="status_booking" name="status" onChange={(ev) => handleChangeStatus(ev)} class="border-2 py-4 border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                       <option selected={dataTransaksi.status === "accepted" ? true : false} value="accepted">Accepted</option>
                       <option selected={dataTransaksi.status === "rejected" ? true : false} value="rejected">Rejected</option>
                       <option selected={dataTransaksi.status === "pending" ? true : false} value="pending">Pending</option>
@@ -156,8 +229,8 @@ const ModalUpdateTransaksi = ({ dataTransaksi }) => {
                     </button>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       )}
