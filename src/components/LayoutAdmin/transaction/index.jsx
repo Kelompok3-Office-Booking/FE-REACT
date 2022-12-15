@@ -398,7 +398,6 @@ const TransactionPage = () => {
           <Pagination
             defaultCurrent={1}
             defaultPageSize={pageSize}
-            // current={dataReview.current}
             total={transaksiList?.length}
             onChange={handleChange}
           />
