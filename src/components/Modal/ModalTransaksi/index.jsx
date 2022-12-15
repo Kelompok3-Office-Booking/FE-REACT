@@ -1,21 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
 
-const ModalUpdateTransaksi = () => {
+const InputField = ({
+  name,
+  defaultValue,
+  label,
+  placeholder,
+  onChange,
+  className,
+  type = "text",
+  disabled,
+  autoComplete = "off",
+  classNameHeader
+}) => (
+  <div className={`${classNameHeader} relative`}>
+    <input
+      type={type}
+      id="floating_outlined"
+      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+      placeholder={placeholder}
+      name={name}
+      onChange={onChange}
+      disabled={disabled}
+      autoComplete={autoComplete}
+      defaultValue={defaultValue}
+    />
+    <label
+      for="floating_outlined"
+      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+    >
+      {label}
+    </label>
+  </div>
+);
+
+const ModalUpdateTransaksi = ({ dataTransaksi }) => {
   const [modal, setModal] = useState(false);
-  const [age, setAge] = useState("");
+  const [status, setStatus] = useState("");
 
-  const handleChange = (e) => {
-    setAge(e.target.value);
+  const handleChangeStatus = (e) => {
+    setStatus(e.target.value);
   };
   const HANDLEMODAL = () => {
     setModal(!modal);
   };
 
+  // console.log(status);
   return (
     <>
       <button
@@ -33,7 +65,7 @@ const ModalUpdateTransaksi = () => {
           id="editUserModal"
           tabIndex={-1}
           aria-hidden="true"
-          className="flex flex-row overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full"
+          className="flex flex-row bg-black bg-opacity-30 overflow-y-scroll fixed left-0 top-0 z-20 justify-center items-center p-4 pt-32 w-full md:inset-0"
         >
           <div className="relative w-full max-w-lg h-full md:h-auto">
             {/* Modal content */}
@@ -67,72 +99,46 @@ const ModalUpdateTransaksi = () => {
                     Edit Transaction
                   </h3>
                   <div className="space-y-6">
-                    <select id="status_booking" class="bg-gray-50 border py-4 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                      <option selected>Status Booking</option>
-                      <option value="Rccept">Accept</option>
-                      <option value="Reject">Reject</option>
+                    <select id="status_booking" onChange={(ev) => handleChangeStatus(ev)} class="border-2 py-4 border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <option selected={dataTransaksi.status === "accepted" ? true : false} value="accepted">Accepted</option>
+                      <option selected={dataTransaksi.status === "rejected" ? true : false} value="rejected">Rejected</option>
+                      <option selected={dataTransaksi.status === "pending" ? true : false} value="pending">Pending</option>
+                      <option selected={dataTransaksi.status === "on process" ? true : false} value="on process">On Process</option>
                     </select>
                   </div>
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="floating_outlined"
-                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor="floating_outlined"
-                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                    >
-                      Full Name
-                    </label>
-                  </div>
+                  <InputField
+                    name="full_name"
+                    label="Full Name"
+                    placeholder="Full Name"
+                    disabled={true}
+                    defaultValue={dataTransaksi.user.full_name}
+                  />
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="floating_outlined"
-                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor="floating_outlined"
-                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                    >
-                      Type
-                    </label>
-                  </div>
+                  <InputField
+                    name="type"
+                    label="Type"
+                    placeholder="Type"
+                    disabled={true}
+                    defaultValue={dataTransaksi.office.office_type}
+                  />
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="floating_outlined"
-                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor="floating_outlined"
-                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                    >
-                      Date
-                    </label>
-                  </div>
+                  <InputField
+                    name="date"
+                    label="Date"
+                    placeholder="Date"
+                    disabled={true}
+                    defaultValue={dataTransaksi.check_in.date}
+                  />
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      id="floating_outlined"
-                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-neutral-500 bg-transparent rounded-lg border-2 border-neutral-400 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                      placeholder=" "
-                    />
-                    <label
-                      htmlFor="floating_outlined"
-                      className="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-                    >
-                      Status
-                    </label>
-                  </div>
+                  <InputField
+                    name="status"
+                    label="Status"
+                    placeholder="Status"
+                    disabled={true}
+                    defaultValue={dataTransaksi.status}
+                  />
+
 
                   {/* Modal footer */}
                   <div className="flex gap-5 ">

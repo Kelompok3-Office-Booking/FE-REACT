@@ -1,9 +1,16 @@
+import axios from "axios";
 import axiosInstance from "configs/AxiosInstance";
+
+const config = {
+    headers: {
+        "x-hasura-admin-secret": "2T083plTMGttLOXsgGkiRGPW3DPK8ChI49T3g3xy7QbUbvIFyPgJ5o3GTXMYfZTj",
+    },
+};
 
 const APIPromo = {
     async getAllPromo() {
         try {
-            const response = await axiosInstance.get("/promo");
+            const response = await axios.get("https://stirred-rhino-39.hasura.app/api/rest/promo", config);
             console.log(response);
             return response;
         } catch (err) {
@@ -24,7 +31,7 @@ const APIPromo = {
     async updatePromo(data) {
         try {
             const id = data.id;
-            const response = await axiosInstance.patch(`/promo/${id}`);
+            const response = await axiosInstance.patch(`https://stirred-rhino-39.hasura.app/api/rest/promo/${id}`, config);
             console.log(response);
             return response;
         } catch (err) {
@@ -34,7 +41,7 @@ const APIPromo = {
 
     async deletePromo(id) {
         try {
-            const response = await axiosInstance.delete(`/promo/${id}`);
+            const response = await axiosInstance.delete(`https://stirred-rhino-39.hasura.app/api/rest/promo/${id}`, config);
             return response;
         } catch (err) {
             console.log(err);

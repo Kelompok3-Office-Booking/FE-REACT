@@ -21,10 +21,21 @@ const TableHead = ({ handleSelectAll, isChecked, getClassNamesFor, requestSort }
                 </th>
                 <th scope="col" className="py-3 px-6">
                     <div className="flex justify-center">
+                        <p className="my-auto">Voucher ID</p>
+                        <button
+                            onClick={() => requestSort('id')}
+                            className={getClassNamesFor('id')}
+                        >
+                            <img src={Arrow} alt="arrow" />
+                        </button>
+                    </div>
+                </th>
+                <th scope="col" className="py-3 px-6">
+                    <div className="flex justify-center">
                         <p className="my-auto">Voucher Code</p>
                         <button
-                            onClick={() => requestSort('full_name')}
-                            className={getClassNamesFor('full_name')}
+                            onClick={() => requestSort('voucher_code')}
+                            className={getClassNamesFor('voucher_code')}
                         >
                             <img src={Arrow} alt="arrow" />
                         </button>
@@ -34,8 +45,8 @@ const TableHead = ({ handleSelectAll, isChecked, getClassNamesFor, requestSort }
                     <div className="flex justify-center">
                         <p className="my-auto">Periode</p>
                         <button
-                            onClick={() => requestSort('email')}
-                            className={getClassNamesFor('email')}
+                            onClick={() => requestSort('periode')}
+                            className={getClassNamesFor('periode')}
                         >
                             <img src={Arrow} alt="arrow" />
                         </button>

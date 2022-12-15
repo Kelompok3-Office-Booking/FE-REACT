@@ -50,7 +50,7 @@ const useSortableData = (items, config = null) => {
 
 const PromoPage = () => {
   const dispatch = useDispatch();
-  const listOfPromo = useSelector((state) => state.users.data);
+  const listOfPromo = useSelector((state) => state.promo.data);
   const pageSize = 6;
   const [promoList, setPromoList] = useState(listOfPromo);
   const { items, requestSort, sortConfig } = useSortableData(promoList);
@@ -82,7 +82,7 @@ const PromoPage = () => {
   const setReload = () => {
     setLoading(true);
     setTimeout(() => {
-      dispatch(fetchUsers()).then((res) => {
+      dispatch(fetchPromo()).then((res) => {
         setPromoList(res.payload);
       });
       setLoading(false);
@@ -118,7 +118,7 @@ const PromoPage = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchUsers())
+    dispatch(fetchPromo())
       .then((res) => {
         if (searchWords === "") {
           setPromoList(res.payload);
@@ -139,11 +139,11 @@ const PromoPage = () => {
     // console.log(updatedPromoList);
     if (searchWords !== "") {
       listOfPromo.forEach((promo) => {
-        const loweredPromoVCode = promo.full_name.toLowerCase();
-        const promoNominal = promo.email;
+        const loweredPromoVCode = promo.voucher_code.toLowerCase();
+        // const promoNominal = promo.id;
         if (
-          loweredPromoVCode.includes(loweredSearchedWords) ||
-          promoNominal.includes(loweredSearchedWords)
+          loweredPromoVCode.includes(loweredSearchedWords)
+          // promoNominal.includes(loweredSearchedWords)
         ) {
           updatedPromoList.push(promo);
         }
@@ -184,7 +184,7 @@ const PromoPage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -254,13 +254,16 @@ const PromoPage = () => {
                             </div>
                           </td>
                           <td className="py-4 px-6 text-center">
-                            {promo.full_name}
+                            {promo.id}
                           </td>
                           <td className="py-4 px-6 text-center">
-                            {promo.email}
+                            {promo.voucher_code}
                           </td>
                           <td className="py-4 px-6 text-center">
-                            {promo.id} %
+                            {promo.periode}
+                          </td>
+                          <td className="py-4 px-6 text-center">
+                            {promo.nominal} %
                           </td>
                           <td className="py-4 px-6 flex gap-2 items-center justify-center">
                             <DeletePromo

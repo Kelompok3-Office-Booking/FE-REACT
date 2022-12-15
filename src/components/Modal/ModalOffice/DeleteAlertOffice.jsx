@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { deleteOffice } from "store/Feature/FeatureOffice/officeSlice";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import CloseIcon from '@mui/icons-material/Close';
 import { checkbox } from "assets";
 

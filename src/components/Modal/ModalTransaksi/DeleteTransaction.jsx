@@ -6,13 +6,11 @@ import DeleteAlertTransaction from "./DeteleAlertTransaction";
 const DeleteTransaction = ({
     idTransaksi,
     loading,
-    setReload
+    setReload,
+    modal,
+    HandleModal
 }) => {
-    const [modal, setModal] = useState(false);
-    const HandleModal = () => {
-        setModal(!modal);
-    }
-
+    // console.log(idTransaksi);
     return (
         <>
             <button

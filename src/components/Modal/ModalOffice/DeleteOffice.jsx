@@ -10,7 +10,7 @@ const DeleteOffice = ({
     modal,
     HandleModal
 }) => {
-
+    // console.log(idOffice);
     return (
         <>
             <button
