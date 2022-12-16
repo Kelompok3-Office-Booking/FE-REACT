@@ -13,31 +13,24 @@ const TopValueTransaction = ({
 }) => {
   const [topValueList, setValueList] = useState(listOfTransaction);
   const [loading, setLoading] = useState(true);
-  const [average, setAverage] = useState(0)
 
   useEffect(() => {
     dispatch(fetchTransaction())
       .then((res) => {
         const updateTopValueTransaksi = [];
-        let totalPrice = 0;
-        res.payload.forEach((transaksi) => {
-          totalPrice += transaksi.price
-          if (transaksi.price > average) {
+        listOfTransaction.forEach((transaksi) => {
+          if (transaksi.price > 100000) {
             updateTopValueTransaksi.push(transaksi);
           }
         })
         setValueList(updateTopValueTransaksi)
         setLoading(false);
-        const priceAverage = totalPrice / topValueList.length
-        setAverage(priceAverage)
-        // console.log(priceAverage);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [])
 
-  // console.log(average);
   return (
     <>
       <Helmet>
