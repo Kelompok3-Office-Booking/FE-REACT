@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { CloseOutlined } from "@ant-design/icons";
 import { dataJakarta } from "store/dataJakarta";
 import CreateIcon from "@mui/icons-material/Create";
-import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { updateOffice } from "store/Feature/FeatureOffice/officeSlice";
+import { Helmet } from "react-helmet";
+import CloseIcon from "@mui/icons-material/Close";
+import { toast, Toaster } from "react-hot-toast";
+import { checkbox } from "assets";
+import { AxiosError } from "axios";
 
 const InputField = ({
   name,
@@ -36,79 +41,144 @@ const InputField = ({
   </div>
 );
 
-const EditOffice = ({ dataDetailOffice }) => {
+const EditOffice = ({ dataDetailOffice, setReload }) => {
+  const imageTypeRegex = /image\/(jpg|jpeg)/gm;
   const [jakartaLits, setJakartaList] = useState(dataJakarta);
-  // const [prov, setProv] = useState([]);
+  const dispatch = useDispatch();
   const [citys, setCitys] = useState([]);
-
-  const [city, setCity] = useState("Central Jakarta");
-  // const [indexCity, setIndexCity] = useState();
+  const [city, setCity] = useState("central cakarta");
   const [district, setDistrict] = useState([]);
-
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [images, setImages] = useState([]);
+  const [facilities_id, setFacilitiesId] = useState([]);
+
   const checked = dataDetailOffice.facility_model.map(
     (val) => val.facilities_id
   );
-  const [data, setData] = useState({
-    id: dataDetailOffice.id,
-    title: dataDetailOffice.title,
-    office_type: dataDetailOffice.office_type,
-    price: dataDetailOffice.price,
-    open_hour: dataDetailOffice.open_hour,
-    close_hour: dataDetailOffice.close_hour,
-    description: dataDetailOffice.description,
-    office_length: dataDetailOffice.office_length,
-    city: dataDetailOffice.city,
-    district: dataDetailOffice.district,
-    address: dataDetailOffice.address,
-    time: dataDetailOffice.time,
-    lat: dataDetailOffice.lat,
-    lng: dataDetailOffice.lng,
-    accomodate: dataDetailOffice.accommodate,
-    working_desk: dataDetailOffice.working_desk,
-    meeting_room: dataDetailOffice.meeting_room,
-    private_room: dataDetailOffice.private_room,
-    images: dataDetailOffice.images,
-    facilities_id: dataDetailOffice.facility_model.map(
-      (val) => val.facilities_id
-    ),
-    facilities_desc: dataDetailOffice.facility_model.map(
-      (val) => val.facilities_desc
-    ),
-    distance: dataDetailOffice.distance,
-    rate: dataDetailOffice.rate,
-  });
-
-  const [imageUpload, setImageUpload] = useState("");
-  const [officeFacility, setOfficeFacility] = useState({
-    facilities: [],
-  });
-
-  const handleChangeFacilities = (ev) => {
-    // Destructuring gess
-    const { value, checked } = ev.target;
-    const { facilities } = officeFacility;
-
-    console.log(`${value} is ${checked}`);
-
-    if (checked) {
-      setOfficeFacility({
-        facilities: [...facilities, value],
-      });
+  let facilities = "";
+  checked.forEach((val, i) => {
+    if (i === checked.length - 1) {
+      facilities += val;
     } else {
-      setOfficeFacility({
-        facilities: facilities.filter((ev) => ev !== value),
+      facilities += `${val},`;
+    }
+  });
+  const handleChangeFacilities = (ev) => {
+    const { value, checked } = ev.target;
+    if (checked) {
+      for (let i = 0; i < ev.target.value.length; i++) {
+        facilities_id.push(value[i]);
+      }
+      setFacilitiesId(facilities_id);
+      let facilitiesId = "";
+      facilities_id.forEach((val, i) => {
+        if (i === facilities_id.length - 1) {
+          facilitiesId += val;
+        } else {
+          facilitiesId += `${val},`;
+        }
       });
+      setData({ ...data, facilities_id: facilitiesId });
+    } else {
+      for (let i = 0; i < facilities_id.length; i++) {
+        if (facilities_id[i] === value[i]) {
+          facilities_id.splice(i, value[i]);
+          i--;
+        }
+      }
     }
   };
 
-  const onImageUpload = (ev) => {
-    const file = ev.target.files[0];
-    setImageUpload(file);
+  const handleUploadImages = (e) => {
+    const { files } = e.target;
+    const validImageFiles = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.match(imageTypeRegex)) {
+        validImageFiles.push(file);
+      }
+    }
+    if (validImageFiles.length) {
+      setImageFiles(validImageFiles);
+      return;
+    }
+    alert("Selected images are not of valid type!");
   };
+  useEffect(() => {
+    const fileReaders = [];
+    let isCancel = false;
+    if (imageFiles.length) {
+      const promises = imageFiles.map((file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReaders.push(fileReader);
+          fileReader.onload = (e) => {
+            const { result } = e.target;
+            if (result) {
+              resolve(result);
+            }
+          };
+          fileReader.onabort = () => {
+            reject(new Error("File reading aborted"));
+          };
+          fileReader.onerror = () => {
+            reject(new Error("Failed to read file"));
+          };
+          fileReader.readAsDataURL(file);
+        });
+      });
+      Promise.all(promises)
+        .then((images) => {
+          if (!isCancel) {
+            setImages(images);
+            setData({ ...data, images: images });
+          }
+        })
+        .catch((reason) => {
+          console.log(reason);
+        });
+    }
+    return () => {
+      isCancel = true;
+      fileReaders.forEach((fileReader) => {
+        if (fileReader.readyState === 1) {
+          fileReader.abort();
+        }
+      });
+    };
+  }, [imageFiles]);
 
+  const [data, setData] = useState({
+    id: dataDetailOffice.id,
+    title: dataDetailOffice.title,
+    description: dataDetailOffice.description,
+    office_type: dataDetailOffice.office_type,
+    office_length: dataDetailOffice.office_length,
+    price: dataDetailOffice.price,
+    open_hour: dataDetailOffice.open_hour,
+    close_hour: dataDetailOffice.close_hour,
+    lat: dataDetailOffice.lat,
+    lng: dataDetailOffice.lng,
+    accommodate: dataDetailOffice.accommodate,
+    working_desk: dataDetailOffice.working_desk,
+    meeting_room: dataDetailOffice.meeting_room,
+    private_room: dataDetailOffice.private_room,
+    city: dataDetailOffice.city,
+    district: dataDetailOffice.district,
+    address: dataDetailOffice.address,
+    images: dataDetailOffice.images,
+    facilities_id: facilities,
+  });
+
+  const handleSelectedCity = (evt) => {
+    const checked = evt.target.value;
+    setCity();
+    const index = citys.indexOf(checked);
+    setDistrict(jakartaLits[index].district);
+  };
   const setHandleChangeData = (ev) => {
     setData({
       ...data,
@@ -123,22 +193,11 @@ const EditOffice = ({ dataDetailOffice }) => {
       return list.push(city.city);
     });
     setCitys(list);
-    // Lock City
     setDistrict(jakartaLits[0].district);
   }, [dataJakarta]);
 
-  const handleSelectedCity = (evt) => {
-    const checked = evt.target.value;
-    setCity(checked);
-    // console.log(checked);
-    const index = citys.indexOf(checked);
-    // setIndexCity(index);
-    setDistrict(jakartaLits[index].district);
-  };
-
   const handleSelectedDistrict = (evt) => {
     const checked = evt.target.value;
-    // setCity(checked)
   };
 
   const getLocation = () => {
@@ -158,10 +217,78 @@ const EditOffice = ({ dataDetailOffice }) => {
       );
     }
   };
-
+  const fasilitas_office = [
+    "High Speed Wifi",
+    "Avalible many charging slot",
+    "Air Conditioner in all room",
+    "Projector to presentation",
+    "Free parking for your vehicle",
+    "Snacks and drinks available",
+    "Prayer room available",
+    "Clean toilet with water heater",
+    "Enter the room using the access card",
+    "nice view from the window",
+  ];
   const [modal, setModal] = useState(false);
   const HandleModal = () => {
     setModal(!modal);
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("id", data.id);
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("office_type", data.office_type);
+    formData.append("office_length", data.office_length);
+    formData.append("price", data.price);
+    formData.append("open_hour", data.open_hour);
+    formData.append("close_hour", data.close_hour);
+    formData.append("lat", data.lat);
+    formData.append("lng", data.lng);
+    formData.append("accommodate", data.accommodate);
+    formData.append("working_desk", data.working_desk);
+    formData.append("meeting_room", data.meeting_room);
+    formData.append("private_room", data.private_room);
+    formData.append("city", data.city);
+    formData.append("district", data.district);
+    formData.append("address", data.address);
+    formData.append("facilities_id", data.facilities_id);
+    imageFiles.forEach((image) => {
+      formData.append("images", image);
+    });
+    dispatch(updateOffice(data));
+    setReload();
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible
+            ? "animate-enter ease-in-out duration-200"
+            : "animate-leave ease-in-out duration-200"
+        } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 pt-0.5">
+              <img className="h-10 w-10 rounded-full" src={checkbox} alt="" />
+            </div>
+            <div className="ml-3 flex-col text-start">
+              <p className="text-sm font-bold text-success">Success</p>
+              <p className="mt-1 text-sm text-gray-500">Successfully Created</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex border-gray-200">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+      </div>
+    ));
   };
   return (
     <>
@@ -179,11 +306,6 @@ const EditOffice = ({ dataDetailOffice }) => {
           <div className="bg-white rounded-2xl px-20 py-12 mt-96 mb-12 w-3/4 z-50 drop-shadow-4xl transform -translate-y-0 scale-25 transition-opacity transition-transform duration-300 center">
             <div className="flex flex-col w-full">
               <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl drop-shadow-4xl">
-                {/* <div className="absolute">
-                                    <button onClick={HandleModal}>
-                                        <CloseOutlined className="relative text-xl -top-0 right-4" />
-                                    </button>
-                                </div> */}
                 <h1 className="text-2xl text-gray-800 font-bold my-auto">
                   Edit Office
                 </h1>
@@ -196,6 +318,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                 </button>
               </div>
               <form
+                onSubmit={handleUpdate}
                 className="bg-white rounded-2xl drop-shadow-4xl w-full py-4 px-4 justify-between flex mt-8"
                 key={dataDetailOffice.id}
               >
@@ -205,6 +328,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                       name="id"
                       label="Office ID"
                       placeholder="Office ID"
+                      disabled={true}
                       defaultValue={dataDetailOffice.id}
                       onChange={(ev) => setHandleChangeData(ev)}
                     />
@@ -225,7 +349,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                         <input
                           id="inline-radio"
                           type="radio"
-                          value="Office"
+                          value="office"
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
@@ -246,7 +370,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                         <input
                           id="inline-2-radio"
                           type="radio"
-                          value="Coworking"
+                          value="coworking space"
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
@@ -267,7 +391,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                         <input
                           id="inline-checked-radio"
                           type="radio"
-                          value="Meeting Room"
+                          value="meeting room"
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
@@ -301,12 +425,8 @@ const EditOffice = ({ dataDetailOffice }) => {
                         <input
                           id="inline-radio"
                           type="radio"
-                          value="hour"
-                          name="time"
+                          defaultChecked={true}
                           onChange={() => {}}
-                          checked={
-                            dataDetailOffice.time === "Hour" ? true : false
-                          }
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label
@@ -320,12 +440,7 @@ const EditOffice = ({ dataDetailOffice }) => {
                         <input
                           id="inline-2-radio"
                           type="radio"
-                          value="month"
-                          name="time"
                           onChange={() => {}}
-                          checked={
-                            dataDetailOffice.time === "Month" ? true : false
-                          }
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label
@@ -341,10 +456,10 @@ const EditOffice = ({ dataDetailOffice }) => {
                     <div className="pb-6 w-full">
                       <InputField
                         name="open_hour"
-                        label="open_hour"
-                        placeholder="open_hour"
-                        type="time"
+                        label="Open"
+                        placeholder="Open"
                         defaultValue={dataDetailOffice.open_hour}
+                        type="time"
                         onChange={(ev) => setHandleChangeData(ev)}
                       />
                     </div>
@@ -353,15 +468,15 @@ const EditOffice = ({ dataDetailOffice }) => {
                         name="close_hour"
                         label="Close"
                         placeholder="Close"
-                        type="time"
                         defaultValue={dataDetailOffice.close_hour}
+                        type="time"
                         onChange={(ev) => setHandleChangeData(ev)}
                       />
                     </div>
                   </div>
                   <div className="pb-6 w-full">
                     <InputField
-                      name="length_office"
+                      name="office_length"
                       label="Length Office / M2"
                       placeholder="Length Office / M2"
                       defaultValue={dataDetailOffice.office_length}
@@ -381,12 +496,12 @@ const EditOffice = ({ dataDetailOffice }) => {
                     <div className="w-full">
                       <select
                         id="city"
-                        onChange={(ev) => handleSelectedCity(ev)}
-                        defaultValue={dataDetailOffice.city}
+                        name="city"
+                        onClick={(ev) => handleSelectedCity(ev)}
+                        onChange={(ev) => setHandleChangeData(ev)}
+                        defaultChecked={dataDetailOffice.city}
                         className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
-                        {/* <option selected>Region</option> */}
-                        {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
                         {jakartaLits.map((city, index) => {
                           return (
                             <option
@@ -403,9 +518,11 @@ const EditOffice = ({ dataDetailOffice }) => {
                     </div>
                     <div className="w-full ml-8">
                       <select
-                        id="city"
-                        onChange={(ev) => handleSelectedDistrict(ev)}
-                        defaultValue={dataDetailOffice.district}
+                        id="district"
+                        name="district"
+                        onClick={(ev) => handleSelectedDistrict(ev)}
+                        onChange={(ev) => setHandleChangeData(ev)}
+                        defaultChecked={dataDetailOffice.district}
                         className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
                         {/* <option selected>City</option> */}
@@ -460,36 +577,42 @@ const EditOffice = ({ dataDetailOffice }) => {
                       htmlFor="dropzone-file"
                       className="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                     >
-                      <div className="gap-6">
-                        <div className="flex justify-between py-2">
-                          <img
-                            src={dataDetailOffice.images[0]}
-                            alt="image1"
-                            className="max-w-[90px] max-h-[90px] mx-2 rounded-md"
-                          />
-                          <img
-                            src={dataDetailOffice.images[1]}
-                            alt="image2"
-                            className="max-w-[90px] max-h-[90px] mx-2 rounded-md"
-                          />
-                          <img
-                            src={dataDetailOffice.images[2]}
-                            alt="image3"
-                            className="max-w-[90px] max-h-[90px] mx-2 rounded-md"
-                          />
-                          <img
-                            src={dataDetailOffice.images[3]}
-                            alt="image3"
-                            className="max-w-[90px] max-h-[90px] mx-2 rounded-md"
-                          />
-                        </div>
-                      </div>
                       <input
                         id="dropzone-file"
                         type="file"
+                        name="images"
+                        accept="image/jpg, image/jpeg"
+                        multiple
                         className="hidden"
-                        onChange={(ev) => onImageUpload(ev)}
+                        onChange={(e) => handleUploadImages(e)}
                       />
+                      <div className="gap-6">
+                        <div className="flex justify-between py-2">
+                          {images.length > 0 ? (
+                            <>
+                              {images.map((img, i) => (
+                                <img
+                                  key={i}
+                                  src={img}
+                                  alt="image1"
+                                  className="max-w-[90px] max-h-[90px] mx-2 rounded-md"
+                                />
+                              ))}
+                            </>
+                          ) : (
+                            <>
+                              {dataDetailOffice.images.map((img, i) => (
+                                <img
+                                  key={i}
+                                  src={img}
+                                  alt="image1"
+                                  className="max-w-[90px] max-h-[90px] mx-2 rounded-md"
+                                />
+                              ))}
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </label>
                   </div>
                   <div className="w-full flex justify-between">
@@ -521,7 +644,6 @@ const EditOffice = ({ dataDetailOffice }) => {
                     </div>
                     <div className="w-1/4 ml-4">
                       <InputField
-                        name="person"
                         label="Person"
                         placeholder="Person"
                         className="border-gray-200"
@@ -541,7 +663,6 @@ const EditOffice = ({ dataDetailOffice }) => {
                     </div>
                     <div className="w-1/4 ml-4">
                       <InputField
-                        name="desk"
                         label="Desk"
                         placeholder="Desk"
                         className="border-gray-200"
@@ -561,7 +682,6 @@ const EditOffice = ({ dataDetailOffice }) => {
                     </div>
                     <div className="w-1/4 ml-4">
                       <InputField
-                        name="room"
                         label="Room"
                         placeholder="Room"
                         className="border-gray-200"
@@ -581,7 +701,6 @@ const EditOffice = ({ dataDetailOffice }) => {
                     </div>
                     <div className="w-1/4 ml-4">
                       <InputField
-                        name="room"
                         label="Room"
                         placeholder="Room"
                         className="border-gray-200"
@@ -590,176 +709,27 @@ const EditOffice = ({ dataDetailOffice }) => {
                     </div>
                   </div>
                   <p className="text-start mb-2">Facilities</p>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      defaultChecked={checked[0] === "1" ? true : undefined}
-                      id="default-checkbox"
-                      type="checkbox"
-                      value="1"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      High Speed Wifi
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      defaultChecked={checked[1] === "2" ? true : undefined}
-                      id="default-checkbox"
-                      type="checkbox"
-                      value="2"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Avalible many charging slot
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[2] === "3" ? true : undefined}
-                      type="checkbox"
-                      value="3"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Air Conditioner in all room
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[3] === "4" ? true : undefined}
-                      type="checkbox"
-                      value="4"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Projector to presentation
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[4] === "5" ? true : undefined}
-                      type="checkbox"
-                      value="5"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Free parking htmlFor your vehicle
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[5] === "6" ? true : undefined}
-                      type="checkbox"
-                      value="6"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Snacks and drinks available
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[6] === "7" ? true : undefined}
-                      type="checkbox"
-                      value="7"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Prayer room available
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[7] === "8" ? true : undefined}
-                      type="checkbox"
-                      value="8"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Clean toilet with water heater
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[8] === "9" ? true : undefined}
-                      type="checkbox"
-                      value="9"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      Enter the room using the access card
-                    </label>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <input
-                      onChange={handleChangeFacilities}
-                      id="default-checkbox"
-                      defaultChecked={checked[9] === "10" ? true : undefined}
-                      type="checkbox"
-                      value="10"
-                      name="facilities"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
-                    >
-                      nice view from the window
-                    </label>
-                  </div>
+                  {fasilitas_office.map((fasilitas, index) => (
+                    <div className="flex items-center mb-2" key={index}>
+                      <input
+                        onChange={handleChangeFacilities}
+                        defaultChecked={
+                          checked[index] === `${index + 1}` ? true : undefined
+                        }
+                        id="default-checkbox"
+                        type="checkbox"
+                        value={index}
+                        name="facilities_id"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      />
+                      <label
+                        htmlFor="default-checkbox"
+                        className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
+                      >
+                        {fasilitas}
+                      </label>
+                    </div>
+                  ))}
                 </div>
               </form>
             </div>
