@@ -5,6 +5,7 @@ import { dataJakarta } from "store/dataJakarta";
 import { useDispatch } from "react-redux";
 import { createOffice } from "store/Feature/FeatureOffice/officeSlice";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const InputField = ({
   name,
@@ -275,6 +276,10 @@ const AddOffice = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Dashboard | Add Offices</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className="flex flex-col w-full">
         <div className="flex justify-start px-8 py-4 w-full bg-white rounded-2xl shadow">
           <Link to={"/admin-dashboard/office"}>
