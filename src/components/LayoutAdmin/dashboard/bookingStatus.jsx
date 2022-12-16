@@ -40,22 +40,32 @@ const BookingStatus = ({
   };
 
   useEffect(() => {
-    dispatch(fetchTransaction())
-      .then((res) => {
-        // setTransaksiList(res.payload);
-        const updateListOnProcess = [];
-        res.payload.forEach((transaksi) => {
-          const loweredStatus = transaksi.status.toLowerCase();
-          if (loweredStatus.includes("on process")) {
-            updateListOnProcess.push(transaksi)
-          }
-        })
-        setTransaksiList(updateListOnProcess);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // dispatch(fetchTransaction())
+    //   .then((res) => {
+    //     // setTransaksiList(res.payload);
+    //     const updateListOnProcess = [];
+    //     res.payload.forEach((transaksi) => {
+    //       const loweredStatus = transaksi.status.toLowerCase();
+    //       if (loweredStatus.includes("on process")) {
+    //         updateListOnProcess.push(transaksi)
+    //       }
+    //     })
+    //     setTransaksiList(updateListOnProcess);
+    //     setLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+    const updateListOnProcess = [];
+    listOfTransaction.forEach((transaksi) => {
+      const loweredStatus = transaksi.status.toLowerCase();
+      if (loweredStatus.includes("on process")) {
+        updateListOnProcess.push(transaksi)
+      }
+    })
+    setTransaksiList(updateListOnProcess);
+    setLoading(false);
 
     setDataTransaksi({
       minValue: 0,
