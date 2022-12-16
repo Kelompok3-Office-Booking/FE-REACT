@@ -4,12 +4,22 @@ import { CloseOutlined } from "@ant-design/icons";
 import { updateUser } from "store/Feature/FeatureUser/userSlice";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import toast, { Toaster } from 'react-hot-toast';
-import CloseIcon from '@mui/icons-material/Close';
+import toast from "react-hot-toast";
+import CloseIcon from "@mui/icons-material/Close";
 import { checkbox } from "assets";
 
-
-const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange, className = "border-gray-300", type = "text", disabled, autoComplete = "off" }) => (
+const InputField = ({
+  name,
+  label,
+  defaultValue,
+  placeholder,
+  onClick,
+  onChange,
+  className = "border-gray-300",
+  type = "text",
+  disabled,
+  autoComplete = "off",
+}) => (
   <div className="relative">
     <input
       type={type}
@@ -25,7 +35,8 @@ const InputField = ({ name, label, defaultValue, placeholder, onClick, onChange,
     />
     <label
       htmlFor="floating_outlined"
-      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+    >
       {label}
     </label>
   </div>
@@ -61,39 +72,35 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
 
   const handleReset = () => {
     setReset(!reset);
-    // console.log(reset);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
       dispatch(updateUser({ id, full_name, gender, email }));
-      // window.location.reload();
       setReload();
       Swal.fire({
         icon: "success",
         title: "Success",
         text: "Edit Users Success",
         showConfirmButton: false,
-        timer: 1000
+        timer: 1000,
       });
       toast.custom((t) => (
         <div
-          className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
-            } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+          className={`${
+            t.visible
+              ? "animate-enter ease-in-out duration-200"
+              : "animate-leave ease-in-out duration-200"
+          } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">
               <div className="flex-shrink-0 pt-0.5">
-                <img
-                  className="h-10 w-10 rounded-full"
-                  src={checkbox}
-                  alt=""
-                />
+                <img className="h-10 w-10 rounded-full" src={checkbox} alt="" />
               </div>
               <div className="ml-3 flex-col text-start">
-                <p className="text-sm font-bold text-success">
-                  Success
-                </p>
+                <p className="text-sm font-bold text-success">Success</p>
                 <p className="mt-1 text-sm text-gray-500">
                   Successfully Updated
                 </p>
@@ -109,7 +116,7 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
             </button>
           </div>
         </div>
-      ))
+      ));
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -119,7 +126,6 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
     }
   };
 
-  // console.log(data);
   return (
     <>
       <button
@@ -149,24 +155,21 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
                   label="Full Name"
                   placeholder="Full Name"
                   type="text"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   defaultValue={reset ? dataUser.full_name : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />
               </div>
               <div className="pb-6">
-                {/* <InputField
-                  name="gender"
-                  label="Gender"
-                  placeholder="Gender"
-                  type="text"
-                  onClick={() => { }}
-                  defaultValue={reset ? dataUser.gender : ""}
-                  onChange={(ev) => setHandleChangeData(ev)}
-                /> */}
                 <div className="w-full">
-                  <select id="city" onChange={(ev) => setHandleChangeData(ev)} name="gender" defaultValue={dataUser.gender} className="border-2 py-3.5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="male" >Male</option>
+                  <select
+                    id="city"
+                    onChange={(ev) => setHandleChangeData(ev)}
+                    name="gender"
+                    defaultValue={dataUser.gender}
+                    className="border-2 py-3.5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
                 </div>
@@ -177,7 +180,7 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
                   label="Email"
                   placeholder="Email"
                   type="email"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   defaultValue={reset ? dataUser.email : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />

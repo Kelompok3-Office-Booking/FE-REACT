@@ -1,17 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const BookingStatus = () => {
-
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transactions.data);
 
   const [loading, setLoading] = useState(true);
   const pageSize = 6;
 
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, []);
 
   return (
     <>

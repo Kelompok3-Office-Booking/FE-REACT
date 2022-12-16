@@ -8,7 +8,7 @@ import { Pagination } from "antd";
 import TableHead from "./tableHead";
 import { ContentTableLoader } from "components";
 import { Helmet } from "react-helmet";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { toast, Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { checkbox } from "assets";
@@ -179,22 +179,23 @@ const UserPage = () => {
         if (result.isConfirmed) {
           try {
             dispatch(deleteUser(id));
-            // setModal(false);
             setReload();
-            Swal.fire(
-              {
-                icon: "success",
-                title: `Deleted!`,
-                text: "Your data has been deleted.",
-                showConfirmButton: false,
-                timer: 1200
-              }
-            );
+            Swal.fire({
+              icon: "success",
+              title: `Deleted!`,
+              text: "Your data has been deleted.",
+              showConfirmButton: false,
+              timer: 1200,
+            });
             setReload();
             toast.custom((t) => (
               <div
-                className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
-                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                className={`${
+                  t.visible
+                    ? "animate-enter ease-in-out duration-200"
+                    : "animate-leave ease-in-out duration-200"
+                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 pt-0.5">
@@ -205,9 +206,7 @@ const UserPage = () => {
                       />
                     </div>
                     <div className="ml-3 flex-col text-start">
-                      <p className="text-sm font-bold text-success">
-                        Success
-                      </p>
+                      <p className="text-sm font-bold text-success">Success</p>
                       <p className="mt-1 text-sm text-gray-500">
                         Successfully Deleted
                       </p>
@@ -223,7 +222,7 @@ const UserPage = () => {
                   </button>
                 </div>
               </div>
-            ))
+            ));
           } catch (error) {
             return Swal.fire({
               icon: "error",
@@ -233,7 +232,7 @@ const UserPage = () => {
           }
         }
       });
-  }
+  };
 
   return (
     <>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { dataJakarta } from "store/dataJakarta";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createOffice } from "store/Feature/FeatureOffice/officeSlice";
 import Swal from "sweetalert2";
 
@@ -60,7 +60,6 @@ const AddOffice = () => {
   const dispatch = useDispatch();
   const navitage = useNavigate();
 
-  const listOfOffice = useSelector((state) => state.office.data);
   const [jakartaLits, setJakartaList] = useState(dataJakarta);
   const [citys, setCitys] = useState([]);
   const [city, setCity] = useState("Central Jakarta");
@@ -157,7 +156,6 @@ const AddOffice = () => {
       });
     };
   }, [imageFiles]);
-
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -166,8 +164,8 @@ const AddOffice = () => {
     price: "",
     open_hour: "",
     close_hour: "",
-    lat: "",
-    lng: "",
+    lat: lat,
+    lng: lng,
     accommodate: "",
     working_desk: "",
     meeting_room: "",
@@ -448,8 +446,6 @@ const AddOffice = () => {
                   onChange={(ev) => handleChangeData(ev)}
                   className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                 >
-                  {/* <option selected>Region</option> */}
-                  {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
                   {jakartaLits.map((city, index) => {
                     return (
                       <option
