@@ -42,8 +42,9 @@ const BookingStatus = ({
   useEffect(() => {
     dispatch(fetchTransaction())
       .then((res) => {
+        // setTransaksiList(res.payload);
         const updateListOnProcess = [];
-        listOfTransaction.forEach((transaksi) => {
+        res.payload.forEach((transaksi) => {
           const loweredStatus = transaksi.status.toLowerCase();
           if (loweredStatus.includes("on process")) {
             updateListOnProcess.push(transaksi)
