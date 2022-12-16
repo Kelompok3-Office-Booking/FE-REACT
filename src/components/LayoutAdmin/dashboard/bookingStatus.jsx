@@ -71,7 +71,7 @@ const BookingStatus = ({
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch])
+  }, [])
 
   const handleChangeReject = (id) => {
     try {

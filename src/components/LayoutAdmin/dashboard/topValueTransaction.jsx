@@ -13,6 +13,7 @@ const TopValueTransaction = ({
 }) => {
   const [topValueList, setValueList] = useState(listOfTransaction);
   const [loading, setLoading] = useState(true);
+  const [average, setAverage] = useState(1);
 
   useEffect(() => {
     // dispatch(fetchTransaction())
@@ -38,23 +39,26 @@ const TopValueTransaction = ({
     //     console.log(err);
     //   });
 
-    // let totalPrice = 0;
-    // const priceAverage = totalPrice / listOfTransaction.length
-    // if (listOfTransaction > 0) {
-    //   listOfTransaction.forEach((transaksi) => {
-    //     totalPrice += transaksi.price
-    //   })
-    // }
+
+    let totalPrice = 0;
+    listOfTransaction.forEach((transaksi) => {
+      totalPrice += transaksi.price
+    })
+    const priceAverage = totalPrice / listOfTransaction.length
+    setAverage(priceAverage)
+
 
     const updateTopValueTransaksi = [];
     listOfTransaction.forEach((transaksi) => {
-      if (transaksi.price > 1000000) {
+      if (transaksi.price > average) {
         updateTopValueTransaksi.push(transaksi);
       }
     })
     setValueList(updateTopValueTransaksi)
     setLoading(false);
-  }, [])
+    // console.log(priceAverage);
+  }, [average])
+
 
   return (
     <>
