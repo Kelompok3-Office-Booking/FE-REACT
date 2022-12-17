@@ -4,18 +4,18 @@ import jsConvert from "js-convert-case";
 import React, { useEffect, useState } from "react";
 import CurrencyFormat from "react-currency-format";
 import { Helmet } from "react-helmet";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
 
-const TopValueTransaction = ({
-  dispatch,
-  listOfTransaction
-}) => {
+const TopValueTransaction = () => {
+  const dispatch = useDispatch();
+  const listOfTransaction = useSelector((state) => state.transactions.data);
   const [topValueList, setValueList] = useState(listOfTransaction);
   const [loading, setLoading] = useState(true);
   const [average, setAverage] = useState(1);
 
   useEffect(() => {
+    dispatch(fetchTransaction())
     let totalPrice = 0;
     listOfTransaction.forEach((transaksi) => {
       totalPrice += transaksi.price

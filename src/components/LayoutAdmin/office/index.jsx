@@ -4,14 +4,17 @@ import { Link } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ViewOffice from "components/Modal/ModalOffice/ViewOffice";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOffice, fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
+import {
+  deleteOffice,
+  fetchOffice,
+} from "store/Feature/FeatureOffice/officeSlice";
 import { ContentTableLoader, EditOffice } from "components";
 import { Helmet } from "react-helmet";
 import { Pagination } from "antd";
 import TableHead from "./tableHead";
 import { toast, Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { checkbox } from "assets";
 
 const useSortableData = (items, config = null) => {
@@ -169,19 +172,14 @@ const OfficePage = () => {
           try {
             dispatch(deleteOffice(id));
             setReload();
-            Swal.fire(
-              {
-                icon: "success",
-                title: "Deleted!",
-                text: "Your data has been deleted.",
-                showConfirmButton: false,
-                timer: 1200
-              }
-            );
             toast.custom((t) => (
               <div
-                className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
-                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                className={`${
+                  t.visible
+                    ? "animate-enter ease-in-out duration-200"
+                    : "animate-leave ease-in-out duration-200"
+                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 pt-0.5">
@@ -192,9 +190,7 @@ const OfficePage = () => {
                       />
                     </div>
                     <div className="ml-3 flex-col text-start">
-                      <p className="text-sm font-bold text-success">
-                        Success
-                      </p>
+                      <p className="text-sm font-bold text-success">Success</p>
                       <p className="mt-1 text-sm text-gray-500">
                         Successfully Deleted
                       </p>
@@ -210,7 +206,7 @@ const OfficePage = () => {
                   </button>
                 </div>
               </div>
-            ))
+            ));
             return result;
           } catch (error) {
             return Swal.fire({
@@ -221,7 +217,7 @@ const OfficePage = () => {
           }
         }
       });
-  }
+  };
 
   return (
     <>
@@ -253,7 +249,7 @@ const OfficePage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -348,7 +344,10 @@ const OfficePage = () => {
                             >
                               <DeleteForeverIcon className="text-slate-500 hover:text-white" />
                             </button>
-                            <EditOffice dataDetailOffice={office} />
+                            <EditOffice
+                              dataDetailOffice={office}
+                              setReload={setReload}
+                            />
                           </td>
                         </tr>
                       ))}

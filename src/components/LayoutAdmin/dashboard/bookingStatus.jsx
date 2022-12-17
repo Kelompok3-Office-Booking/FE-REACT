@@ -10,9 +10,9 @@ import { toast } from "react-hot-toast";
 import CloseIcon from '@mui/icons-material/Close';
 import { checkbox } from "assets";
 
-const BookingStatus = ({ listOfTransaction }) => {
-
+const BookingStatus = () => {
   const dispatch = useDispatch();
+  const listOfTransaction = useSelector((state) => state.transactions.data);
   // const listOfTransaction = useSelector((state) => state.transactions.data);
   const [transaksiList, setTransaksiList] = useState(listOfTransaction);
   const [loading, setLoading] = useState(true);
@@ -32,19 +32,22 @@ const BookingStatus = ({ listOfTransaction }) => {
 
   const setReload = () => {
     setLoading(true);
-    dispatch(fetchTransaction())
-    const updateListOnProcess = [];
-    transaksiList.forEach((transaksi) => {
-      const loweredStatus = transaksi.status.toLowerCase();
-      if (loweredStatus.includes("on process")) {
-        updateListOnProcess.push(transaksi)
-      }
-    })
-    setTransaksiList(updateListOnProcess);
     setTimeout(() => {
-      // setLoading(false);
+      dispatch(fetchTransaction()).then((res) => {
+        setTransaksiList(res.payload);
+        const updateListOnProcess = [];
+        transaksiList.forEach((transaksi) => {
+          const loweredStatus = transaksi.status.toLowerCase();
+          if (loweredStatus.includes("on process")) {
+            updateListOnProcess.push(transaksi)
+          }
+        })
+        setTransaksiList(updateListOnProcess);
+        // setLoading(false);
+        // alert(transaksiList)
+      });
       setLoading(false);
-    }, 1000);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -65,7 +68,7 @@ const BookingStatus = ({ listOfTransaction }) => {
     //   });
 
     const updateListOnProcess = [];
-    listOfTransaction.forEach((transaksi) => {
+    transaksiList.forEach((transaksi) => {
       const loweredStatus = transaksi.status.toLowerCase();
       if (loweredStatus.includes("on process")) {
         updateListOnProcess.push(transaksi)
@@ -95,40 +98,6 @@ const BookingStatus = ({ listOfTransaction }) => {
           timer: 1200
         }
       );
-      // alert("berhasil")
-      // toast.custom((t) => (
-      //   <div
-      //     className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
-      //       } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
-      //     <div className="flex-1 w-0 p-4">
-      //       <div className="flex items-start">
-      //         <div className="flex-shrink-0 pt-0.5">
-      //           <img
-      //             className="h-10 w-10 rounded-full"
-      //             src={checkbox}
-      //             alt=""
-      //           />
-      //         </div>
-      //         <div className="ml-3 flex-col text-start">
-      //           <p className="text-sm font-bold text-success">
-      //             Success
-      //           </p>
-      //           <p className="mt-1 text-sm text-gray-500">
-      //             Successfully Updated
-      //           </p>
-      //         </div>
-      //       </div>
-      //     </div>
-      //     <div className="flex border-gray-200">
-      //       <button
-      //         onClick={() => toast.dismiss(t.id)}
-      //         className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
-      //       >
-      //         <CloseIcon />
-      //       </button>
-      //     </div>
-      //   </div>
-      // ))
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -152,39 +121,6 @@ const BookingStatus = ({ listOfTransaction }) => {
           timer: 1200
         }
       );
-      // toast.custom((t) => (
-      //   <div
-      //     className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
-      //       } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
-      //     <div className="flex-1 w-0 p-4">
-      //       <div className="flex items-start">
-      //         <div className="flex-shrink-0 pt-0.5">
-      //           <img
-      //             className="h-10 w-10 rounded-full"
-      //             src={checkbox}
-      //             alt=""
-      //           />
-      //         </div>
-      //         <div className="ml-3 flex-col text-start">
-      //           <p className="text-sm font-bold text-success">
-      //             Success
-      //           </p>
-      //           <p className="mt-1 text-sm text-gray-500">
-      //             Successfully Updated
-      //           </p>
-      //         </div>
-      //       </div>
-      //     </div>
-      //     <div className="flex border-gray-200">
-      //       <button
-      //         onClick={() => toast.dismiss(t.id)}
-      //         className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
-      //       >
-      //         <CloseIcon />
-      //       </button>
-      //     </div>
-      //   </div>
-      // ))
     } catch (error) {
       Swal.fire({
         icon: "error",

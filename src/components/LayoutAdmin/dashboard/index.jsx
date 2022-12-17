@@ -70,8 +70,8 @@ const DashboardPage = () => {
     <>
       <ItemsData />
       <TransactionChart coworkingSpace={coworkingSpace} meetingSpace={meetingSpace} officeSpace={officeSpace} />
-      <BookingStatus dispatch={dispatch} listOfTransaction={listOfTransaction} setReload={setReload} loading={loading} setLoading={setLoading} />
-      <TopValueTransaction dispatch={dispatch} listOfTransaction={listOfTransaction} />
+      <BookingStatus />
+      <TopValueTransaction />
     </>
   );
 };

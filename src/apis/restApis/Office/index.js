@@ -30,12 +30,17 @@ const APIOffice = {
       const id = data.id;
       const response = await axiosInstance.put(
         `/admin/offices/update/${id}`,
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       console.log(response);
       return response;
     } catch (err) {
-      console.log(err);
+      alert("Input Failed");
     }
   },
 
