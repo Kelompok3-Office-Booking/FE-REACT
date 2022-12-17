@@ -4,22 +4,21 @@ import { Data, dataOffice, dataMeetings } from "utils/dummy";
 import BarChart from "../../Chart/lineChart";
 import DoughnutChart from "components/Chart/doughnutChart";
 
-const TransactionChart = ({
-  coworkingSpace,
-  meetingSpace,
-  officeSpace
-}) => {
-
+const TransactionChart = ({ coworkingSpace, meetingSpace, officeSpace }) => {
   useEffect(() => {
     // setCountOffice(officeSpace.length)
     // console.log(officeSpace)
-  }, [])
+  }, []);
 
   const [pie, setPie] = useState({
     labels: ["Cooworking Space", "Meeting Room", "Office Building"],
     datasets: [
       {
-        data: [coworkingSpace?.length, meetingSpace?.length, officeSpace?.length],
+        data: [
+          coworkingSpace?.length,
+          meetingSpace?.length,
+          officeSpace?.length,
+        ],
         backgroundColor: ["#D4647A", "#1DBFC1", "#6E6FDC"],
         cutout: "80%",
         borderWidth: 0,
@@ -66,7 +65,9 @@ const TransactionChart = ({
       <section className="flex gap-4 mt-10">
         <div className="w-1/2 bg-white rounded-xl drop-shadow-4xl">
           <div className="p-8">
-            <h2 className="font-bold text-2xl text-left pt-2">Transaction Chart</h2>
+            <h2 className="font-bold text-2xl text-left pt-2">
+              Transaction Chart
+            </h2>
             <hr className="w-full border-t-white border-l-white border-r-white border-2 my-2 border-b-gray-100 " />
             <div className="flex justify-between py-5">
               <div className="flex flex-wrap justify-center items-center ">
