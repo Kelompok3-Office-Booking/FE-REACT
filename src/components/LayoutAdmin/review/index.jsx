@@ -11,8 +11,9 @@ import { Link } from "react-router-dom";
 import { twitter } from "assets";
 import { Rating } from "@mui/material";
 import { Helmet } from "react-helmet";
-
-import { testimonials } from "store/dataTestimonials";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReview } from "store/Feature/FeatureReview/reviewSlice";
+import { ContentTableLoader } from "components";
 
 const Card = ({ imgUrl, name, rating, date, office, comment }) => {
   return (
@@ -47,17 +48,22 @@ const Card = ({ imgUrl, name, rating, date, office, comment }) => {
 };
 
 const ReviewPage = () => {
+  const dispatch = useDispatch();
+  const listOfReview = useSelector((state) => state.reviews.data);
   const pageSize = 4;
   const [dataReview, setDataReview] = useState({
     minValue: 0,
     maxValue: 2,
   });
   const [filter, setFilter] = useState("newest");
-  const [testimonial, setTestimonial] = useState(testimonials);
-  // const TestiImage = { image1, image2, image3, image4, image5, image6, image7, image8, image9, image10 }
+  const [testimonial, setTestimonial] = useState(listOfReview);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTestimonial(testimonials);
+    dispatch(fetchReview()).then(() => {
+      setLoading(false);
+      setTestimonial(testimonial);
+    });
     setDataReview({
       minValue: 0,
       maxValue: 4,
@@ -115,29 +121,30 @@ const ReviewPage = () => {
           </div>
         </div>
         <div className=" my-8 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
-          {testimonial &&
-            testimonial.length > 0 &&
-            testimonial
-              .slice(dataReview.minValue, dataReview.maxValue)
-              .map((review) => {
-                return (
+          {loading ? (
+            <ContentTableLoader />
+          ) : (
+            <>
+              {testimonial
+                .slice(dataReview.minValue, dataReview.maxValue)
+                .map((review) => (
                   <Card
                     key={review.id}
                     imgUrl={twitter}
-                    name={review.name}
-                    rating={review.rating}
-                    date={"22/05/2022"}
-                    office="Equity Tower Floor 34"
+                    name={review.user.full_name}
+                    rating={review.score}
+                    date={review.created_at}
+                    office={review.office.office_name}
                     comment={review.comment}
                   />
-                );
-              })}
+                ))}
+            </>
+          )}
         </div>
         <div>
           <Pagination
             defaultCurrent={1}
             defaultPageSize={pageSize}
-            // current={dataReview.current}
             total={testimonial.length}
             onChange={handleChange}
           />

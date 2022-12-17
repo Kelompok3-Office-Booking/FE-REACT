@@ -9,7 +9,6 @@ import TopValueTransaction from "./topValueTransaction";
 
 const DashboardPage = () => {
   const dispatch = useDispatch();
-  const listOfTransaction = useSelector((state) => state.transactions.data);
 
   const listOfOffice = useSelector((state) => state.office.data);
   const [officeList, setOfficeList] = useState(listOfOffice);
@@ -21,16 +20,15 @@ const DashboardPage = () => {
   const setReload = () => {
     setLoading(true);
     setTimeout(() => {
-      dispatch(fetchTransaction())
+      dispatch(fetchTransaction());
       setLoading(false);
     }, 3000);
   };
 
   useEffect(() => {
-    dispatch(fetchTransaction())
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(fetchTransaction()).catch((err) => {
+      console.log(err);
+    });
     dispatch(fetchOffice())
       .then((res) => {
         setOfficeList(res.payload);
@@ -44,32 +42,27 @@ const DashboardPage = () => {
     const updatedOfficeList = [];
     officeList.forEach((office) => {
       const loweredOfficeType = office.office_type.toLowerCase();
-      if (
-        loweredOfficeType.includes("coworking space")
-      ) {
+      if (loweredOfficeType.includes("coworking space")) {
         updatedCoworkList.push(office);
-      } else if (
-        loweredOfficeType.includes("meeting room")
-      ) {
+      } else if (loweredOfficeType.includes("meeting room")) {
         updateMeetingList.push(office);
-      } else if (
-        loweredOfficeType.includes("office")
-      ) {
+      } else if (loweredOfficeType.includes("office")) {
         updatedOfficeList.push(office);
       }
     });
     seCoworkingSpace(updatedCoworkList);
     setMeetingSpace(updateMeetingList);
     setOfficeSpace(updatedOfficeList);
-  }, []);
+  }, [dispatch, officeList]);
 
-  // console.log(coworkingSpace);
-
-  // console.log(meetingSpace)
   return (
     <>
       <ItemsData />
-      <TransactionChart coworkingSpace={coworkingSpace} meetingSpace={meetingSpace} officeSpace={officeSpace} />
+      <TransactionChart
+        coworkingSpace={coworkingSpace}
+        meetingSpace={meetingSpace}
+        officeSpace={officeSpace}
+      />
       <BookingStatus />
       <TopValueTransaction />
     </>
