@@ -15,7 +15,6 @@ import APIOffice from "apis/restApis/Office";
 export const fetchOffice = createAsyncThunk("fetch/office", async () => {
   try {
     const res = await APIOffice.getAllOffice();
-    console.log(res.data.data);
     return res.data.data;
   } catch (err) {
     console.log(err);
@@ -24,9 +23,29 @@ export const fetchOffice = createAsyncThunk("fetch/office", async () => {
 
 export const createOffice = createAsyncThunk("create/office", async (data) => {
   try {
-    const res = await APIOffice.createOffice();
-    console.log(res.data);
-    return res.data;
+    // const {
+    //   title,
+    //   description,
+    //   office_type,
+    //   office_length,
+    //   price,
+    //   open_hour,
+    //   close_hour,
+    //   lat,
+    //   lng,
+    //   accommodate,
+    //   working_desk,
+    //   meeting_room,
+    //   private_room,
+    //   city,
+    //   district,
+    //   address,
+    //   images,
+    //   facilities_id,
+    // } = data;
+    // console.log(images);
+    const res = await APIOffice.createOffice(data);
+    return res;
   } catch (err) {
     console.log(err);
   }
@@ -55,7 +74,6 @@ export const deleteOffice = createAsyncThunk("delete/office", async (id) => {
 const OfficesEntity = createEntityAdapter({
   selectId: (offices) => offices.id,
 });
-console.log(OfficesEntity.getInitialState());
 
 const officeSlice = createSlice({
   name: "office",
