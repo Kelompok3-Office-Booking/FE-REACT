@@ -16,30 +16,6 @@ const TopValueTransaction = ({
   const [average, setAverage] = useState(1);
 
   useEffect(() => {
-    // dispatch(fetchTransaction())
-    //   .then((res) => {
-    //     let totalPrice = 0;
-    //     const priceAverage = totalPrice / listOfTransaction.length
-    //     if (listOfTransaction > 0) {
-    //       listOfTransaction.forEach((transaksi) => {
-    //         totalPrice += transaksi.price
-    //       })
-    //     }
-
-    //     const updateTopValueTransaksi = [];
-    //     listOfTransaction.forEach((transaksi) => {
-    //       if (transaksi.price > priceAverage) {
-    //         updateTopValueTransaksi.push(transaksi);
-    //       }
-    //     })
-    //     setValueList(updateTopValueTransaksi)
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
-
     let totalPrice = 0;
     listOfTransaction.forEach((transaksi) => {
       totalPrice += transaksi.price
@@ -122,7 +98,7 @@ const TopValueTransaction = ({
                                 </td>
                                 <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.office.office_name)}</td>
                                 <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.office.office_type)}</td>
-                                <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.check_in.date)}</td>
+                                <td className="py-4 px-6">{transaksi.check_in.date}</td>
                               </tr>
                             ))
                         }

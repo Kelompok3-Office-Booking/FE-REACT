@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import CloseIcon from '@mui/icons-material/Close';
 import { checkbox } from "assets";
+import jsConvert from "js-convert-case";
 
 
 const InputField = ({
@@ -56,7 +57,7 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
       ...data,
       [ev.target.name]: ev.target.value,
     });
-    console.log(ev.target.value);
+    // console.log(ev.target.value);
   };
 
   const HANDLEMODAL = () => {
@@ -185,6 +186,7 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
                     label="Full Name"
                     placeholder="Full Name"
                     disabled={true}
+                    className="text-gray-400"
                     defaultValue={dataTransaksi.user.full_name}
                   />
 
@@ -193,7 +195,8 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
                     label="Type"
                     placeholder="Type"
                     disabled={true}
-                    defaultValue={dataTransaksi.office.office_type}
+                    className="text-gray-400"
+                    defaultValue={jsConvert.toHeaderCase(dataTransaksi.office.office_type)}
                   />
 
                   <InputField
@@ -201,6 +204,7 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
                     label="Date"
                     placeholder="Date"
                     disabled={true}
+                    className="text-gray-400"
                     defaultValue={dataTransaksi.check_in.date}
                   />
 
@@ -209,9 +213,9 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
                     label="Status"
                     placeholder="Status"
                     disabled={true}
-                    defaultValue={dataTransaksi.status}
+                    className="text-gray-400"
+                    defaultValue={jsConvert.toHeaderCase(dataTransaksi.status)}
                   />
-
 
                   {/* Modal footer */}
                   <div className="flex gap-5 ">

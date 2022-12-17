@@ -19,34 +19,34 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-axios.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    function(error) {
-        const originalRequest = error.config;
-        if (error.response.status === 401) {
-            Navigate("/login");
-            return Promise.reject(error);
-        }
-        if (error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            const refreshToken = Cookies.setToken("refresh");
-            return axios
-                .post("/login", {
-                    refresh_token: refreshToken,
-                })
-                .then((res) => {
-                    if (res.status === 201) {
-                        // Cookies.setToken(res.data);
-                        Cookies.set("token", res.data);
-                        config.headers["Authorization"] = `Bearer ${Auth.getAccessToken()}`;
-                        return axios(originalRequest);
-                    }
-                });
-        }
-        return Promise.reject(error);
-    }
-);
+// axios.interceptors.response.use(
+//     (response) => {
+//         return response;
+//     },
+//     function(error) {
+//         const originalRequest = error.config;
+//         if (error.response.status === 401) {
+//             Navigate("/login");
+//             return Promise.reject(error);
+//         }
+//         if (error.response.status === 401 && !originalRequest._retry) {
+//             originalRequest._retry = true;
+//             const refreshToken = Cookies.setToken("refresh");
+//             return axios
+//                 .post("/login", {
+//                     refresh_token: refreshToken,
+//                 })
+//                 .then((res) => {
+//                     if (res.status === 201) {
+//                         // Cookies.setToken(res.data);
+//                         Cookies.set("token", res.data);
+//                         config.headers["Authorization"] = `Bearer ${Auth.getAccessToken()}`;
+//                         return axios(originalRequest);
+//                     }
+//                 });
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 
 export default axiosInstance;

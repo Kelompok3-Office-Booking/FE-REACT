@@ -239,7 +239,7 @@ const PromoPage = () => {
         <div className="flex justify-between px-8 py-2 w-full bg-white rounded-2xl shadow">
           <h1 className="text-2xl font-bold my-auto">Voucher Promo</h1>
           <div className="flex content-center pl-12 rounded-xl text-lg py-2">
-            <AddPromo />
+            <AddPromo loading={loading} setReload={setReload} />
           </div>
         </div>
         <div className="mt-4 z-10">
