@@ -3,68 +3,30 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import { Data, dataOffice, dataMeetings } from "utils/dummy";
 import BarChart from "../../Chart/lineChart";
 import DoughnutChart from "components/Chart/doughnutChart";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
 
-const TransactionChart = () => {
-  const dispatch = useDispatch();
-  const listOfOffice = useSelector((state) => state.office.data);
-  const [officeList, setOfficeList] = useState();
+const TransactionChart = ({
+  coworkingSpace,
+  meetingSpace,
+  officeSpace
+}) => {
 
-  const [coworkCount, setCoworkCount] = useState(1);
-  const [meetingCount, setMeetingCount] = useState(1);
-  const [officeCount, setOfficeCount] = useState(1);
-
-  const updatedCoworkList = [];
-  const updateMeetingList = [];
-  const updatedOfficeList = [];
+  useEffect(() => {
+    // setCountOffice(officeSpace.length)
+    // console.log(officeSpace)
+  }, [])
 
   const [pie, setPie] = useState({
     labels: ["Cooworking Space", "Meeting Room", "Office Building"],
     datasets: [
       {
-        data: [coworkCount, meetingCount, officeCount],
+        data: [coworkingSpace?.length, meetingSpace?.length, officeSpace?.length],
         backgroundColor: ["#D4647A", "#1DBFC1", "#6E6FDC"],
         cutout: "80%",
         borderWidth: 0,
       },
     ],
   });
-
-  useEffect(() => {
-    dispatch(fetchOffice())
-      .then((res) => {
-        setOfficeList(res.payload);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    listOfOffice.forEach((office) => {
-      const loweredOfficeType = office.office_type.toLowerCase();
-      if (
-        loweredOfficeType.includes("coworking space")
-      ) {
-        updatedCoworkList.push(office);
-        setCoworkCount(updatedCoworkList?.length);
-        // console.log(updatedCoworkList)
-      } else if (
-        loweredOfficeType.includes("meeting room")
-      ) {
-        updateMeetingList.push(office);
-        setMeetingCount(updateMeetingList?.length);
-        // console.log(updateMeetingList)
-      } else if (
-        loweredOfficeType.includes("office")
-      ) {
-        updatedOfficeList.push(office);
-        setOfficeCount(updatedOfficeList?.length);
-        // console.log(updatedOfficeList)
-      }
-    });
-  }, [dispatch]);
-
-
+  // console.log(updatedCoworkList);
 
   const [chartData, setChartData] = useState({
     labels: Data.map((data) => data.day),
@@ -98,6 +60,7 @@ const TransactionChart = () => {
       },
     ],
   });
+  // console.log(coworkCount)
   return (
     <>
       <section className="flex gap-4 mt-10">

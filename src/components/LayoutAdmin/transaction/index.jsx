@@ -156,7 +156,7 @@ const TransactionPage = () => {
         setTransaksiList(res.payload);
       });
       setLoading(false);
-    }, 3000);
+    }, 1000);
   };
 
   const handleChange = (value) => {
@@ -398,7 +398,6 @@ const TransactionPage = () => {
           <Pagination
             defaultCurrent={1}
             defaultPageSize={pageSize}
-            // current={dataReview.current}
             total={transaksiList?.length}
             onChange={handleChange}
           />
