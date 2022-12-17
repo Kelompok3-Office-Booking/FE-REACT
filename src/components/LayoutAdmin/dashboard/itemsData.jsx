@@ -2,26 +2,28 @@ import React, { useEffect } from "react";
 import { items, items2, items3, items4 } from "assets";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
-import { fetchOffice, OfficesSelectors } from "store/Feature/FeatureOffice/officeSlice";
-
+import { fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
+import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
 
 const ItemsData = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
-  const listOfOffice = useSelector(OfficesSelectors.selectAll);
+  const listOfOffice = useSelector((state) => state.office.data);
+  const listOfTransaction = useSelector((state) => state.transactions.data);
 
   useEffect(() => {
-    dispatch(fetchUsers())
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(fetchUsers()).catch((err) => {
+      console.log(err);
+    });
 
-    dispatch(fetchOffice())
-      .catch((err) => {
-        console.log(err);
-      })
-  }, [])
+    dispatch(fetchOffice()).catch((err) => {
+      console.log(err);
+    });
 
+    dispatch(fetchTransaction()).catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   return (
     <div className="flex gap-4 mt-2">
@@ -80,7 +82,7 @@ const ItemsData = () => {
           </div>
           <div className="flex flex-col items-start justify-center pl-3">
             <div>
-              <h1 className="font-bold text-3xl text-left">1.403</h1>
+              <h1 className="font-bold text-3xl text-left">{listOfTransaction?.length}</h1>
               <p className="text-base font-normal text-neutral-400 text-left">
                 Transaction
               </p>

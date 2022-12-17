@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const BookingStatus = () => {
+  const dispatch = useDispatch();
+  const listOfTransaction = useSelector((state) => state.transactions.data);
+
+  const [loading, setLoading] = useState(true);
+  const pageSize = 6;
+
+  useEffect(() => {}, []);
+
   return (
     <>
       <section className="mt-10 flex flex-col bg-white rounded-3xl drop-shadow-4xl">

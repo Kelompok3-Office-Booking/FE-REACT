@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import toast, { Toaster } from 'react-hot-toast';
 import CloseIcon from '@mui/icons-material/Close';
 import { checkbox } from "assets";
+import { updatePromo } from "store/Feature/FeaturePromo/promoSlice";
 
 const EditPromo = ({
     dataPromo, setReload
@@ -13,12 +14,13 @@ const EditPromo = ({
     const [modal, setModal] = useState(false);
     const [reset, setReset] = useState(true);
     const [data, setData] = useState({
+        id: dataPromo.id,
         voucher_code: dataPromo.voucher_code,
         periode: dataPromo.periode,
         nominal: dataPromo.nominal,
     })
 
-    const { voucher_code, periode, nominal } = data;
+    const { id, voucher_code, periode, nominal } = data;
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -44,13 +46,12 @@ const EditPromo = ({
     const handleSubmit = (ev) => {
         ev.preventDefault();
         try {
-            // dispatch(updateUser({ id, full_name, gender, email }));
-            // window.location.reload();
+            dispatch(updatePromo({ id, voucher_code, periode, nominal }));
             setReload();
             Swal.fire({
                 icon: "success",
                 title: "Success",
-                text: "Edit Users Success",
+                text: "Edit Promo Success",
                 showConfirmButton: false,
                 timer: 1000
             });

@@ -13,7 +13,11 @@ const APIOffice = {
   async createOffice(data) {
     try {
       console.log(data);
-      const response = await axiosInstance.post("/admin/offices/create", data);
+      const response = await axiosInstance.post("/admin/offices/create", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log(response);
       return response;
     } catch (err) {
@@ -26,12 +30,17 @@ const APIOffice = {
       const id = data.id;
       const response = await axiosInstance.put(
         `/admin/offices/update/${id}`,
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       console.log(response);
       return response;
     } catch (err) {
-      console.log(err);
+      alert("Input Failed");
     }
   },
 

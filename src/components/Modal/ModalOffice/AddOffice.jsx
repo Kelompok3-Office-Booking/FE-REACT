@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { dataJakarta } from "store/dataJakarta";
 import { useDispatch } from "react-redux";
 import { createOffice } from "store/Feature/FeatureOffice/officeSlice";
-import axios from "axios";
+import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const InputField = ({
   name,
@@ -30,6 +31,7 @@ const InputField = ({
       autoComplete={autoComplete}
       onClick={onClick}
       defaultValue={defaultValue}
+      required
     />
     <label
       htmlFor="floating_outlined"
@@ -54,31 +56,38 @@ const fasilitas_office = [
 ];
 
 const AddOffice = () => {
+  const imageTypeRegex = /image\/(jpg|jpeg)/gm;
+
   const dispatch = useDispatch();
+  const navitage = useNavigate();
+
   const [jakartaLits, setJakartaList] = useState(dataJakarta);
   const [citys, setCitys] = useState([]);
-
   const [city, setCity] = useState("Central Jakarta");
   const [district, setDistrict] = useState([]);
-
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
   const [images, setImages] = useState([]);
   const [facilities_id, setFacilitiesId] = useState([]);
 
   const handleChangeFacilities = (ev) => {
-    // Destructuring gess
     const { value, checked } = ev.target;
-    // const { facilities } = facilities_id;
-
-    console.log(`${value} is ${checked}`);
-
     if (checked) {
       for (let i = 0; i < ev.target.value.length; i++) {
         facilities_id.push(value[i]);
       }
       setFacilitiesId(facilities_id);
+      let facilitiesId = "";
+      facilities_id.forEach((val, i) => {
+        if (i === facilities_id.length - 1) {
+          facilitiesId += val;
+        } else {
+          facilitiesId += `${val},`;
+        }
+      });
+      setData({ ...data, facilities_id: facilitiesId });
     } else {
       for (let i = 0; i < facilities_id.length; i++) {
         if (facilities_id[i] === value[i]) {
@@ -86,27 +95,78 @@ const AddOffice = () => {
           i--;
         }
       }
-      // setFacilitiesId(facilities_id);
     }
   };
 
-  const handleUploadImages = (ev) => {
-    for (let i = 0; i < ev.target.files.length; i++) {
-      images.push(ev.target.files[i]);
+  const handleUploadImages = (e) => {
+    const { files } = e.target;
+    const validImageFiles = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.match(imageTypeRegex)) {
+        validImageFiles.push(file);
+      }
     }
-    setImages(images);
-    console.log(images);
+    if (validImageFiles.length) {
+      setImageFiles(validImageFiles);
+      return;
+    }
+    alert("Selected images are not of valid type!");
   };
+
+  useEffect(() => {
+    const fileReaders = [];
+    let isCancel = false;
+    if (imageFiles.length) {
+      const promises = imageFiles.map((file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReaders.push(fileReader);
+          fileReader.onload = (e) => {
+            const { result } = e.target;
+            if (result) {
+              resolve(result);
+            }
+          };
+          fileReader.onabort = () => {
+            reject(new Error("File reading aborted"));
+          };
+          fileReader.onerror = () => {
+            reject(new Error("Failed to read file"));
+          };
+          fileReader.readAsDataURL(file);
+        });
+      });
+      Promise.all(promises)
+        .then((images) => {
+          if (!isCancel) {
+            setImages(images);
+            setData({ ...data, images: images });
+          }
+        })
+        .catch((reason) => {
+          console.log(reason);
+        });
+    }
+    return () => {
+      isCancel = true;
+      fileReaders.forEach((fileReader) => {
+        if (fileReader.readyState === 1) {
+          fileReader.abort();
+        }
+      });
+    };
+  }, [imageFiles]);
   const [data, setData] = useState({
     title: "",
-    description: 0,
-    office_type: 0,
-    office_length: 0,
-    price: 0,
+    description: "",
+    office_type: "",
+    office_length: "",
+    price: "",
     open_hour: "",
     close_hour: "",
-    lat: "",
-    lng: "",
+    lat: lat,
+    lng: lng,
     accommodate: "",
     working_desk: "",
     meeting_room: "",
@@ -114,8 +174,8 @@ const AddOffice = () => {
     city: "",
     district: "",
     address: "",
-    images: images,
-    facilities_id: facilities_id,
+    images: [],
+    facilities_id: "",
   });
   const handleChangeData = (ev) => {
     setData({
@@ -127,17 +187,12 @@ const AddOffice = () => {
   const handleSelectedCity = (evt) => {
     const checked = evt.target.value;
     setCity(checked);
-    console.log(checked);
-    // const index = citys.findIndex((city) => +city === region);
     const index = citys.indexOf(checked);
-    // setIndexCity(index);
     setDistrict(jakartaLits[index].district);
   };
 
   const handleSelectedDistrict = (evt) => {
     const checked = evt.target.value;
-    // setDistrict(checked)
-    // setDistrict(checked);
   };
 
   const getLocation = () => {
@@ -164,51 +219,67 @@ const AddOffice = () => {
       return list.push(city.city);
     });
     setCitys(list);
-    // Lock City
     setDistrict(jakartaLits[0].district);
   }, [dataJakarta]);
-  // console.log(lat, lng);
-  // console.log(data);
-  // console.log(imageUpload.name);
+  const preventMinus = (e) => {
+    if (e.code === "Minus") {
+      e.preventDefault();
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const images = imageUpload;
-    // const fasilitas_id = facilities_id.facilities;
-    // const {title,
-    //   description,
-    //   office_type,
-    //   office_length,
-    //   price,
-    //   open_hour,
-    //   close_hour,
-    //   lat,
-    //   lng,
-    //   accommodate,
-    //   working_desk,
-    //   meeting_room,
-    //   private_room,
-    //   city,
-    //   district,
-    //   address,
-    //   images,
-    //   facilities_id} = data
-    // dispatch(createOffice());
-    axios
-      .post(
-        "https://api-better-space-staging.herokuapp.com/api/v1/admin/offices/create",
-        {
-          data,
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("office_type", data.office_type);
+    formData.append("office_length", data.office_length);
+    formData.append("price", data.price);
+    formData.append("open_hour", data.open_hour);
+    formData.append("close_hour", data.close_hour);
+    formData.append("lat", data.lat);
+    formData.append("lng", data.lng);
+    formData.append("accommodate", data.accommodate);
+    formData.append("working_desk", data.working_desk);
+    formData.append("meeting_room", data.meeting_room);
+    formData.append("private_room", data.private_room);
+    formData.append("city", data.city);
+    formData.append("district", data.district);
+    formData.append("address", data.address);
+    formData.append("facilities_id", data.facilities_id);
+    imageFiles.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    try {
+      dispatch(createOffice(formData));
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Add Office Success",
+        showConfirmButton: false,
+        timer: 1000,
       });
+      setTimeout(() => {
+        navitage("/admin-dashboard/office");
+      }, 1500);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Add Office Failed",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+    }
   };
+
   return (
     <>
+      <Helmet>
+        <title>Dashboard | Add Offices</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className="flex flex-col w-full">
         <div className="flex justify-start px-8 py-4 w-full bg-white rounded-2xl shadow">
           <Link to={"/admin-dashboard/office"}>
@@ -236,6 +307,7 @@ const AddOffice = () => {
                 label="Full Name"
                 placeholder="Full Name"
                 onChange={(ev) => handleChangeData(ev)}
+                required
               />
             </div>
             <div className="pb-6 flex-col text-start">
@@ -279,7 +351,7 @@ const AddOffice = () => {
                     type="radio"
                     value="meeting room"
                     onChange={(ev) => handleChangeData(ev)}
-                    name="type"
+                    name="office_type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -298,6 +370,8 @@ const AddOffice = () => {
                   type="number"
                   label="Price(Rp)"
                   placeholder="Price(Rp)"
+                  min="0"
+                  onKeyPress={preventMinus}
                   onChange={(ev) => handleChangeData(ev)}
                 />
               </div>
@@ -307,15 +381,13 @@ const AddOffice = () => {
                     id="inline-radio"
                     type="radio"
                     value="month"
-                    name="time"
-                    onChange={(ev) => handleChangeData(ev)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="inline-radio"
                     className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
-                    / month
+                    / hour
                   </label>
                 </div>
                 <div className="flex items-center">
@@ -323,8 +395,6 @@ const AddOffice = () => {
                     id="inline-2-radio"
                     type="radio"
                     value="month"
-                    name="time"
-                    onChange={(ev) => handleChangeData(ev)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -381,14 +451,12 @@ const AddOffice = () => {
                   onChange={(ev) => handleChangeData(ev)}
                   className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                 >
-                  {/* <option selected>Region</option> */}
-                  {/* <option value={"DKI Jakarta"} id="regionIndex" selected>DKI Jakarta</option> */}
                   {jakartaLits.map((city, index) => {
                     return (
                       <option
                         value={city.city}
-                        id="regionIndex"
                         key={index}
+                        id="regionIndex"
                         index={index}
                       >
                         {city.city}
@@ -460,34 +528,50 @@ const AddOffice = () => {
                   id="dropzone-file"
                   type="file"
                   name="images"
+                  accept="image/jpg, image/jpeg"
                   multiple
-                  onChange={(ev) => handleUploadImages(ev)}
+                  onChange={(e) => handleUploadImages(e)}
                   className="hidden"
                 />
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <svg
-                    aria-hidden="true"
-                    className="w-10 h-10 mb-3 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                    ></path>
-                  </svg>
-                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span> or
-                    drag and drop
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    SVG, PNG, JPG or GIF (MAX. 800x400px)
-                  </p>
-                </div>
+
+                {images.length > 0 ? (
+                  <div className="flex items-center gap-2">
+                    {images.map((image, index) => (
+                      <div key={index}>
+                        <img
+                          src={image}
+                          className="max-w-[90px]"
+                          alt="preview"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      aria-hidden="true"
+                      className="w-10 h-10 mb-3 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      ></path>
+                    </svg>
+                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      JPG or JPEG (MAX. 800x400px)
+                    </p>
+                  </div>
+                )}
               </label>
             </div>
             <div className="w-full flex justify-between">

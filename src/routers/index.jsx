@@ -9,6 +9,7 @@ import {
   EditOffice,
   AddOffice,
 } from "components";
+import NotFoundPage from "pages/NotFoundPage";
 import TeamPage from "pages/TeamPage";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
@@ -42,6 +43,7 @@ const SetupRouters = () => {
       </Route>
 
       {/*Notfound Routes*/}
+      <Route path="*" element={<NotFoundPage />} />
       <Route />
     </Routes>
   );

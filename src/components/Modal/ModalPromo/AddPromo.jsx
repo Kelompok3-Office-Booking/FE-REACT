@@ -27,8 +27,14 @@ const AddPromo = () => {
     }
 
     const handleSubmit = (ev) => {
-        const { nominal, periode, voucher_code } = data;
-        dispatch(createPromo({ voucher_code, nominal, periode }));
+        // const { nominal, periode, voucher_code } = data;
+        dispatch(createPromo({
+            objects: {
+                voucher_code: data.voucher_code,
+                periode: data.periode,
+                nominal: data.nominal,
+            }
+        }));
     };
 
     return (
@@ -41,7 +47,7 @@ const AddPromo = () => {
             {
                 modal && (
                     <div className="flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-20 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full">
-                        <div className="bg-white rounded-2xl px-20 py-12 w-1/2 absolute z-50 drop-shadow-4xl transform -translate-y-0 scale-90 transition-opacity transition-transform duration-300 center">
+                        <div className="bg-white rounded-2xl px-20 py-12 w-1/2 absolute z-50 transform -translate-y-0 scale-90 transition-opacity transition-transform duration-300 center">
                             <div className="absolute">
                                 <button onClick={HandleModal}>
                                     <CloseOutlined className="relative text-xl -top-6 right-12" />

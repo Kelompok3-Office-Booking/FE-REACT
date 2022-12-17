@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
+import { deleteTransaction, fetchTransaction, transactionSelectors } from "store/Feature/FeatureTransaction/transactionSlice";
 import DeleteAlert from "components/Alert/deleteAlert";
 import ModalUpdateTransaksi from "components/Modal/ModalTransaksi";
 import DeleteAllData from "components/Alert/deleteAllData";
@@ -10,30 +10,130 @@ import THead from "./tableHeader";
 import { ContentTableLoader } from "components";
 import { Helmet } from "react-helmet";
 import { Pagination } from "antd";
-import DeleteTransaction from "components/Modal/ModalTransaksi/DeleteTransaction";
-import { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
+import jsConvert from 'js-convert-case';
+import CurrencyFormat from 'react-currency-format';
+import CloseIcon from '@mui/icons-material/Close';
+import { checkbox } from "assets";
+import Swal from "sweetalert2";
+
+const useSortableData = (items, config = null) => {
+  const [sortConfig, setSortConfig] = useState(config);
+
+  // console.log(items);
+  const sortedItems = useMemo(() => {
+    const { id, user, office, check_in, price, status } = items;
+    let sortableItems = [...items];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [items, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  return { items: sortedItems, requestSort };
+};
 
 const TransactionPage = () => {
   const dispatch = useDispatch();
-  const listOfTransaction = useSelector((state) => state.transaction);
-  const [loading, setLoading] = useState(false);
+  const listOfTransaction = useSelector((state) => state.transactions.data);
+  const [loading, setLoading] = useState(true);
   const pageSize = 6;
 
   const [dataTransaksi, setDataTransaksi] = useState({
     minValue: 0,
     maxValue: 20,
   });
+  const [transaksiList, setTransaksiList] = useState(listOfTransaction);
+  const { items, requestSort, sortConfig } = useSortableData(transaksiList);
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [isCheck, setIsCheck] = useState([]);
+  const [searchWords, setSearchWords] = useState("");
+  const [modal, setModal] = useState(false);
 
-  const [user, setUser] = [];
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
+
+  const handleSelectAll = () => {
+    setIsCheckAll(!isCheckAll);
+    setIsCheck(transaksiList.map((transaksi) => transaksi.id));
+    if (isCheckAll) {
+      setIsCheck([]);
+    }
+  };
+
+  const handleClickCheck = (ev) => {
+    // setIsCheckAll(!isCheckAll);
+    const { id, checked } = ev.target;
+    setIsCheck([...isCheck, id]);
+    if (!checked) {
+      setIsCheck(isCheck.filter((item) => item !== id));
+    }
+  };
 
   useEffect(() => {
-    dispatch(fetchTransaction());
-    setLoading(false);
+    dispatch(fetchTransaction())
+      .then((res) => {
+        if (searchWords === "") {
+          setTransaksiList(res.payload);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     setDataTransaksi({
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch, loading, user]);
+
+    const loweredSearchedWords = searchWords.toLowerCase();
+    const updatedTransaksiList = [];
+    if (searchWords !== "") {
+      listOfTransaction.forEach((transaksi) => {
+        const loweredFullName = transaksi.user.full_name.toLowerCase();
+        const loweredType = transaksi.office.office_type;
+        const loweredStatus = transaksi.status;
+        const loweredDate = transaksi.check_in.date;
+        if (
+          loweredFullName.includes(loweredSearchedWords) ||
+          loweredType.includes(loweredSearchedWords) ||
+          loweredStatus.includes(loweredSearchedWords) ||
+          loweredDate.includes(loweredSearchedWords)
+        ) {
+          updatedTransaksiList.push(transaksi);
+        }
+      });
+      setTransaksiList(updatedTransaksiList);
+      setLoading(false);
+    } else {
+      setTransaksiList(listOfTransaction);
+    }
+  }, [dispatch, searchWords]);
 
   const HANDLEDELETE = (id) => {
     DeleteAlert(id);
@@ -42,8 +142,21 @@ const TransactionPage = () => {
     DeleteAllData();
   };
 
+  const HandleModal = () => {
+    setModal(true);
+    setTimeout(() => {
+      setModal(false);
+    }, 1000);
+  };
+
   const setReload = () => {
     setLoading(true);
+    setTimeout(() => {
+      dispatch(fetchTransaction()).then((res) => {
+        setTransaksiList(res.payload);
+      });
+      setLoading(false);
+    }, 3000);
   };
 
   const handleChange = (value) => {
@@ -53,6 +166,90 @@ const TransactionPage = () => {
     });
   };
 
+  const handleSearch = (ev) => {
+    setSearchWords(ev.target.value);
+  };
+
+  const handleDelete = (id) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(deleteTransaction(id));
+            setReload();
+            Swal.fire(
+              {
+                icon: "success",
+                title: "Deleted!",
+                text: "Your data has been deleted.",
+                showConfirmButton: false,
+                timer: 1200
+              }
+            );
+            toast.custom((t) => (
+              <div
+                className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                <div className="flex-1 w-0 p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5">
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={checkbox}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-3 flex-col text-start">
+                      <p className="text-sm font-bold text-success">
+                        Success
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500">
+                        Successfully Deleted
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex border-gray-200">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              </div>
+            ))
+            return result;
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Delete is Failed ",
+            });
+          }
+        }
+      });
+  }
+
+  // console.log(listOfTransaction)
   return (
     <>
       <Helmet>
@@ -67,7 +264,7 @@ const TransactionPage = () => {
           <div className="flex justify-between items-center rounded-2xl py-4 bg-white px-4">
             <div className="flex">
               <h1 className="inline pr-4 text-base my-auto text-neutral-500">
-                ({listOfTransaction.data?.length}) Record Found
+                ({transaksiList?.length}) Record Found
               </h1>
 
               <button
@@ -101,78 +298,100 @@ const TransactionPage = () => {
               <input
                 type="text"
                 id="table-search-users"
+                onChange={(ev) => handleSearch(ev)}
                 className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search for users"
+                placeholder="Search for Transaction"
               />
             </div>
           </div>
           <table className="w-full text-sm text-left text-gray-500 ">
-            <THead />
-            <tbody>
-              {loading ? (
-                <ContentTableLoader />
-              ) : (
-                listOfTransaction &&
-                listOfTransaction.data?.length > 0 &&
-                listOfTransaction.data
-                  ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
-                  .map((transaction) => (
-                    <tr
-                      className="bg-white border-b hover:bg-gray-50"
-                      key={transaction.id}
-                    >
-                      <td className="p-4 w-4">
-                        <div className="flex items-center">
-                          <input
-                            id="checkbox-table-search-1"
-                            type="checkbox"
-                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                          />
-                          <label
-                            htmlFor="checkbox-table-search-1"
-                            className="sr-only"
-                          >
-                            checkbox
-                          </label>
-                        </div>
-                      </td>
-                      <td className="py-4 px-6">{transaction.id}</td>
-                      <td className="py-4 px-6">
-                        {transaction.user?.fullName}
-                      </td>
-                      <td className="py-4 px-6">{transaction.type}</td>
-                      <td className="py-4 px-6">{transaction.date}</td>
-                      <td className="py-4 px-6">{transaction.nominal}</td>
-                      <td id="status" className="py-4 px-6">
-                        <span
-                          className={`${transaction.status === "On Process"
+            {loading ? (
+              <ContentTableLoader />
+            ) : (
+              <>
+                <THead
+                  handleSelectAll={handleSelectAll}
+                  isChecked={isCheckAll}
+                  requestSort={requestSort}
+                  getClassNamesFor={getClassNamesFor}
+                />
+                <tbody>
+                  {items
+                    ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
+                    .map((transaction) => (
+                      <tr
+                        className="bg-white border-b hover:bg-gray-50"
+                        key={transaction.id}
+                      >
+                        <td className="p-4 w-4">
+                          <div className="flex items-center">
+                            <input
+                              id="checkbox-table-search-1"
+                              type="checkbox"
+                              checked={isCheckAll ? true : transaction.checked}
+                              // checked={isCheckAll ? !isCheckAll : user.checked}
+                              onChange={handleClickCheck}
+                              className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                            />
+                            <label
+                              htmlFor="checkbox-table-search-1"
+                              className="sr-only"
+                            >
+                              checkbox
+                            </label>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6">{transaction.id}</td>
+                        <td className="py-4 px-3">
+                          {transaction.user.full_name}
+                          {/* {console.log(transaction.user_id)} */}
+                        </td>
+                        <td className="py-4 px-6">{jsConvert.toHeaderCase(transaction.office.office_type)}</td>
+                        <td className="py-4 px-6">{transaction.check_in.date}</td>
+                        <td className="py-4 px-6">{transaction.check_in.time}</td>
+                        <td className="py-4 px-6 items-center">
+                          <CurrencyFormat value={transaction.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => <div>{value}</div>} />
+                        </td>
+                        <td id="status" className="py-4 px-6">
+                          <span
+                            className={`${jsConvert.toHeaderCase(transaction.status) === "On Process"
                               ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
-                              : transaction.status === "Confirmed"
+                              : jsConvert.toHeaderCase(transaction.status) === "Confirmed"
                                 ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
-                                : transaction.status === "Pending"
-                                  ? "bg-gray-200 rounded-2xl border-2 border-gray-300 py-1 px-4"
-                                  : transaction.status === "Cancelled"
-                                    ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                                    : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
-                            }`}
-                        >
-                          {transaction.status}
-                        </span>
-                      </td>
-                      <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                        {/* Modal toggle */}
-                        <ModalViewTransaction />
-                        <DeleteTransaction
-                          idTransaksi={transaction.id}
-                          loading={loading}
-                          setReload={setReload}
-                        />
-                        <ModalUpdateTransaksi />
-                      </td>
-                    </tr>
-                  ))
-              )}
-            </tbody>
+                                : jsConvert.toHeaderCase(transaction.status) === "Pending"
+                                  ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                                  : jsConvert.toHeaderCase(transaction.status) === "Accepted"
+                                    ? "bg-success bg-opacity-30 rounded-2xl border-2 border-success py-1 px-4"
+                                    : jsConvert.toHeaderCase(transaction.status) === "Cancelled"
+                                      ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                                      : jsConvert.toHeaderCase(transaction.status) === "Rejected"
+                                        ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                                        : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
+                              }`}
+                          >
+                            {jsConvert.toHeaderCase(transaction.status)}
+                          </span>
+                        </td>
+                        <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                          <ModalViewTransaction dataTransaksi={transaction} />
+                          <button
+                            href="#"
+                            onClick={() => handleDelete(transaction.id)}
+                            type="button"
+                            data-modal-toggle="editUserModal"
+                            className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
+                          >
+                            <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                          </button>
+                          <ModalUpdateTransaksi dataTransaksi={transaction} setReload={setReload} />
+                        </td>
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </>
+            )}
+
           </table>
         </div>
         <div className="mt-8 text-start">
@@ -180,7 +399,7 @@ const TransactionPage = () => {
             defaultCurrent={1}
             defaultPageSize={pageSize}
             // current={dataReview.current}
-            total={listOfTransaction.data?.length}
+            total={transaksiList?.length}
             onChange={handleChange}
           />
         </div>
