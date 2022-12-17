@@ -343,11 +343,11 @@ const TransactionPage = () => {
                         </td>
                         <td className="py-4 px-6">{transaction.id}</td>
                         <td className="py-4 px-3">
-                          {transaction.user.full_name}
+                          {transaction.user_full_name}
                           {/* {console.log(transaction.user_id)} */}
                         </td>
-                        <td className="py-4 px-6">{jsConvert.toHeaderCase(transaction.office.office_type)}</td>
-                        <td className="py-4 px-6">{transaction.check_in.date}</td>
+                        <td className="py-4 px-6">{jsConvert.toHeaderCase(transaction.offices_office_type)}</td>
+                        <td className="py-4 px-6">{transaction.check_in_date}</td>
                         <td className="py-4 px-6">{transaction.check_in.time}</td>
                         <td className="py-4 px-6 items-center">
                           <CurrencyFormat value={transaction.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => <div>{value}</div>} />
