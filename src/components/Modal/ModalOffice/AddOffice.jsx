@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { dataJakarta } from "store/dataJakarta";
+import { useDispatch } from "react-redux";
+import { createOffice } from "store/Feature/FeatureOffice/officeSlice";
+import axios from "axios";
 
 const InputField = ({
   name,
@@ -51,88 +54,74 @@ const fasilitas_office = [
 ];
 
 const AddOffice = () => {
+  const dispatch = useDispatch();
   const [jakartaLits, setJakartaList] = useState(dataJakarta);
   const [citys, setCitys] = useState([]);
 
   const [city, setCity] = useState("Central Jakarta");
-  // const [indexCity, setIndexCity] = useState();
   const [district, setDistrict] = useState([]);
-  // const [city, setCity] = useState("");
 
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
-
-  const [data, setData] = useState({
-    office_id: "",
-    full_name: "",
-    type: "",
-    price: 0,
-    time: "",
-    open: "",
-    close: "",
-    name: "",
-    description: "",
-    length: "",
-    city: "",
-    district: "",
-    address: "",
-    latitude: "",
-    longitude: "",
-    accommodate: "",
-    working_desk: "",
-    meeting_room: "",
-    private_room: "",
-  });
-
-  const [imageUpload, setImageUpload] = useState([]);
-
-  const [officeFacility, setOfficeFacility] = useState({
-    facilities: [],
-  });
+  const [images, setImages] = useState([]);
+  const [facilities_id, setFacilitiesId] = useState([]);
 
   const handleChangeFacilities = (ev) => {
     // Destructuring gess
     const { value, checked } = ev.target;
-    const { facilities } = officeFacility;
+    // const { facilities } = facilities_id;
 
     console.log(`${value} is ${checked}`);
 
     if (checked) {
-      setOfficeFacility({
-        facilities: [...facilities, value],
-      });
+      for (let i = 0; i < ev.target.value.length; i++) {
+        facilities_id.push(value[i]);
+      }
+      setFacilitiesId(facilities_id);
     } else {
-      setOfficeFacility({
-        facilities: facilities.filter((ev) => ev !== value),
-      });
+      for (let i = 0; i < facilities_id.length; i++) {
+        if (facilities_id[i] === value[i]) {
+          facilities_id.splice(i, value[i]);
+          i--;
+        }
+      }
+      // setFacilitiesId(facilities_id);
     }
   };
 
-  const onImageUpload = (ev) => {
-    const imageUpload = [];
+  const handleUploadImages = (ev) => {
     for (let i = 0; i < ev.target.files.length; i++) {
-      imageUpload.push(ev.target.files[i]);
+      images.push(ev.target.files[i]);
     }
-    setImageUpload(imageUpload);
-    console.log(imageUpload);
+    setImages(images);
+    console.log(images);
   };
-
+  const [data, setData] = useState({
+    title: "",
+    description: 0,
+    office_type: 0,
+    office_length: 0,
+    price: 0,
+    open_hour: "",
+    close_hour: "",
+    lat: "",
+    lng: "",
+    accommodate: "",
+    working_desk: "",
+    meeting_room: "",
+    private_room: "",
+    city: "",
+    district: "",
+    address: "",
+    images: images,
+    facilities_id: facilities_id,
+  });
   const handleChangeData = (ev) => {
     setData({
       ...data,
       [ev.target.name]: ev.target.value,
     });
-  };
-
-  const handleSelectedRegion = (evt) => {
-    const checked = evt.target.value;
-    setCity(checked);
-    console.log(checked);
-    // const index = citys.findIndex((city) => +city === region);
-    const index = citys.indexOf(checked);
-    // setIndexCity(index);
-    setDistrict(jakartaLits[index].district);
   };
 
   const handleSelectedCity = (evt) => {
@@ -148,6 +137,7 @@ const AddOffice = () => {
   const handleSelectedDistrict = (evt) => {
     const checked = evt.target.value;
     // setDistrict(checked)
+    // setDistrict(checked);
   };
 
   const getLocation = () => {
@@ -167,11 +157,56 @@ const AddOffice = () => {
       );
     }
   };
-
+  useEffect(() => {
+    setJakartaList(dataJakarta);
+    const list = [];
+    jakartaLits.map((city) => {
+      return list.push(city.city);
+    });
+    setCitys(list);
+    // Lock City
+    setDistrict(jakartaLits[0].district);
+  }, [dataJakarta]);
   // console.log(lat, lng);
   // console.log(data);
-  console.log(data);
   // console.log(imageUpload.name);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // const images = imageUpload;
+    // const fasilitas_id = facilities_id.facilities;
+    // const {title,
+    //   description,
+    //   office_type,
+    //   office_length,
+    //   price,
+    //   open_hour,
+    //   close_hour,
+    //   lat,
+    //   lng,
+    //   accommodate,
+    //   working_desk,
+    //   meeting_room,
+    //   private_room,
+    //   city,
+    //   district,
+    //   address,
+    //   images,
+    //   facilities_id} = data
+    // dispatch(createOffice());
+    axios
+      .post(
+        "https://api-better-space-staging.herokuapp.com/api/v1/admin/offices/create",
+        {
+          data,
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <>
       <div className="flex flex-col w-full">
@@ -181,19 +216,23 @@ const AddOffice = () => {
           </Link>
           <h1 className="text-2xl font-bold my-auto">Add Office</h1>
         </div>
-        <form className="bg-white rounded-2xl shadow w-full py-4 px-4 justify-between flex mt-8">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl shadow w-full py-4 px-4 justify-between flex mt-8"
+        >
           <div className="mx-2 mt-4 mb-4 w-1/2">
             <div className="pb-6">
               <InputField
                 name="office_id"
                 label="Office ID"
                 placeholder="Office ID"
+                disabled={true}
                 onChange={(ev) => handleChangeData(ev)}
               />
             </div>
             <div className="pb-6">
               <InputField
-                name="full_name"
+                name="title"
                 label="Full Name"
                 placeholder="Full Name"
                 onChange={(ev) => handleChangeData(ev)}
@@ -206,9 +245,9 @@ const AddOffice = () => {
                   <input
                     id="inline-radio"
                     type="radio"
-                    value="Office"
+                    value="office"
                     onChange={(ev) => handleChangeData(ev)}
-                    name="type"
+                    name="office_type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -222,9 +261,9 @@ const AddOffice = () => {
                   <input
                     id="inline-2-radio"
                     type="radio"
-                    value="Coworking"
+                    value="coworking space"
                     onChange={(ev) => handleChangeData(ev)}
-                    name="type"
+                    name="office_type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
@@ -238,7 +277,7 @@ const AddOffice = () => {
                   <input
                     id="inline-checked-radio"
                     type="radio"
-                    value="Meeting Room"
+                    value="meeting room"
                     onChange={(ev) => handleChangeData(ev)}
                     name="type"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -300,7 +339,7 @@ const AddOffice = () => {
             <div className="w-full flex">
               <div className="pb-6 w-full">
                 <InputField
-                  name="open"
+                  name="open_hour"
                   label="Open"
                   placeholder="Open"
                   type="time"
@@ -309,7 +348,7 @@ const AddOffice = () => {
               </div>
               <div className="pb-6 w-full ml-8">
                 <InputField
-                  name="close"
+                  name="close_hour"
                   label="Close"
                   placeholder="Close"
                   type="time"
@@ -319,7 +358,7 @@ const AddOffice = () => {
             </div>
             <div className="pb-6 w-full">
               <InputField
-                name="length"
+                name="office_length"
                 label="Length"
                 placeholder="Length"
                 onChange={(ev) => handleChangeData(ev)}
@@ -393,7 +432,7 @@ const AddOffice = () => {
             <div className="pb-6 w-full flex justify-between">
               <div className="w-full">
                 <InputField
-                  name="latitude"
+                  name="lat"
                   label="Latitude"
                   placeholder="Latitude"
                   onClick={getLocation}
@@ -403,7 +442,7 @@ const AddOffice = () => {
               </div>
               <div className="w-full ml-8">
                 <InputField
-                  name="longitude"
+                  name="lng"
                   label="Longitude"
                   placeholder="Longitude"
                   onClick={getLocation}
@@ -417,6 +456,14 @@ const AddOffice = () => {
                 htmlFor="dropzone-file"
                 className="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
               >
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  name="images"
+                  multiple
+                  onChange={(ev) => handleUploadImages(ev)}
+                  className="hidden"
+                />
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <svg
                     aria-hidden="true"
@@ -441,13 +488,6 @@ const AddOffice = () => {
                     SVG, PNG, JPG or GIF (MAX. 800x400px)
                   </p>
                 </div>
-                <input
-                  id="dropzone-file"
-                  type="file"
-                  name="image"
-                  onChange={(ev) => onImageUpload(ev)}
-                  className="hidden"
-                />
               </label>
             </div>
             <div className="w-full flex justify-between">
@@ -555,8 +595,8 @@ const AddOffice = () => {
                     onChange={handleChangeFacilities}
                     id="default-checkbox"
                     type="checkbox"
-                    value={index}
-                    name="facilities"
+                    value={index + 1}
+                    name="facilities_id"
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
