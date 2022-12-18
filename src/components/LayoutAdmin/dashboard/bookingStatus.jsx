@@ -31,9 +31,16 @@ const BookingStatus = () => {
 
   const setReload = () => {
     setLoading(true);
+    const updateListOnProcess = [];
     dispatch(fetchTransaction()).then((res) => {
-      setTransaksiList(res.payload);
+      res.payload.forEach((transaksi) => {
+        const loweredStatus = transaksi.status.toLowerCase();
+        if (loweredStatus.includes("on process")) {
+          updateListOnProcess.push(transaksi)
+        }
+      })
     });
+    setTransaksiList(updateListOnProcess);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
