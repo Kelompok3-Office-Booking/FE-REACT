@@ -18,7 +18,6 @@ export const fetchPromo = createAsyncThunk("fetch/promo", async() => {
 export const createPromo = createAsyncThunk("create/promo", async(data) => {
     try {
         const res = await APIPromo.createPromo(data);
-        // console.log(res);
         return res;
     } catch (err) {
         console.log(err);
@@ -28,7 +27,6 @@ export const createPromo = createAsyncThunk("create/promo", async(data) => {
 export const updatePromo = createAsyncThunk("update/promo", async(data) => {
     try {
         const res = await APIPromo.updatePromo(data);
-        // console.log(res);
         return res;
     } catch (err) {
         console.log(err);
@@ -38,7 +36,6 @@ export const updatePromo = createAsyncThunk("update/promo", async(data) => {
 export const deletePromo = createAsyncThunk("delete/promo", async(id) => {
     try {
         const res = await APIPromo.deletePromo(id);
-        // console.log(res);
         return res;
     } catch (err) {
         console.log(err);
@@ -81,7 +78,6 @@ const promoSlice = createSlice({
             })
             .addCase(createPromo.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                // const { nominal, periode, voucher_code } = action.payload;
                 state.data = action.payload;
             })
             .addCase(createPromo.rejected, (state, action) => {

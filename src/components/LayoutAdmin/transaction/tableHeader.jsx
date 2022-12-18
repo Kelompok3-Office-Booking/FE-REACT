@@ -33,8 +33,8 @@ export default function THead({ handleSelectAll, isChecked, getClassNamesFor, re
             <div className="flex items-center">
               Full Name
               <button
-                onClick={() => requestSort(`full_name`)}
-                className={getClassNamesFor('full_name')}
+                onClick={() => requestSort(`user_full_name`)}
+                className={getClassNamesFor('user_full_name')}
               >
                 <img src={Arrow} alt="arrow" />
               </button>
@@ -44,8 +44,8 @@ export default function THead({ handleSelectAll, isChecked, getClassNamesFor, re
             <div className="flex items-center">
               Type
               <button
-                onClick={() => requestSort('office_type')}
-                className={getClassNamesFor('office_type')}
+                onClick={() => requestSort('offices_office_type')}
+                className={getClassNamesFor('offices_office_type')}
               >
                 <img src={Arrow} alt="arrow" />
               </button>
@@ -55,8 +55,8 @@ export default function THead({ handleSelectAll, isChecked, getClassNamesFor, re
             <div className="flex items-center">
               Date
               <button
-                onClick={() => requestSort('date')}
-                className={getClassNamesFor('date')}
+                onClick={() => requestSort('check_in_date')}
+                className={getClassNamesFor('check_in_date')}
               >
                 <img src={Arrow} alt="arrow" />
               </button>

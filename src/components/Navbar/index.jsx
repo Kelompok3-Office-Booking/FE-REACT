@@ -13,7 +13,6 @@ const Navbar = () => {
   const [navbar, setNavbar] = useState(true);
 
   const changeBackground = () => {
-    // console.log(window.scrollY);
     if (window.scrollY > 0) {
       setNavbar(false);
     } else {
@@ -30,10 +29,6 @@ const Navbar = () => {
   useEffect(() => {
     setNavbar(true);
   }, []);
-
-  // const handleScroll = (ev) => {
-  //   console.log(window.scrollY);
-  // }
 
   return (
     <>
@@ -105,9 +100,6 @@ const Navbar = () => {
                       ? {
                         color: "#1d4ed8",
                         fontWeight: "bold",
-                        // textDecoration: "underline",
-                        // margin: "12px",
-                        // marginBottom: "12px"
                         transition:
                           "box-shadow 0.2s ease 0s, color 0.2s ease 0",
                       }
@@ -128,9 +120,6 @@ const Navbar = () => {
                       ? {
                         color: "#1d4ed8",
                         fontWeight: "bold",
-                        // textDecoration: "underline",
-                        // margin: "12px",
-                        // marginBottom: "12px"
                         transition:
                           "box-shadow 0.2s ease 0s, color 0.2s ease 0",
                       }
@@ -151,9 +140,6 @@ const Navbar = () => {
                       ? {
                         color: "#1d4ed8",
                         fontWeight: "bold",
-                        // textDecoration: "underline",
-                        // margin: "12px",
-                        // marginBottom: "12px"
                         transition:
                           "box-shadow 0.2s ease 0s, color 0.2s ease 0",
                       }
@@ -174,9 +160,6 @@ const Navbar = () => {
                       ? {
                         color: "#1d4ed8",
                         fontWeight: "bold",
-                        // textDecoration: "underline",
-                        // margin: "12px",
-                        // marginBottom: "12px"
                         transition:
                           "box-shadow 0.2s ease 0s, color 0.2s ease 0",
                       }

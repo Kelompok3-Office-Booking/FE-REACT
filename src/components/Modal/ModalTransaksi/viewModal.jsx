@@ -51,9 +51,6 @@ const ModalViewTransaction = (
     setModal(!modal);
   };
 
-  // var CurrencyFormat = require('react-currency-format');
-  // console.log(ppn);
-
   return (
     <>
       <button

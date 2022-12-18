@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { createOffice } from "store/Feature/FeatureOffice/officeSlice";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
+import CurrencyInput from "react-currency-input-field";
 
 const InputField = ({
   name,
@@ -32,6 +33,41 @@ const InputField = ({
       onClick={onClick}
       defaultValue={defaultValue}
       required
+    />
+    <label
+      htmlFor="floating_outlined"
+      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+    >
+      {label}
+    </label>
+  </div>
+);
+
+const CurrencyField = ({
+  name,
+  label,
+  placeholder,
+  defaultValue,
+  onClick,
+  onValueChange,
+  className = "border-gray-400",
+  type = "text",
+  disabled,
+}) => (
+  <div className="relative">
+    <CurrencyInput
+      type={type}
+      id="floating_outlined"
+      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+      placeholder={placeholder}
+      name={name}
+      prefix={"Rp."}
+      onClick={onClick}
+      defaultValue={defaultValue}
+      onValueChange={onValueChange}
+      autoComplete="off"
+      min="0"
+      disabled={disabled}
     />
     <label
       htmlFor="floating_outlined"
@@ -144,8 +180,8 @@ const AddOffice = () => {
             setData({ ...data, images: images });
           }
         })
-        .catch((reason) => {
-          console.log(reason);
+        .catch((err) => {
+          console.log(err);
         });
     }
     return () => {
@@ -177,10 +213,18 @@ const AddOffice = () => {
     images: [],
     facilities_id: "",
   });
+
   const handleChangeData = (ev) => {
     setData({
       ...data,
       [ev.target.name]: ev.target.value,
+    });
+  };
+
+  const setHandleValuePrice = (value) => {
+    setData({
+      ...data,
+      price: value,
     });
   };
 
@@ -212,6 +256,7 @@ const AddOffice = () => {
       );
     }
   };
+
   useEffect(() => {
     setJakartaList(dataJakarta);
     const list = [];
@@ -221,6 +266,7 @@ const AddOffice = () => {
     setCitys(list);
     setDistrict(jakartaLits[0].district);
   }, [dataJakarta]);
+
   const preventMinus = (e) => {
     if (e.code === "Minus") {
       e.preventDefault();
@@ -365,15 +411,14 @@ const AddOffice = () => {
             </div>
             <div className="pb-6 flex w-full">
               <div className="w-full">
-                <InputField
+                <CurrencyField
                   name="price"
-                  type="number"
                   label="Price(Rp)"
                   placeholder="Price(Rp)"
-                  min="0"
                   onKeyPress={preventMinus}
-                  onChange={(ev) => handleChangeData(ev)}
+                  onValueChange={(value, name) => setHandleValuePrice(value)}
                 />
+
               </div>
               <div className="flex mx-auto w-full ml-8">
                 <div className="flex items-center mx-12">
@@ -473,7 +518,6 @@ const AddOffice = () => {
                   onChange={(ev) => handleChangeData(ev)}
                   className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
-                  {/* <option selected>City</option> */}
                   {district.map((val, index) => {
                     return (
                       <option

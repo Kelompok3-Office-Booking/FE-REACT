@@ -13,7 +13,6 @@ import { checkbox } from "assets";
 const BookingStatus = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transactions.data);
-  // const listOfTransaction = useSelector((state) => state.transactions.data);
   const [transaksiList, setTransaksiList] = useState(listOfTransaction);
   const [loading, setLoading] = useState(true);
   const pageSize = 6;
@@ -32,41 +31,23 @@ const BookingStatus = () => {
 
   const setReload = () => {
     setLoading(true);
+    const updateListOnProcess = [];
+    dispatch(fetchTransaction()).then((res) => {
+      res.payload.forEach((transaksi) => {
+        const loweredStatus = transaksi.status.toLowerCase();
+        if (loweredStatus.includes("on process")) {
+          updateListOnProcess.push(transaksi)
+        }
+      })
+    });
+    setTransaksiList(updateListOnProcess);
     setTimeout(() => {
-      dispatch(fetchTransaction()).then((res) => {
-        setTransaksiList(res.payload);
-        const updateListOnProcess = [];
-        transaksiList.forEach((transaksi) => {
-          const loweredStatus = transaksi.status.toLowerCase();
-          if (loweredStatus.includes("on process")) {
-            updateListOnProcess.push(transaksi)
-          }
-        })
-        setTransaksiList(updateListOnProcess);
-        // setLoading(false);
-        // alert(transaksiList)
-      });
       setLoading(false);
-    }, 3000);
+    }, 1000);
   };
 
   useEffect(() => {
     dispatch(fetchTransaction())
-    //   .then((res) => {
-    //     const updateListOnProcess = [];
-    //     listOfTransaction.forEach((transaksi) => {
-    //       const loweredStatus = transaksi.status.toLowerCase();
-    //       if (loweredStatus.includes("on process")) {
-    //         updateListOnProcess.push(transaksi)
-    //       }
-    //     })
-    //     setTransaksiList(updateListOnProcess);
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
     const updateListOnProcess = [];
     transaksiList.forEach((transaksi) => {
       const loweredStatus = transaksi.status.toLowerCase();
@@ -83,53 +64,98 @@ const BookingStatus = () => {
     });
   }, [dispatch])
 
-  // console.log(transaksiList)
   const handleChangeReject = (ev, id) => {
     ev.preventDefault();
-    try {
-      dispatch(updateTransaction({ id, status: "rejected" }))
-      setReload();
-      Swal.fire(
-        {
-          icon: "success",
-          title: "Success!",
-          text: "Your data success updates.",
-          showConfirmButton: false,
-          timer: 1200
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: `Are you sure?`,
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(updateTransaction({ id, status: "rejected" }))
+            setReload();
+            Swal.fire(
+              {
+                icon: "success",
+                title: "Success!",
+                text: "Your data success updates.",
+                showConfirmButton: false,
+                timer: 1200
+              }
+            );
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Failed",
+              text: "Edit Transaction Fail",
+            });
+          }
         }
-      );
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: "Edit Transaction Fail",
       });
-    }
   }
 
   const handleChangeAccept = (ev, id) => {
     ev.preventDefault();
-    try {
-      dispatch(updateTransaction({ id, status: "accepted" }))
-      setReload();
-      Swal.fire(
-        {
-          icon: "success",
-          title: "Success!",
-          text: "Your data success updates.",
-          showConfirmButton: false,
-          timer: 1200
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: `Are you sure?`,
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(updateTransaction({ id, status: "accepted" }))
+            setReload();
+            Swal.fire(
+              {
+                icon: "success",
+                title: "Success!",
+                text: "Your data success updates.",
+                showConfirmButton: false,
+                timer: 1200
+              }
+            );
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Failed",
+              text: "Edit Transaction Fail",
+            });
+          }
         }
-      );
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: "Edit Transaction Fail",
       });
-    }
+
   }
-  // console.log(transaksiList);
 
   return (
     <>

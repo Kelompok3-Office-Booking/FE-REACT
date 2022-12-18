@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "store/Feature/FeatureUser/userSlice";
 import { fetchOffice } from "store/Feature/FeatureOffice/officeSlice";
 import { fetchTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
+import { fetchReview } from "store/Feature/FeatureReview/reviewSlice";
 
 const ItemsData = () => {
   const dispatch = useDispatch();
   const listOfUser = useSelector((state) => state.users.data);
   const listOfOffice = useSelector((state) => state.office.data);
   const listOfTransaction = useSelector((state) => state.transactions.data);
+  const listOfReview = useSelector((state) => state.reviews.data);
 
   useEffect(() => {
     dispatch(fetchUsers()).catch((err) => {
@@ -21,6 +23,9 @@ const ItemsData = () => {
     });
 
     dispatch(fetchTransaction()).catch((err) => {
+      console.log(err);
+    });
+    dispatch(fetchReview()).catch((err) => {
       console.log(err);
     });
   }, []);
@@ -105,7 +110,7 @@ const ItemsData = () => {
           </div>
           <div className="flex flex-col items-start justify-center pl-3">
             <div>
-              <h1 className="font-bold text-3xl">303</h1>
+              <h1 className="font-bold text-3xl">{listOfReview?.length}</h1>
               <p className="text-base font-normal text-neutral-400 text-left">
                 Review
               </p>

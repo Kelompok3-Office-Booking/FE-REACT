@@ -16,6 +16,7 @@ import { toast, Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import CloseIcon from "@mui/icons-material/Close";
 import { checkbox } from "assets";
+import CurrencyFormat from "react-currency-format";
 
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -174,11 +175,10 @@ const OfficePage = () => {
             setReload();
             toast.custom((t) => (
               <div
-                className={`${
-                  t.visible
-                    ? "animate-enter ease-in-out duration-200"
-                    : "animate-leave ease-in-out duration-200"
-                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                className={`${t.visible
+                  ? "animate-enter ease-in-out duration-200"
+                  : "animate-leave ease-in-out duration-200"
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
               >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
@@ -249,7 +249,7 @@ const OfficePage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -324,14 +324,15 @@ const OfficePage = () => {
                           <td className="py-4 px-6 text-center">{office.id}</td>
                           <td className="py-4 px-6">{office.title}</td>
                           <td className="py-4 px-6 ">{office.office_type}</td>
-                          <td className="py-4 px-6 text-center">
-                            {office.price} /Hour
+                          <td className="py-4 px-6 text-start">
+                            <CurrencyFormat className="hidden" value={office.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => <span>{value} </span>} />
+                            / Hour
                           </td>
                           <td className="py-4 px-6 text-center">
                             {office.office_length} Person
                           </td>
                           <td className="py-4 px-6 text-center">
-                            {office.accommodate}
+                            {office.total_booked}
                           </td>
                           <td className="py-4 px-6 flex gap-2 items-center justify-center">
                             <ViewOffice dataDetailOffice={office} />

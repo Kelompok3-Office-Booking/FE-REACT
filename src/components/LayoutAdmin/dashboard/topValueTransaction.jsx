@@ -31,7 +31,6 @@ const TopValueTransaction = () => {
     });
     setValueList(updateTopValueTransaksi);
     setLoading(false);
-    // console.log(priceAverage);
   }, [average]);
 
   return (
