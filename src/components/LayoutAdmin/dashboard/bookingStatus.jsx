@@ -3,11 +3,14 @@ import { ContentTableLoader } from "components";
 import jsConvert from "js-convert-case";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTransaction, updateTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
-import CurrencyFormat from 'react-currency-format';
+import {
+  fetchTransaction,
+  updateTransaction,
+} from "store/Feature/FeatureTransaction/transactionSlice";
+import CurrencyFormat from "react-currency-format";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { checkbox } from "assets";
 
 const BookingStatus = () => {
@@ -36,9 +39,9 @@ const BookingStatus = () => {
       res.payload.forEach((transaksi) => {
         const loweredStatus = transaksi.status.toLowerCase();
         if (loweredStatus.includes("on process")) {
-          updateListOnProcess.push(transaksi)
+          updateListOnProcess.push(transaksi);
         }
-      })
+      });
     });
     setTransaksiList(updateListOnProcess);
     setTimeout(() => {
@@ -47,14 +50,14 @@ const BookingStatus = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchTransaction())
+    dispatch(fetchTransaction());
     const updateListOnProcess = [];
     transaksiList.forEach((transaksi) => {
       const loweredStatus = transaksi.status.toLowerCase();
       if (loweredStatus.includes("on process")) {
-        updateListOnProcess.push(transaksi)
+        updateListOnProcess.push(transaksi);
       }
-    })
+    });
     setTransaksiList(updateListOnProcess);
     setLoading(false);
 
@@ -62,7 +65,7 @@ const BookingStatus = () => {
       minValue: 0,
       maxValue: 6,
     });
-  }, [dispatch])
+  }, [dispatch]);
 
   const handleChangeReject = (ev, id) => {
     ev.preventDefault();
@@ -88,17 +91,15 @@ const BookingStatus = () => {
       .then((result) => {
         if (result.isConfirmed) {
           try {
-            dispatch(updateTransaction({ id, status: "rejected" }))
+            dispatch(updateTransaction({ id, status: "rejected" }));
             setReload();
-            Swal.fire(
-              {
-                icon: "success",
-                title: "Success!",
-                text: "Your data success updates.",
-                showConfirmButton: false,
-                timer: 1200
-              }
-            );
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "Your data success updates.",
+              showConfirmButton: false,
+              timer: 1200,
+            });
           } catch (error) {
             Swal.fire({
               icon: "error",
@@ -108,7 +109,7 @@ const BookingStatus = () => {
           }
         }
       });
-  }
+  };
 
   const handleChangeAccept = (ev, id) => {
     ev.preventDefault();
@@ -134,17 +135,15 @@ const BookingStatus = () => {
       .then((result) => {
         if (result.isConfirmed) {
           try {
-            dispatch(updateTransaction({ id, status: "accepted" }))
+            dispatch(updateTransaction({ id, status: "accepted" }));
             setReload();
-            Swal.fire(
-              {
-                icon: "success",
-                title: "Success!",
-                text: "Your data success updates.",
-                showConfirmButton: false,
-                timer: 1200
-              }
-            );
+            Swal.fire({
+              icon: "success",
+              title: "Success!",
+              text: "Your data success updates.",
+              showConfirmButton: false,
+              timer: 1200,
+            });
           } catch (error) {
             Swal.fire({
               icon: "error",
@@ -154,8 +153,7 @@ const BookingStatus = () => {
           }
         }
       });
-
-  }
+  };
 
   return (
     <>
@@ -168,67 +166,92 @@ const BookingStatus = () => {
           </div>
           <div>
             <div className="overflow-x-auto relative">
-              <table className="w-full text-sm text-left text-gray-500 space-y-6 ">
-                {
-                  loading
-                    ?
-                    <ContentTableLoader />
-                    :
-                    <>
-                      <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
-                        <tr>
-                          <th scope="col" className="py-3 px-6 rounded-l-2xl">
-                            Date
-                          </th>
-                          <th scope="col" className="py-3 px-6">
-                            Name
-                          </th>
-                          <th scope="col" className="py-3 px-6">
-                            Type
-                          </th>
-                          <th scope="col" className="py-3 px-6">
-                            Office Name
-                          </th>
-                          <th scope="col" className="py-3 px-6">
-                            Price(Rp)
-                          </th>
-                          <th scope="col" className="py-3 px-6 rounded-r-2xl">
-                            Action
-                          </th>
+              {loading ? (
+                <ContentTableLoader />
+              ) : (
+                <table className="w-full text-sm text-left text-gray-500 space-y-6 ">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
+                    <tr>
+                      <th scope="col" className="py-3 px-6 rounded-l-2xl">
+                        Date
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Name
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Type
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Office Name
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Price(Rp)
+                      </th>
+                      <th scope="col" className="py-3 px-6 rounded-r-2xl">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transaksiList
+                      ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
+                      .map((transaksi) => (
+                        <tr
+                          className="bg-white font-medium text-neutral-500"
+                          key={transaksi.id}
+                        >
+                          <td className="py-4 px-6 font-medium  whitespace-nowrap  ">
+                            {transaksi.check_in.date}
+                          </td>
+                          <td className="py-4 px-6">
+                            {transaksi.user.full_name}
+                          </td>
+                          <td className="py-4 px-6">
+                            {jsConvert.toHeaderCase(
+                              transaksi.office.office_type
+                            )}
+                          </td>
+                          <td className="py-4 px-6">
+                            {jsConvert.toHeaderCase(
+                              transaksi.office.office_name
+                            )}
+                          </td>
+                          <td className="py-4 px-6">
+                            <CurrencyFormat
+                              value={transaksi.price}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              prefix={"Rp."}
+                              renderText={(value) => <div>{value}</div>}
+                            />
+                          </td>
+                          <td className="py-4 px-6">
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={(ev) =>
+                                  handleChangeReject(ev, transaksi.id)
+                                }
+                                className="py-2 px-4 text-sixth bg-[#FBE0DB] rounded-lg"
+                                value="rejected"
+                              >
+                                Reject
+                              </button>
+                              <button
+                                onClick={(ev) =>
+                                  handleChangeAccept(ev, transaksi.id)
+                                }
+                                className="py-2 px-4 text-[#45AF49] bg-[#DAEFDB] rounded-lg"
+                                value="accepted"
+                              >
+                                Accept
+                              </button>
+                            </div>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {
-                          transaksiList
-                            ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
-                            .map((transaksi) => (
-                              <tr className="bg-white font-medium text-neutral-500" key={transaksi.id}>
-                                <td className="py-4 px-6 font-medium  whitespace-nowrap  ">
-                                  {transaksi.check_in.date}
-                                </td>
-                                <td className="py-4 px-6">{transaksi.user.full_name}</td>
-                                <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.office.office_type)}</td>
-                                <td className="py-4 px-6">{jsConvert.toHeaderCase(transaksi.office.office_name)}</td>
-                                <td className="py-4 px-6">
-                                  <CurrencyFormat value={transaksi.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => <div>{value}</div>} />
-                                </td>
-                                <td className="py-4 px-6">
-                                  <div className="flex items-center gap-2">
-                                    <button onClick={(ev) => handleChangeReject(ev, transaksi.id)} className="py-2 px-4 text-sixth bg-[#FBE0DB] rounded-lg" value="rejected">
-                                      Reject
-                                    </button>
-                                    <button onClick={(ev) => handleChangeAccept(ev, transaksi.id)} className="py-2 px-4 text-[#45AF49] bg-[#DAEFDB] rounded-lg" value="accepted">
-                                      Accept
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))
-                        }
-                      </tbody>
-                    </>
-                }
-              </table>
+                      ))}
+                  </tbody>
+                </table>
+              )}
             </div>
             <div className="mt-8 text-start">
               <Pagination
