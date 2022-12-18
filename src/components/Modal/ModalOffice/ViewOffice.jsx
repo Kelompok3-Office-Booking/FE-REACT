@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import CurrencyFormat from "react-currency-format";
 
 const InputField = ({
   name,
@@ -35,6 +36,7 @@ const InputField = ({
 );
 
 const ViewOffice = ({ dataDetailOffice }) => {
+  const [price, setPrice] = useState('');
   const [modal, setModal] = useState(false);
   const HandleModal = () => {
     setModal(!modal);
@@ -65,7 +67,7 @@ const ViewOffice = ({ dataDetailOffice }) => {
             <div className="relative w-full max-w-lg h-full md:h-auto">
               {/* Modal content */}
               <form
-                onSubmit={() => {}}
+                onSubmit={() => { }}
                 className="relative bg-white rounded-tl-3xl rounded-bl-3xl shadow "
               >
                 {/* Modal header */}
@@ -128,7 +130,7 @@ const ViewOffice = ({ dataDetailOffice }) => {
                           label={`Price / ${"hour"}`}
                           placeholder="Type"
                           disabled={true}
-                          defaultValue={dataDetailOffice.price}
+                          defaultValue={price}
                         />
                       </div>
                       <InputField
@@ -207,7 +209,11 @@ const ViewOffice = ({ dataDetailOffice }) => {
                           disabled={true}
                           defaultValue={`${dataDetailOffice.facility_model.length} Facilities`}
                         />
-                        <p className="pt-2 text-start">{`detail fasilitas disini njir`}</p>
+                        <p className="pt-2 text-start">{
+                          dataDetailOffice.facility_model.map((fasility) => (
+                            <p className="py-3 px-3 border border-gray-400 rounded-lg mb-2">{fasility.facilities_desc}</p>
+                          ))
+                        }</p>
                       </div>
                       <div className="col-span-2 relative">
                         <InputField
@@ -301,6 +307,8 @@ const ViewOffice = ({ dataDetailOffice }) => {
               </form>
             </div>
           </div>
+          <CurrencyFormat className="hidden" value={0.11 * dataDetailOffice.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => { setPrice(value) }} />
+
         </div>
       )}
     </>

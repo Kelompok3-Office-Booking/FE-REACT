@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { dataJakarta } from "store/dataJakarta";
 import CreateIcon from "@mui/icons-material/Create";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateOffice } from "store/Feature/FeatureOffice/officeSlice";
 import { Helmet } from "react-helmet";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast, Toaster } from "react-hot-toast";
 import { checkbox } from "assets";
 import { AxiosError } from "axios";
+import { fetchFacility } from "store/Feature/FeaturesFacility/facilitySlice";
+import jsConvert from "js-convert-case";
+import CurrencyInput from 'react-currency-input-field';
 
 const InputField = ({
   name,
@@ -41,19 +44,57 @@ const InputField = ({
   </div>
 );
 
+const CurrencyField = ({
+  name,
+  label,
+  placeholder,
+  defaultValue,
+  onClick,
+  onValueChange,
+  className = "border-gray-400",
+  type = "text",
+  disabled,
+}) => (
+  <div className="relative">
+    <CurrencyInput
+      type={type}
+      id="floating_outlined"
+      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+      placeholder={placeholder}
+      name={name}
+      prefix={"Rp."}
+      onClick={onClick}
+      defaultValue={defaultValue}
+      onValueChange={onValueChange}
+      autoComplete="off"
+      disabled={disabled}
+    />
+    <label
+      htmlFor="floating_outlined"
+      className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+    >
+      {label}
+    </label>
+  </div>
+);
+
 const EditOffice = ({ dataDetailOffice, setReload }) => {
   const imageTypeRegex = /image\/(jpg|jpeg)/gm;
   const [jakartaLits, setJakartaList] = useState(dataJakarta);
   const dispatch = useDispatch();
   const [citys, setCitys] = useState([]);
-  const [city, setCity] = useState("central cakarta");
+  const [city, setCity] = useState('');
+  const [visibleCity, setVisibleCity] = useState(false);
   const [district, setDistrict] = useState([]);
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [status, setStatus] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
   const [images, setImages] = useState([]);
-  const [facilities_id, setFacilitiesId] = useState([]);
+
+  const [isCheck, setIsCheck] = useState([]);
+  const listOfFacility = useSelector((state) => state.facility.data);
+  const [facilityList, setFacilityList] = useState(listOfFacility);
 
   const checked = dataDetailOffice.facility_model.map(
     (val) => val.facilities_id
@@ -66,30 +107,19 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
       facilities += `${val},`;
     }
   });
+
+  const checkedFacilityDesc = dataDetailOffice.facility_model.map(
+    (val) => val.facilities_desc
+  );
+
   const handleChangeFacilities = (ev) => {
     const { value, checked } = ev.target;
-    if (checked) {
-      for (let i = 0; i < ev.target.value.length; i++) {
-        facilities_id.push(value[i]);
-      }
-      setFacilitiesId(facilities_id);
-      let facilitiesId = "";
-      facilities_id.forEach((val, i) => {
-        if (i === facilities_id.length - 1) {
-          facilitiesId += val;
-        } else {
-          facilitiesId += `${val},`;
-        }
-      });
-      setData({ ...data, facilities_id: facilitiesId });
-    } else {
-      for (let i = 0; i < facilities_id.length; i++) {
-        if (facilities_id[i] === value[i]) {
-          facilities_id.splice(i, value[i]);
-          i--;
-        }
-      }
+
+    setIsCheck([...isCheck, +value + 1]);
+    if (!checked) {
+      setIsCheck(isCheck.filter(item => item !== +value + 1));
     }
+    setData({ ...data, facilities_id: isCheck.toString() });
   };
 
   const handleUploadImages = (e) => {
@@ -107,7 +137,13 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     }
     alert("Selected images are not of valid type!");
   };
+
   useEffect(() => {
+    dispatch(fetchFacility())
+      .then((res) => {
+        setFacilityList(res.payload);
+      })
+
     const fileReaders = [];
     let isCancel = false;
     if (imageFiles.length) {
@@ -155,7 +191,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     id: dataDetailOffice.id,
     title: dataDetailOffice.title,
     description: dataDetailOffice.description,
-    office_type: dataDetailOffice.office_type,
+    office_type: dataDetailOffice.office_type.toLowerCase(),
     office_length: dataDetailOffice.office_length,
     price: dataDetailOffice.price,
     open_hour: dataDetailOffice.open_hour,
@@ -166,23 +202,23 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     working_desk: dataDetailOffice.working_desk,
     meeting_room: dataDetailOffice.meeting_room,
     private_room: dataDetailOffice.private_room,
-    city: dataDetailOffice.city,
+    city: dataDetailOffice.city.toLowerCase(),
     district: dataDetailOffice.district,
     address: dataDetailOffice.address,
     images: dataDetailOffice.images,
     facilities_id: facilities,
   });
 
-  const handleSelectedCity = (evt) => {
-    const checked = evt.target.value;
-    setCity();
-    const index = citys.indexOf(checked);
-    setDistrict(jakartaLits[index].district);
-  };
   const setHandleChangeData = (ev) => {
     setData({
       ...data,
       [ev.target.name]: ev.target.value,
+    });
+  };
+  const setHandleValuePrice = (value) => {
+    setData({
+      ...data,
+      price: value,
     });
   };
 
@@ -196,8 +232,20 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     setDistrict(jakartaLits[0].district);
   }, [dataJakarta]);
 
+  const handleSelectedCity = (evt) => {
+    const checked = evt.target.value;
+    setCity(checked);
+    if (checked) {
+      setVisibleCity(true)
+    }
+    const index = citys.indexOf(checked);
+    setDistrict(jakartaLits[index].district);
+    setData({ ...data, city: checked })
+  };
+
   const handleSelectedDistrict = (evt) => {
     const checked = evt.target.value;
+    setData({ ...data, district: checked })
   };
 
   const getLocation = () => {
@@ -217,21 +265,13 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
       );
     }
   };
-  const fasilitas_office = [
-    "High Speed Wifi",
-    "Avalible many charging slot",
-    "Air Conditioner in all room",
-    "Projector to presentation",
-    "Free parking for your vehicle",
-    "Snacks and drinks available",
-    "Prayer room available",
-    "Clean toilet with water heater",
-    "Enter the room using the access card",
-    "nice view from the window",
-  ];
+
   const [modal, setModal] = useState(false);
   const HandleModal = () => {
     setModal(!modal);
+    setIsCheck([]);
+    setVisibleCity(false);
+
   };
 
   const handleUpdate = (e) => {
@@ -262,11 +302,10 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     setReload();
     toast.custom((t) => (
       <div
-        className={`${
-          t.visible
-            ? "animate-enter ease-in-out duration-200"
-            : "animate-leave ease-in-out duration-200"
-        } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        className={`${t.visible
+          ? "animate-enter ease-in-out duration-200"
+          : "animate-leave ease-in-out duration-200"
+          } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 w-0 p-4">
           <div className="flex items-start">
@@ -290,6 +329,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
       </div>
     ));
   };
+
   return (
     <>
       <button
@@ -353,7 +393,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
-                            dataDetailOffice.office_type === "Office"
+                            dataDetailOffice.office_type.toLowerCase() === "office"
                               ? true
                               : undefined
                           }
@@ -374,7 +414,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
-                            dataDetailOffice.office_type === "Coworking Space"
+                            dataDetailOffice.office_type.toLowerCase() === "coworking space"
                               ? true
                               : undefined
                           }
@@ -395,7 +435,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
-                            dataDetailOffice.office_type === "Meeting Room"
+                            dataDetailOffice.office_type.toLowerCase() === "meeting room"
                               ? true
                               : undefined
                           }
@@ -412,12 +452,13 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                   </div>
                   <div className="pb-6 flex w-full">
                     <div className="w-full">
-                      <InputField
+                      <CurrencyField
                         name="price"
                         label="Price(Rp)"
                         placeholder="Price(Rp)"
                         defaultValue={dataDetailOffice.price}
-                        onChange={(ev) => setHandleChangeData(ev)}
+                        onValueChange={(value, name) => setHandleValuePrice(value)}
+                      // onValueChange={(value, name) => console.log(value, name)}
                       />
                     </div>
                     <div className="flex mx-auto w-full ml-8">
@@ -426,7 +467,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           id="inline-radio"
                           type="radio"
                           defaultChecked={true}
-                          onChange={() => {}}
+                          onChange={() => { }}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label
@@ -440,7 +481,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         <input
                           id="inline-2-radio"
                           type="radio"
-                          onChange={() => {}}
+                          onChange={() => { }}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label
@@ -499,9 +540,10 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         name="city"
                         onClick={(ev) => handleSelectedCity(ev)}
                         onChange={(ev) => setHandleChangeData(ev)}
-                        defaultChecked={dataDetailOffice.city}
+                        defaultChecked={citys.includes(dataDetailOffice.city) ? true : undefined}
                         className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
+                        <option value={dataDetailOffice.city} hidden={visibleCity ? true : undefined} defaultChecked={dataDetailOffice.city} >{dataDetailOffice.city}</option>
                         {jakartaLits.map((city, index) => {
                           return (
                             <option
@@ -510,7 +552,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                               id="regionIndex"
                               index={index}
                             >
-                              {city.city}
+                              {jsConvert.toHeaderCase(city.city)}
                             </option>
                           );
                         })}
@@ -526,6 +568,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
                         {/* <option selected>City</option> */}
+                        <option value={dataDetailOffice.district} hidden={visibleCity ? true : undefined} defaultChecked={dataDetailOffice.district} >{dataDetailOffice.district}</option>
                         {district.map((val, index) => {
                           return (
                             <option
@@ -709,16 +752,17 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                     </div>
                   </div>
                   <p className="text-start mb-2">Facilities</p>
-                  {fasilitas_office.map((fasilitas, index) => (
-                    <div className="flex items-center mb-2" key={index}>
+                  {facilityList?.slice(0, 10).map((fasilitas, index) => (
+                    // alert(index)
+                    <div className="flex items-center mb-2" key={fasilitas.id}>
                       <input
                         onChange={handleChangeFacilities}
                         defaultChecked={
-                          checked[index] === `${index + 1}` ? true : undefined
+                          checkedFacilityDesc.includes(`${fasilitas.description}`) ? true : undefined
                         }
                         id="default-checkbox"
                         type="checkbox"
-                        value={index}
+                        value={fasilitas.id}
                         name="facilities_id"
                         className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
@@ -726,9 +770,11 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         htmlFor="default-checkbox"
                         className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
                       >
-                        {fasilitas}
+                        {fasilitas.description}
                       </label>
                     </div>
+                    // <>
+                    // </>
                   ))}
                 </div>
               </form>

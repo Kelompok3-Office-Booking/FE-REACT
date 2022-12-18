@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
-import {
-  CaretDownOutlined,
-  EyeOutlined,
-  EyeInvisibleOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { toast, Toaster } from "react-hot-toast";
+import CloseIcon from "@mui/icons-material/Close";
+import Swal from "sweetalert2";
+import { checkbox } from "assets";
 // import type { PaginationProps } from 'antd';
-import { Dropdown, Menu, Space, Pagination, Select } from "antd";
-import { Link } from "react-router-dom";
+import { Pagination, Select } from "antd";
 import { twitter } from "assets";
 import { Rating } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReview } from "store/Feature/FeatureReview/reviewSlice";
+import { deleteReview, fetchReview } from "store/Feature/FeatureReview/reviewSlice";
 import { ContentTableLoader } from "components";
 
-const Card = ({ imgUrl, name, rating, date, office, comment }) => {
+const Card = ({ imgUrl, name, rating, date, office, comment, onChange, key }) => {
   return (
-    <div className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
+    <div key={key} className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
       <div className="flex justify-between">
         <div className="flex">
           <img src={imgUrl} className="rounded-full" alt="gambar" />
@@ -38,8 +36,8 @@ const Card = ({ imgUrl, name, rating, date, office, comment }) => {
         <p className="text-gray-500">“{comment}”</p>
       </div>
       <div className="flex justify-end">
-        <button className="text-red-600 border-2 rounded-2xl border-red-600 px-8 py-1 flex content-center">
-          <EyeInvisibleOutlined className="text-2xl mb-1" />
+        <button onClick={onChange} className="rounded-xl text-white bg-fifth hover:bg-opacity-70 px-8 py-3 flex content-center">
+          <DeleteForeverIcon className="text-white" />
           <p className="ml-4 my-auto">Hide Comment</p>
         </button>
       </div>
@@ -60,15 +58,16 @@ const ReviewPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchReview()).then(() => {
-      setLoading(false);
-      setTestimonial(testimonial);
-    });
+    dispatch(fetchReview())
+      .then((res) => {
+        setTestimonial(res.payload);
+        setLoading(false);
+      });
     setDataReview({
       minValue: 0,
       maxValue: 4,
     });
-  }, [testimonial]);
+  }, [dispatch]);
 
   const handleChange = (value) => {
     setDataReview({
@@ -78,19 +77,102 @@ const ReviewPage = () => {
     // console.log(dataReview);
   };
 
+  const setReload = () => {
+    setLoading(true);
+    setTimeout(() => {
+      dispatch(fetchReview())
+        .then((res) => {
+          setTestimonial(res.payload);
+        });
+      setLoading(false);
+    }, 500);
+  };
+
   const handleFilter = (value) => {
     // console.log(`selected ${value}`);
     setFilter(value);
   };
 
-  // const handleFilter = ({ name }) => {
-  //     setFilter(name);
-  // }
+  const handleDelete = (id) => {
+    // alert(id)
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
 
-  // console.log(dataReview.data);
-  // onClick={handleFilter()}
-  // console.log(menu.props.items[0].name);
-  console.log(filter);
+    swalWithBootstrapButtons
+      .fire({
+        title: `Are you sure?`,
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(deleteReview(id));
+            setReload();
+            Swal.fire({
+              icon: "success",
+              title: `Deleted!`,
+              text: "Your data has been deleted.",
+              showConfirmButton: false,
+              timer: 1200,
+            });
+            setReload();
+            toast.custom((t) => (
+              <div
+                className={`${t.visible
+                  ? "animate-enter ease-in-out duration-200"
+                  : "animate-leave ease-in-out duration-200"
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex-1 w-0 p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5">
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={checkbox}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-3 flex-col text-start">
+                      <p className="text-sm font-bold text-success">Success</p>
+                      <p className="mt-1 text-sm text-gray-500">
+                        Successfully Deleted
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex border-gray-200">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              </div>
+            ));
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Delete is Failed ",
+            });
+          }
+        }
+      });
+  };
+
+  // console.log(filter);
   return (
     <>
       <Helmet>
@@ -136,6 +218,7 @@ const ReviewPage = () => {
                     date={review.created_at}
                     office={review.office.office_name}
                     comment={review.comment}
+                    onChange={() => handleDelete(review.id)}
                   />
                 ))}
             </>
@@ -150,6 +233,7 @@ const ReviewPage = () => {
           />
         </div>
       </div>
+      <Toaster position="bottom-left" reverseOrder={false} />
     </>
   );
 };

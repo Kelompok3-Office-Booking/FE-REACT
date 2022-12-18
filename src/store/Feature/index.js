@@ -6,6 +6,7 @@ import promo from "./FeaturePromo/promoSlice";
 import office from "./FeatureOffice/officeSlice";
 import loader from "./FeatureLoader/loaderSlice";
 import reviews from "./FeatureReview/reviewSlice";
+import facility from "./FeaturesFacility/facilitySlice";
 
 const rootReducers = combineReducers({
     users,
@@ -14,6 +15,7 @@ const rootReducers = combineReducers({
     office,
     loader,
     reviews,
+    facility,
 });
 
 export default rootReducers;

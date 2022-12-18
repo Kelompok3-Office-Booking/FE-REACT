@@ -28,6 +28,16 @@ export const updateReview = createAsyncThunk(
   }
 );
 
+export const deleteReview = createAsyncThunk("delete/review", async (id) => {
+  try {
+    const res = await APIReview.deleteReview(id);
+    // console.log(res);
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 const reviewSlice = createSlice({
   name: "reviews",
   initialState,
