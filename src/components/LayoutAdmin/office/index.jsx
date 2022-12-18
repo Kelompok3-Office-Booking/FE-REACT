@@ -133,7 +133,7 @@ const OfficePage = () => {
         setOfficeList(res.payload);
       });
       setLoading(false);
-    }, 3000);
+    }, 1500);
   };
 
   const handleChangePage = (value) => {
