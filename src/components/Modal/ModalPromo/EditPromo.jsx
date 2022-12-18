@@ -97,7 +97,6 @@ const EditPromo = ({
         }
     }
 
-    // console.log(data);
     return (
         <>
             <button

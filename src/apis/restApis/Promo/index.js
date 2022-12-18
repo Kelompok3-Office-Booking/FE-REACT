@@ -11,7 +11,6 @@ const APIPromo = {
     async getAllPromo() {
         try {
             const response = await axios.get("https://stirred-rhino-39.hasura.app/api/rest/promo", config);
-            // console.log(response);
             return response;
         } catch (err) {
             console.log(err);
@@ -21,7 +20,6 @@ const APIPromo = {
     async createPromo(data) {
         try {
             const response = await axios.post("https://stirred-rhino-39.hasura.app/api/rest/promo", data, config);
-            console.log(response);
             return response;
         } catch (err) {
             console.log(err);
@@ -32,7 +30,6 @@ const APIPromo = {
         try {
             const id = data.id;
             const response = await axios.patch(`https://stirred-rhino-39.hasura.app/api/rest/promo/${id}`, data, config);
-            // console.log(response);
             return response;
         } catch (err) {
             console.log(err);

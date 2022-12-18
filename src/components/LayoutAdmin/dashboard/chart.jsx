@@ -5,10 +5,6 @@ import BarChart from "../../Chart/lineChart";
 import DoughnutChart from "components/Chart/doughnutChart";
 
 const TransactionChart = ({ coworkingSpace, meetingSpace, officeSpace }) => {
-  useEffect(() => {
-    // setCountOffice(officeSpace.length)
-    // console.log(officeSpace)
-  }, []);
 
   const [pie, setPie] = useState({
     labels: ["Cooworking Space", "Meeting Room", "Office Building"],
@@ -25,7 +21,6 @@ const TransactionChart = ({ coworkingSpace, meetingSpace, officeSpace }) => {
       },
     ],
   });
-  // console.log(updatedCoworkList);
 
   const [chartData, setChartData] = useState({
     labels: Data.map((data) => data.day),
@@ -59,7 +54,7 @@ const TransactionChart = ({ coworkingSpace, meetingSpace, officeSpace }) => {
       },
     ],
   });
-  // console.log(coworkCount)
+
   return (
     <>
       <section className="flex gap-4 mt-10">

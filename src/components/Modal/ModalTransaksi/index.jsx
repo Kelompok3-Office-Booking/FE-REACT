@@ -49,15 +49,12 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
     id: dataTransaksi.id,
     status: dataTransaksi.status,
   });
-  // const [status, setStatus] = useState("");
 
-  const { id, status } = data;
   const handleChangeStatus = (ev) => {
     setData({
       ...data,
       [ev.target.name]: ev.target.value,
     });
-    // console.log(ev.target.value);
   };
 
   const HANDLEMODAL = () => {
@@ -67,8 +64,6 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
   const handleUpdateStatus = (e) => {
     e.preventDefault();
     try {
-      // dispatch(updateUser({ id, full_name, gender, email }));
-      // window.location.reload();
       dispatch(updateTransaction(data));
       setReload();
       Swal.fire({
@@ -121,7 +116,6 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
 
   }
 
-  // console.log(status);
   return (
     <>
       <button

@@ -10,7 +10,6 @@ const initialState = {
 export const fetchFacility = createAsyncThunk("fetch/facility", async() => {
     try {
         const response = await APIFacility.getAllFacility();
-        // console.log(response.data);
         return response.data;
     } catch (err) {
         console.log(err);

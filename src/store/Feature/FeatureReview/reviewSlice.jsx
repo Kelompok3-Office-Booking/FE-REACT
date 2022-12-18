@@ -9,7 +9,6 @@ const initialState = {
 export const fetchReview = createAsyncThunk("fetch/review", async () => {
   try {
     const res = await APIReview.getAllReview();
-    console.log(res.data);
     return res.data.data;
   } catch (err) {
     console.log(err);
@@ -31,7 +30,6 @@ export const updateReview = createAsyncThunk(
 export const deleteReview = createAsyncThunk("delete/review", async (id) => {
   try {
     const res = await APIReview.deleteReview(id);
-    // console.log(res);
     return res;
   } catch (err) {
     console.log(err);

@@ -20,9 +20,7 @@ import Swal from "sweetalert2";
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
 
-  // console.log(items);
   const sortedItems = useMemo(() => {
-    const { id, user, office, check_in, price, status } = items;
     let sortableItems = [...items];
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
@@ -86,7 +84,6 @@ const TransactionPage = () => {
   };
 
   const handleClickCheck = (ev) => {
-    // setIsCheckAll(!isCheckAll);
     const { id, checked } = ev.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
@@ -249,7 +246,6 @@ const TransactionPage = () => {
       });
   }
 
-  // console.log(listOfTransaction)
   return (
     <>
       <Helmet>
@@ -329,7 +325,6 @@ const TransactionPage = () => {
                               id="checkbox-table-search-1"
                               type="checkbox"
                               checked={isCheckAll ? true : transaction.checked}
-                              // checked={isCheckAll ? !isCheckAll : user.checked}
                               onChange={handleClickCheck}
                               className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                             />
@@ -344,7 +339,6 @@ const TransactionPage = () => {
                         <td className="py-4 px-6">{transaction.id}</td>
                         <td className="py-4 px-3">
                           {transaction.user_full_name}
-                          {/* {console.log(transaction.user_id)} */}
                         </td>
                         <td className="py-4 px-6">{jsConvert.toHeaderCase(transaction.offices_office_type)}</td>
                         <td className="py-4 px-6">{transaction.check_in_date}</td>
@@ -411,9 +405,6 @@ const TransactionPage = () => {
   );
 };
 
-// const status = document.getElementById("status");
-// if (status === "On Process") {
-//   status.style = "bg-black"
-// }
+
 
 export default TransactionPage;

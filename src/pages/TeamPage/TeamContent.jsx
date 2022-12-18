@@ -79,7 +79,6 @@ const TeamContent = () => {
                     <div className="mr-2 wave">
                       <img src={github_team} alt="" className="w-6" />
                     </div>
-                    {/* <p>davidnasrulloh</p> */}
                   </a>
                 </div>
                 <div className="flex py-3 mx-2">
@@ -92,7 +91,6 @@ const TeamContent = () => {
                     <div className="mr-2 wave">
                       <img src={instagram_team} alt="" className="w-6" />
                     </div>
-                    {/* <p className="my-auto">davidnasrulloh_</p> */}
                   </a>
                 </div>
                 <div className="flex py-3 mx-2">
@@ -105,7 +103,6 @@ const TeamContent = () => {
                     <div className="mr-2 wave">
                       <img src={linkedin_team} alt="" className="w-6" />
                     </div>
-                    {/* <p>davidnasrulloh</p> */}
                   </a>
                 </div>
                 <div className="flex py-3 mx-2">
@@ -118,7 +115,6 @@ const TeamContent = () => {
                     <div className="mr-2 wave">
                       <img src={behance_team} alt="" className="w-6" />
                     </div>
-                    {/* <p>davidnasrulloh</p> */}
                   </a>
                 </div>
                 <div className="flex py-3 mx-2">
@@ -131,7 +127,6 @@ const TeamContent = () => {
                     <div className="mr-2 wave">
                       <img src={dribbble_team} alt="" className="w-6" />
                     </div>
-                    {/* <p>davidnasrulloh</p> */}
                   </a>
                 </div>
               </div>
@@ -177,7 +172,6 @@ const TeamContent = () => {
                     target="_blank"
                     className="flex"
                   >
-                    {/* <p>mochammadilham06</p> */}
                     <div className="ml-2 wave">
                       <img src={github_team} alt="" className="w-6" />
                     </div>
@@ -190,7 +184,6 @@ const TeamContent = () => {
                     target="_blank"
                     className="flex"
                   >
-                    {/* <p className="my-auto">moch.ilham10</p> */}
                     <div className="ml-2 wave">
                       <img src={instagram_team} alt="" className="w-6" />
                     </div>
@@ -203,7 +196,6 @@ const TeamContent = () => {
                     target="_blank"
                     className="flex"
                   >
-                    {/* <p>mochilham1006</p> */}
                     <div className="ml-2 wave">
                       <img src={linkedin_team} alt="" className="w-6" />
                     </div>

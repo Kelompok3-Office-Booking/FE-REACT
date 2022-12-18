@@ -13,7 +13,6 @@ import { checkbox } from "assets";
 const BookingStatus = () => {
   const dispatch = useDispatch();
   const listOfTransaction = useSelector((state) => state.transactions.data);
-  // const listOfTransaction = useSelector((state) => state.transactions.data);
   const [transaksiList, setTransaksiList] = useState(listOfTransaction);
   const [loading, setLoading] = useState(true);
   const pageSize = 6;
@@ -34,16 +33,6 @@ const BookingStatus = () => {
     setLoading(true);
     dispatch(fetchTransaction()).then((res) => {
       setTransaksiList(res.payload);
-      // const updateListOnProcess = [];
-      // transaksiList.forEach((transaksi) => {
-      //   const loweredStatus = transaksi.status.toLowerCase();
-      //   if (loweredStatus.includes("on process")) {
-      //     updateListOnProcess.push(transaksi)
-      //   }
-      // })
-      // setTransaksiList(updateListOnProcess);
-      // setLoading(false);
-      // alert(transaksiList)
     });
     setTimeout(() => {
       setLoading(false);
@@ -52,21 +41,6 @@ const BookingStatus = () => {
 
   useEffect(() => {
     dispatch(fetchTransaction())
-    //   .then((res) => {
-    //     const updateListOnProcess = [];
-    //     listOfTransaction.forEach((transaksi) => {
-    //       const loweredStatus = transaksi.status.toLowerCase();
-    //       if (loweredStatus.includes("on process")) {
-    //         updateListOnProcess.push(transaksi)
-    //       }
-    //     })
-    //     setTransaksiList(updateListOnProcess);
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
     const updateListOnProcess = [];
     transaksiList.forEach((transaksi) => {
       const loweredStatus = transaksi.status.toLowerCase();
@@ -83,7 +57,6 @@ const BookingStatus = () => {
     });
   }, [dispatch])
 
-  // console.log(transaksiList)
   const handleChangeReject = (ev, id) => {
     ev.preventDefault();
     const swalWithBootstrapButtons = Swal.mixin({
@@ -128,7 +101,6 @@ const BookingStatus = () => {
           }
         }
       });
-
   }
 
   const handleChangeAccept = (ev, id) => {
@@ -177,9 +149,6 @@ const BookingStatus = () => {
       });
 
   }
-
-
-  // console.log(transaksiList);
 
   return (
     <>

@@ -4,7 +4,6 @@ import { toast, Toaster } from "react-hot-toast";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
 import { checkbox } from "assets";
-// import type { PaginationProps } from 'antd';
 import { Pagination, Select } from "antd";
 import { twitter } from "assets";
 import { Rating } from "@mui/material";
@@ -74,7 +73,6 @@ const ReviewPage = () => {
       minValue: (value - 1) * pageSize,
       maxValue: value * pageSize,
     });
-    // console.log(dataReview);
   };
 
   const setReload = () => {
@@ -89,7 +87,6 @@ const ReviewPage = () => {
   };
 
   const handleFilter = (value) => {
-    // console.log(`selected ${value}`);
     setFilter(value);
   };
 
@@ -172,7 +169,6 @@ const ReviewPage = () => {
       });
   };
 
-  // console.log(filter);
   return (
     <>
       <Helmet>
@@ -215,7 +211,7 @@ const ReviewPage = () => {
                     imgUrl={twitter}
                     name={review.user.full_name}
                     rating={review.score}
-                    date={review.created_at}
+                    date={review.created_at.substr(0, 11)}
                     office={review.office.office_name}
                     comment={review.comment}
                     onChange={() => handleDelete(review.id)}

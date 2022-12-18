@@ -126,14 +126,11 @@ const PromoPage = () => {
 
     const loweredSearchedWords = searchWords.toLowerCase();
     const updatedPromoList = [];
-    // console.log(updatedPromoList);
     if (searchWords !== "") {
       listOfPromo.forEach((promo) => {
         const loweredPromoVCode = promo.voucher_code.toLowerCase();
-        // const promoNominal = promo.id;
         if (
           loweredPromoVCode.includes(loweredSearchedWords)
-          // promoNominal.includes(loweredSearchedWords)
         ) {
           updatedPromoList.push(promo);
         }
@@ -143,7 +140,6 @@ const PromoPage = () => {
     } else {
       setPromoList(listOfPromo);
     }
-    // console.log(updatedPromoList);
   }, [dispatch, searchWords]);
 
   const handleDeleteAll = () => {
@@ -362,7 +358,6 @@ const PromoPage = () => {
             <Pagination
               defaultCurrent={1}
               defaultPageSize={pageSize}
-              // current={dataReview.current}
               total={promoList?.length}
               onChange={handleChange}
             />

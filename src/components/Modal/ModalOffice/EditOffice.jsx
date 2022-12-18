@@ -22,6 +22,7 @@ const InputField = ({
   className = "border-gray-400",
   type = "text",
   disabled,
+  onKeyPress
 }) => (
   <div className="relative">
     <input
@@ -32,6 +33,7 @@ const InputField = ({
       name={name}
       onClick={onClick}
       defaultValue={defaultValue}
+      onKeyPress={onKeyPress}
       onChange={onChange}
       disabled={disabled}
     />
@@ -92,13 +94,13 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
   const [imageFiles, setImageFiles] = useState([]);
   const [images, setImages] = useState([]);
 
-  const [isCheck, setIsCheck] = useState([]);
   const listOfFacility = useSelector((state) => state.facility.data);
   const [facilityList, setFacilityList] = useState(listOfFacility);
 
   const checked = dataDetailOffice.facility_model.map(
     (val) => val.facilities_id
   );
+
   let facilities = "";
   checked.forEach((val, i) => {
     if (i === checked.length - 1) {
@@ -108,21 +110,53 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     }
   });
 
+  const [isCheck, setIsCheck] = useState(facilities.split(","));
+
+  const [data, setData] = useState({
+    id: dataDetailOffice.id,
+    title: dataDetailOffice.title,
+    description: dataDetailOffice.description,
+    office_type: dataDetailOffice.office_type.toLowerCase(),
+    office_length: dataDetailOffice.office_length,
+    price: dataDetailOffice.price,
+    open_hour: dataDetailOffice.open_hour,
+    close_hour: dataDetailOffice.close_hour,
+    lat: dataDetailOffice.lat,
+    lng: dataDetailOffice.lng,
+    accommodate: dataDetailOffice.accommodate,
+    working_desk: dataDetailOffice.working_desk,
+    meeting_room: dataDetailOffice.meeting_room,
+    private_room: dataDetailOffice.private_room,
+    city: dataDetailOffice.city.toLowerCase(),
+    district: dataDetailOffice.district,
+    address: dataDetailOffice.address,
+    images: dataDetailOffice.images,
+    facilities_id: isCheck.toString(),
+  });
+
   const checkedFacilityDesc = dataDetailOffice.facility_model.map(
     (val) => val.facilities_desc
   );
 
   const handleChangeFacilities = (ev) => {
     const { value, checked } = ev.target;
-
-    setIsCheck([...isCheck, +value + 1]);
+    setIsCheck([...isCheck, value]);
     if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== +value + 1));
+      setIsCheck(isCheck.filter(item => item !== value));
     }
-    setData({ ...data, facilities_id: isCheck.toString() });
+  };
+
+  const [modal, setModal] = useState(false);
+  const HandleModal = (ev) => {
+    ev.preventDefault();
+    setModal(!modal);
+    setIsCheck(facilities.split(","));
+    setData({ ...data, facilities_id: facilities });
+    setVisibleCity(false);
   };
 
   const handleUploadImages = (e) => {
+    e.preventDefault();
     const { files } = e.target;
     const validImageFiles = [];
     for (let i = 0; i < files.length; i++) {
@@ -173,8 +207,8 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
             setData({ ...data, images: images });
           }
         })
-        .catch((reason) => {
-          console.log(reason);
+        .catch((err) => {
+          console.log(err);
         });
     }
     return () => {
@@ -185,29 +219,14 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
         }
       });
     };
+
   }, [imageFiles]);
 
-  const [data, setData] = useState({
-    id: dataDetailOffice.id,
-    title: dataDetailOffice.title,
-    description: dataDetailOffice.description,
-    office_type: dataDetailOffice.office_type.toLowerCase(),
-    office_length: dataDetailOffice.office_length,
-    price: dataDetailOffice.price,
-    open_hour: dataDetailOffice.open_hour,
-    close_hour: dataDetailOffice.close_hour,
-    lat: dataDetailOffice.lat,
-    lng: dataDetailOffice.lng,
-    accommodate: dataDetailOffice.accommodate,
-    working_desk: dataDetailOffice.working_desk,
-    meeting_room: dataDetailOffice.meeting_room,
-    private_room: dataDetailOffice.private_room,
-    city: dataDetailOffice.city.toLowerCase(),
-    district: dataDetailOffice.district,
-    address: dataDetailOffice.address,
-    images: dataDetailOffice.images,
-    facilities_id: facilities,
-  });
+  const preventMinus = (e) => {
+    if (e.code === "Minus") {
+      e.preventDefault();
+    }
+  };
 
   const setHandleChangeData = (ev) => {
     setData({
@@ -215,6 +234,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
       [ev.target.name]: ev.target.value,
     });
   };
+
   const setHandleValuePrice = (value) => {
     setData({
       ...data,
@@ -266,13 +286,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     }
   };
 
-  const [modal, setModal] = useState(false);
-  const HandleModal = () => {
-    setModal(!modal);
-    setIsCheck([]);
-    setVisibleCity(false);
 
-  };
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -294,7 +308,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     formData.append("city", data.city);
     formData.append("district", data.district);
     formData.append("address", data.address);
-    formData.append("facilities_id", data.facilities_id);
+    formData.append("facilities_id", isCheck.toString());
     imageFiles.forEach((image) => {
       formData.append("images", image);
     });
@@ -457,8 +471,8 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         label="Price(Rp)"
                         placeholder="Price(Rp)"
                         defaultValue={dataDetailOffice.price}
+                        onKeyPress={preventMinus}
                         onValueChange={(value, name) => setHandleValuePrice(value)}
-                      // onValueChange={(value, name) => console.log(value, name)}
                       />
                     </div>
                     <div className="flex mx-auto w-full ml-8">
@@ -567,7 +581,6 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         defaultChecked={dataDetailOffice.district}
                         className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
-                        {/* <option selected>City</option> */}
                         <option value={dataDetailOffice.district} hidden={visibleCity ? true : undefined} defaultChecked={dataDetailOffice.district} >{dataDetailOffice.district}</option>
                         {district.map((val, index) => {
                           return (
@@ -753,10 +766,9 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                   </div>
                   <p className="text-start mb-2">Facilities</p>
                   {facilityList?.slice(0, 10).map((fasilitas, index) => (
-                    // alert(index)
                     <div className="flex items-center mb-2" key={fasilitas.id}>
                       <input
-                        onChange={handleChangeFacilities}
+                        onChange={(ev) => handleChangeFacilities(ev)}
                         defaultChecked={
                           checkedFacilityDesc.includes(`${fasilitas.description}`) ? true : undefined
                         }
@@ -773,8 +785,6 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         {fasilitas.description}
                       </label>
                     </div>
-                    // <>
-                    // </>
                   ))}
                 </div>
               </form>

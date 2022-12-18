@@ -19,34 +19,33 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// axios.interceptors.response.use(
-//     (response) => {
-//         return response;
-//     },
-//     function(error) {
-//         const originalRequest = error.config;
-//         if (error.response.status === 401) {
-//             Navigate("/login");
-//             return Promise.reject(error);
-//         }
-//         if (error.response.status === 401 && !originalRequest._retry) {
-//             originalRequest._retry = true;
-//             const refreshToken = Cookies.setToken("refresh");
-//             return axios
-//                 .post("/login", {
-//                     refresh_token: refreshToken,
-//                 })
-//                 .then((res) => {
-//                     if (res.status === 201) {
-//                         // Cookies.setToken(res.data);
-//                         Cookies.set("token", res.data);
-//                         config.headers["Authorization"] = `Bearer ${Auth.getAccessToken()}`;
-//                         return axios(originalRequest);
-//                     }
-//                 });
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+axiosInstance.interceptors.response.use(
+    (res) => {
+        return res;
+    },
+    async(err) => {
+        const originalConfig = err.config;
+
+        if (originalConfig.url !== "auth/login" && err.response) {
+            // Access Token was expired
+            if (err.response.status === 401 && !originalConfig._retry) {
+                originalConfig._retry = true;
+
+                try {
+                    const rs = await axiosInstance.post("/refresh", {
+                        refreshToken: Auth.getRefreshToken(),
+                    });
+                    const data = rs.data;
+                    Auth.storeUserInfoToCookie(data);
+                    return axiosInstance(originalConfig);
+                } catch (_error) {
+                    return Promise.reject(_error);
+                }
+            }
+        }
+
+        return Promise.reject(err);
+    }
+);
 
 export default axiosInstance;
