@@ -9,12 +9,24 @@ import { twitter } from "assets";
 import { Rating } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteReview, fetchReview } from "store/Feature/FeatureReview/reviewSlice";
+import {
+  deleteReview,
+  fetchReview,
+} from "store/Feature/FeatureReview/reviewSlice";
 import { ContentTableLoader } from "components";
 
-const Card = ({ imgUrl, name, rating, date, office, comment, onChange, key }) => {
+const Card = ({
+  imgUrl,
+  name,
+  rating,
+  date,
+  office,
+  comment,
+  onChange,
+  key,
+}) => {
   return (
-    <div key={key} className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
+    <>
       <div className="flex justify-between">
         <div className="flex">
           <img src={imgUrl} className="rounded-full" alt="gambar" />
@@ -35,12 +47,15 @@ const Card = ({ imgUrl, name, rating, date, office, comment, onChange, key }) =>
         <p className="text-gray-500">“{comment}”</p>
       </div>
       <div className="flex justify-end">
-        <button onClick={onChange} className="rounded-xl text-white bg-fifth hover:bg-opacity-70 px-8 py-3 flex content-center">
+        <button
+          onClick={onChange}
+          className="rounded-xl text-white bg-fifth hover:bg-opacity-70 px-8 py-3 flex content-center"
+        >
           <DeleteForeverIcon className="text-white" />
           <p className="ml-4 my-auto">Hide Comment</p>
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -57,11 +72,10 @@ const ReviewPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchReview())
-      .then((res) => {
-        setTestimonial(res.payload);
-        setLoading(false);
-      });
+    dispatch(fetchReview()).then((res) => {
+      setTestimonial(res.payload);
+      setLoading(false);
+    });
     setDataReview({
       minValue: 0,
       maxValue: 4,
@@ -78,10 +92,9 @@ const ReviewPage = () => {
   const setReload = () => {
     setLoading(true);
     setTimeout(() => {
-      dispatch(fetchReview())
-        .then((res) => {
-          setTestimonial(res.payload);
-        });
+      dispatch(fetchReview()).then((res) => {
+        setTestimonial(res.payload);
+      });
       setLoading(false);
     }, 500);
   };
@@ -126,10 +139,11 @@ const ReviewPage = () => {
             setReload();
             toast.custom((t) => (
               <div
-                className={`${t.visible
-                  ? "animate-enter ease-in-out duration-200"
-                  : "animate-leave ease-in-out duration-200"
-                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                className={`${
+                  t.visible
+                    ? "animate-enter ease-in-out duration-200"
+                    : "animate-leave ease-in-out duration-200"
+                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
               >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
@@ -206,16 +220,20 @@ const ReviewPage = () => {
               {testimonial
                 .slice(dataReview.minValue, dataReview.maxValue)
                 .map((review) => (
-                  <Card
+                  <div
                     key={review.id}
-                    imgUrl={twitter}
-                    name={review.user.full_name}
-                    rating={review.score}
-                    date={review.created_at.substr(0, 11)}
-                    office={review.office.office_name}
-                    comment={review.comment}
-                    onChange={() => handleDelete(review.id)}
-                  />
+                    className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]"
+                  >
+                    <Card
+                      imgUrl={twitter}
+                      name={review.user.full_name}
+                      rating={review.score}
+                      date={review.created_at.substr(0, 11)}
+                      office={review.office.office_name}
+                      comment={review.comment}
+                      onChange={() => handleDelete(review.id)}
+                    />
+                  </div>
                 ))}
             </>
           )}

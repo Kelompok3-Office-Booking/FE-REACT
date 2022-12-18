@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTransaction, fetchTransaction, transactionSelectors } from "store/Feature/FeatureTransaction/transactionSlice";
+import {
+  deleteTransaction,
+  fetchTransaction,
+} from "store/Feature/FeatureTransaction/transactionSlice";
 import DeleteAlert from "components/Alert/deleteAlert";
 import ModalUpdateTransaksi from "components/Modal/ModalTransaksi";
 import DeleteAllData from "components/Alert/deleteAllData";
@@ -11,9 +14,9 @@ import { ContentTableLoader } from "components";
 import { Helmet } from "react-helmet";
 import { Pagination } from "antd";
 import { toast, Toaster } from "react-hot-toast";
-import jsConvert from 'js-convert-case';
-import CurrencyFormat from 'react-currency-format';
-import CloseIcon from '@mui/icons-material/Close';
+import jsConvert from "js-convert-case";
+import CurrencyFormat from "react-currency-format";
+import CloseIcon from "@mui/icons-material/Close";
 import { checkbox } from "assets";
 import Swal from "sweetalert2";
 
@@ -192,19 +195,21 @@ const TransactionPage = () => {
           try {
             dispatch(deleteTransaction(id));
             setReload();
-            Swal.fire(
-              {
-                icon: "success",
-                title: "Deleted!",
-                text: "Your data has been deleted.",
-                showConfirmButton: false,
-                timer: 1200
-              }
-            );
+            Swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: "Your data has been deleted.",
+              showConfirmButton: false,
+              timer: 1200,
+            });
             toast.custom((t) => (
               <div
-                className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
-                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                className={`${
+                  t.visible
+                    ? "animate-enter ease-in-out duration-200"
+                    : "animate-leave ease-in-out duration-200"
+                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 pt-0.5">
@@ -215,9 +220,7 @@ const TransactionPage = () => {
                       />
                     </div>
                     <div className="ml-3 flex-col text-start">
-                      <p className="text-sm font-bold text-success">
-                        Success
-                      </p>
+                      <p className="text-sm font-bold text-success">Success</p>
                       <p className="mt-1 text-sm text-gray-500">
                         Successfully Deleted
                       </p>
@@ -233,7 +236,7 @@ const TransactionPage = () => {
                   </button>
                 </div>
               </div>
-            ))
+            ));
             return result;
           } catch (error) {
             return Swal.fire({
@@ -244,7 +247,7 @@ const TransactionPage = () => {
           }
         }
       });
-  }
+  };
 
   return (
     <>
@@ -300,93 +303,109 @@ const TransactionPage = () => {
               />
             </div>
           </div>
-          <table className="w-full text-sm text-left text-gray-500 ">
-            {loading ? (
-              <ContentTableLoader />
-            ) : (
-              <>
-                <THead
-                  handleSelectAll={handleSelectAll}
-                  isChecked={isCheckAll}
-                  requestSort={requestSort}
-                  getClassNamesFor={getClassNamesFor}
-                />
-                <tbody>
-                  {items
-                    ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
-                    .map((transaction) => (
-                      <tr
-                        className="bg-white border-b hover:bg-gray-50"
-                        key={transaction.id}
-                      >
-                        <td className="p-4 w-4">
-                          <div className="flex items-center">
-                            <input
-                              id="checkbox-table-search-1"
-                              type="checkbox"
-                              checked={isCheckAll ? true : transaction.checked}
-                              onChange={handleClickCheck}
-                              className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                            />
-                            <label
-                              htmlFor="checkbox-table-search-1"
-                              className="sr-only"
-                            >
-                              checkbox
-                            </label>
-                          </div>
-                        </td>
-                        <td className="py-4 px-6">{transaction.id}</td>
-                        <td className="py-4 px-3">
-                          {transaction.user_full_name}
-                        </td>
-                        <td className="py-4 px-6">{jsConvert.toHeaderCase(transaction.offices_office_type)}</td>
-                        <td className="py-4 px-6">{transaction.check_in_date}</td>
-                        <td className="py-4 px-6">{transaction.check_in.time}</td>
-                        <td className="py-4 px-6 items-center">
-                          <CurrencyFormat value={transaction.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => <div>{value}</div>} />
-                        </td>
-                        <td id="status" className="py-4 px-6">
-                          <span
-                            className={`${jsConvert.toHeaderCase(transaction.status) === "On Process"
+          {loading ? (
+            <ContentTableLoader />
+          ) : (
+            <table className="w-full text-sm text-left text-gray-500 ">
+              <THead
+                handleSelectAll={handleSelectAll}
+                isChecked={isCheckAll}
+                requestSort={requestSort}
+                getClassNamesFor={getClassNamesFor}
+              />
+              <tbody>
+                {items
+                  ?.slice(dataTransaksi.minValue, dataTransaksi.maxValue)
+                  .map((transaction) => (
+                    <tr
+                      className="bg-white border-b hover:bg-gray-50"
+                      key={transaction.id}
+                    >
+                      <td className="p-4 w-4">
+                        <div className="flex items-center">
+                          <input
+                            id="checkbox-table-search-1"
+                            type="checkbox"
+                            checked={isCheckAll ? true : transaction.checked}
+                            onChange={handleClickCheck}
+                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
+                          />
+                          <label
+                            htmlFor="checkbox-table-search-1"
+                            className="sr-only"
+                          >
+                            checkbox
+                          </label>
+                        </div>
+                      </td>
+                      <td className="py-4 px-6">{transaction.id}</td>
+                      <td className="py-4 px-3">
+                        {transaction.user_full_name}
+                      </td>
+                      <td className="py-4 px-6">
+                        {jsConvert.toHeaderCase(
+                          transaction.offices_office_type
+                        )}
+                      </td>
+                      <td className="py-4 px-6">{transaction.check_in_date}</td>
+                      <td className="py-4 px-6">{transaction.check_in.time}</td>
+                      <td className="py-4 px-6 items-center">
+                        <CurrencyFormat
+                          value={transaction.price}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          prefix={"Rp."}
+                          renderText={(value) => <div>{value}</div>}
+                        />
+                      </td>
+                      <td id="status" className="py-4 px-6">
+                        <span
+                          className={`${
+                            jsConvert.toHeaderCase(transaction.status) ===
+                            "On Process"
                               ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
-                              : jsConvert.toHeaderCase(transaction.status) === "Confirmed"
-                                ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
-                                : jsConvert.toHeaderCase(transaction.status) === "Pending"
-                                  ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
-                                  : jsConvert.toHeaderCase(transaction.status) === "Accepted"
-                                    ? "bg-success bg-opacity-30 rounded-2xl border-2 border-success py-1 px-4"
-                                    : jsConvert.toHeaderCase(transaction.status) === "Cancelled"
-                                      ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                                      : jsConvert.toHeaderCase(transaction.status) === "Rejected"
-                                        ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                                        : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
-                              }`}
-                          >
-                            {jsConvert.toHeaderCase(transaction.status)}
-                          </span>
-                        </td>
-                        <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                          <ModalViewTransaction dataTransaksi={transaction} />
-                          <button
-                            href="#"
-                            onClick={() => handleDelete(transaction.id)}
-                            type="button"
-                            data-modal-toggle="editUserModal"
-                            className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
-                          >
-                            <DeleteForeverIcon className="text-slate-500 hover:text-white" />
-                          </button>
-                          <ModalUpdateTransaksi dataTransaksi={transaction} setReload={setReload} />
-                        </td>
-                      </tr>
-                    ))
-                  }
-                </tbody>
-              </>
-            )}
-
-          </table>
+                              : jsConvert.toHeaderCase(transaction.status) ===
+                                "Confirmed"
+                              ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                              : jsConvert.toHeaderCase(transaction.status) ===
+                                "Pending"
+                              ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                              : jsConvert.toHeaderCase(transaction.status) ===
+                                "Accepted"
+                              ? "bg-success bg-opacity-30 rounded-2xl border-2 border-success py-1 px-4"
+                              : jsConvert.toHeaderCase(transaction.status) ===
+                                "Cancelled"
+                              ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                              : jsConvert.toHeaderCase(transaction.status) ===
+                                "Rejected"
+                              ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                              : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
+                          }`}
+                        >
+                          {jsConvert.toHeaderCase(transaction.status)}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                        <ModalViewTransaction dataTransaksi={transaction} />
+                        <button
+                          href="#"
+                          onClick={() => handleDelete(transaction.id)}
+                          type="button"
+                          data-modal-toggle="editUserModal"
+                          className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
+                        >
+                          <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                        </button>
+                        <ModalUpdateTransaksi
+                          dataTransaksi={transaction}
+                          setReload={setReload}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          )}
         </div>
         <div className="mt-8 text-start">
           <Pagination
@@ -397,14 +416,9 @@ const TransactionPage = () => {
           />
         </div>
       </div>
-      <Toaster
-        position="bottom-left"
-        reverseOrder={false}
-      />
+      <Toaster position="bottom-left" reverseOrder={false} />
     </>
   );
 };
-
-
 
 export default TransactionPage;
