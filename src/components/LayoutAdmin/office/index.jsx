@@ -175,10 +175,11 @@ const OfficePage = () => {
             setReload();
             toast.custom((t) => (
               <div
-                className={`${t.visible
-                  ? "animate-enter ease-in-out duration-200"
-                  : "animate-leave ease-in-out duration-200"
-                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                className={`${
+                  t.visible
+                    ? "animate-enter ease-in-out duration-200"
+                    : "animate-leave ease-in-out duration-200"
+                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
               >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
@@ -249,7 +250,7 @@ const OfficePage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -284,78 +285,83 @@ const OfficePage = () => {
                 />
               </div>
             </div>
-            <table className="w-full text-sm text-left text-gray-500 ">
-              {loading ? (
-                <ContentTableLoader />
-              ) : (
-                <>
-                  <TableHead
-                    handleSelectAll={handleSelectAll}
-                    isChecked={isCheckAll}
-                    requestSort={requestSort}
-                    getClassNamesFor={getClassNamesFor}
-                  />
-                  <tbody>
-                    {items
-                      ?.slice(dataOffice.minValue, dataOffice.maxValue)
-                      .map((office) => (
-                        <tr
-                          className="bg-white border-b hover:bg-gray-50"
-                          key={office.id}
-                        >
-                          <td className="p-4 w-4">
-                            <div className="flex items-center">
-                              <input
-                                id="checkbox-table-search-1"
-                                type="checkbox"
-                                dataid={office.id}
-                                checked={isCheckAll ? true : office.checked}
-                                onChange={handleClickCheck}
-                                className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
-                              />
-                              <label
-                                htmlFor="checkbox-table-search-1"
-                                className="sr-only"
-                              >
-                                checkbox
-                              </label>
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 text-center">{office.id}</td>
-                          <td className="py-4 px-6">{office.title}</td>
-                          <td className="py-4 px-6 ">{office.office_type}</td>
-                          <td className="py-4 px-6 text-start">
-                            <CurrencyFormat className="hidden" value={office.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => <span>{value} </span>} />
-                            / Hour
-                          </td>
-                          <td className="py-4 px-6 text-center">
-                            {office.office_length} Person
-                          </td>
-                          <td className="py-4 px-6 text-center">
-                            {office.total_booked}
-                          </td>
-                          <td className="py-4 px-6 flex gap-2 items-center justify-center">
-                            <ViewOffice dataDetailOffice={office} />
-                            <button
-                              href="#"
-                              onClick={() => handleDelete(office.id)}
-                              type="button"
-                              data-modal-toggle="editUserModal"
-                              className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
-                            >
-                              <DeleteForeverIcon className="text-slate-500 hover:text-white" />
-                            </button>
-                            <EditOffice
-                              dataDetailOffice={office}
-                              setReload={setReload}
+            {loading ? (
+              <ContentTableLoader />
+            ) : (
+              <table className="w-full text-sm text-left text-gray-500 ">
+                <TableHead
+                  handleSelectAll={handleSelectAll}
+                  isChecked={isCheckAll}
+                  requestSort={requestSort}
+                  getClassNamesFor={getClassNamesFor}
+                />
+                <tbody>
+                  {items
+                    ?.slice(dataOffice.minValue, dataOffice.maxValue)
+                    .map((office) => (
+                      <tr
+                        className="bg-white border-b hover:bg-gray-50"
+                        key={office.id}
+                      >
+                        <td className="p-4 w-4">
+                          <div className="flex items-center">
+                            <input
+                              id="checkbox-table-search-1"
+                              type="checkbox"
+                              dataid={office.id}
+                              checked={isCheckAll ? true : office.checked}
+                              onChange={handleClickCheck}
+                              className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500"
                             />
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </>
-              )}
-            </table>
+                            <label
+                              htmlFor="checkbox-table-search-1"
+                              className="sr-only"
+                            >
+                              checkbox
+                            </label>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 text-center">{office.id}</td>
+                        <td className="py-4 px-6">{office.title}</td>
+                        <td className="py-4 px-6 ">{office.office_type}</td>
+                        <td className="py-4 px-6 text-start">
+                          <CurrencyFormat
+                            className="hidden"
+                            value={office.price}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"Rp."}
+                            renderText={(value) => <span>{value} </span>}
+                          />
+                          / Hour
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          {office.office_length} Person
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          {office.total_booked}
+                        </td>
+                        <td className="py-4 px-6 flex gap-2 items-center justify-center">
+                          <ViewOffice dataDetailOffice={office} />
+                          <button
+                            href="#"
+                            onClick={() => handleDelete(office.id)}
+                            type="button"
+                            data-modal-toggle="editUserModal"
+                            className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
+                          >
+                            <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                          </button>
+                          <EditOffice
+                            dataDetailOffice={office}
+                            setReload={setReload}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            )}
           </div>
           <div className="mt-8 text-start">
             <Pagination
