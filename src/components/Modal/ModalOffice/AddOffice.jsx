@@ -399,7 +399,6 @@ const AddOffice = () => {
                   onKeyPress={preventMinus}
                   onValueChange={(value, name) => setHandleValuePrice(value)}
                 />
-
               </div>
               <div className="flex mx-auto w-full ml-8">
                 <div className="flex items-center mx-12">
