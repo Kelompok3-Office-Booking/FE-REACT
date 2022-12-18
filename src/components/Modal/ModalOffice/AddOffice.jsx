@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { dataJakarta } from "store/dataJakarta";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createOffice } from "store/Feature/FeatureOffice/officeSlice";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 import CurrencyInput from "react-currency-input-field";
+import { fetchFacility } from "store/Feature/FeaturesFacility/facilitySlice";
+import jsConvert from "js-convert-case";
 
 const InputField = ({
   name,
@@ -78,19 +80,6 @@ const CurrencyField = ({
   </div>
 );
 
-const fasilitas_office = [
-  "High Speed Wifi",
-  "Avalible many charging slot",
-  "Air Conditioner in all room",
-  "Projector to presentation",
-  "Free parking for your vehicle",
-  "Snacks and drinks available",
-  "Prayer room available",
-  "Clean toilet with water heater",
-  "Enter the room using the access card",
-  "nice view from the window",
-];
-
 const AddOffice = () => {
   const imageTypeRegex = /image\/(jpg|jpeg)/gm;
 
@@ -108,29 +97,16 @@ const AddOffice = () => {
   const [images, setImages] = useState([]);
   const [facilities_id, setFacilitiesId] = useState([]);
 
+  const listOfFacility = useSelector((state) => state.facility.data);
+  const [facilityList, setFacilityList] = useState(listOfFacility);
+
+  const [isCheck, setIsCheck] = useState([]);
+
   const handleChangeFacilities = (ev) => {
     const { value, checked } = ev.target;
-    if (checked) {
-      for (let i = 0; i < ev.target.value.length; i++) {
-        facilities_id.push(value[i]);
-      }
-      setFacilitiesId(facilities_id);
-      let facilitiesId = "";
-      facilities_id.forEach((val, i) => {
-        if (i === facilities_id.length - 1) {
-          facilitiesId += val;
-        } else {
-          facilitiesId += `${val},`;
-        }
-      });
-      setData({ ...data, facilities_id: facilitiesId });
-    } else {
-      for (let i = 0; i < facilities_id.length; i++) {
-        if (facilities_id[i] === value[i]) {
-          facilities_id.splice(i, value[i]);
-          i--;
-        }
-      }
+    setIsCheck([...isCheck, value]);
+    if (!checked) {
+      setIsCheck(isCheck.filter((item) => item !== value));
     }
   };
 
@@ -193,6 +169,7 @@ const AddOffice = () => {
       });
     };
   }, [imageFiles]);
+
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -258,6 +235,10 @@ const AddOffice = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchFacility()).then((res) => {
+      setFacilityList(res.payload);
+    });
+
     setJakartaList(dataJakarta);
     const list = [];
     jakartaLits.map((city) => {
@@ -292,7 +273,7 @@ const AddOffice = () => {
     formData.append("city", data.city);
     formData.append("district", data.district);
     formData.append("address", data.address);
-    formData.append("facilities_id", data.facilities_id);
+    formData.append("facilities_id", isCheck.toString());
     imageFiles.forEach((image) => {
       formData.append("images", image);
     });
@@ -504,7 +485,7 @@ const AddOffice = () => {
                         id="regionIndex"
                         index={index}
                       >
-                        {city.city}
+                        {jsConvert.toHeaderCase(city.city)}
                       </option>
                     );
                   })}
@@ -716,14 +697,14 @@ const AddOffice = () => {
               </div>
             </div>
             <p className="text-start mb-2">Facilities</p>
-            {fasilitas_office.map((fasilitas, index) => {
+            {facilityList?.slice(0, 10).map((fasilitas, index) => {
               return (
-                <div className="flex items-center mb-2" key={index}>
+                <div className="flex items-center mb-2" key={fasilitas.id}>
                   <input
                     onChange={handleChangeFacilities}
                     id="default-checkbox"
                     type="checkbox"
-                    value={index + 1}
+                    value={fasilitas.id}
                     name="facilities_id"
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-400 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
@@ -731,7 +712,7 @@ const AddOffice = () => {
                     htmlFor="default-checkbox"
                     className="ml-8 border-2 pl-3 py-3 w-full text-start border-gray-400 rounded-lg text-sm font-normal text-gray-900 dark:text-gray-300"
                   >
-                    {fasilitas}
+                    {fasilitas.description}
                   </label>
                 </div>
               );
