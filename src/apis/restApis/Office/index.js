@@ -3,18 +3,20 @@ import axiosInstance from "configs/AxiosInstance";
 const APIOffice = {
     async getAllOffice() {
         try {
-            const response = await axiosInstance.get("/office");
-            console.log(response);
+            const response = await axiosInstance.get("/admin/offices/all");
             return response;
         } catch (err) {
             console.log(err);
         }
     },
 
-    async createOffice() {
+    async createOffice(data) {
         try {
-            const response = await axiosInstance.post("/office");
-            console.log(response);
+            const response = await axiosInstance.post("/admin/offices/create", data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             return response;
         } catch (err) {
             console.log(err);
@@ -24,17 +26,20 @@ const APIOffice = {
     async updateOffice(data) {
         try {
             const id = data.id;
-            const response = await axiosInstance.patch(`/office/${id}`);
-            console.log(response);
+            const response = await axiosInstance.put(`/admin/offices/update/${id}`, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             return response;
         } catch (err) {
-            console.log(err);
+            alert("Input Failed");
         }
     },
 
     async deleteOffice(id) {
         try {
-            const response = await axiosInstance.delete(`/office/${id}`);
+            const response = await axiosInstance.delete(`/admin/offices/delete/${id}`);
             return response;
         } catch (err) {
             console.log(err);

@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import { Data, dataOffice, dataMeetings } from "utils/dummy";
 import BarChart from "../../Chart/lineChart";
 import DoughnutChart from "components/Chart/doughnutChart";
 
-const TransactionChart = () => {
+const TransactionChart = ({ coworkingSpace, meetingSpace, officeSpace }) => {
+
   const [pie, setPie] = useState({
-    labels: ["Cooworking", "Meeting Room", "Office Building"],
+    labels: ["Cooworking Space", "Meeting Room", "Office Building"],
     datasets: [
       {
-        data: [43, 26, 31],
+        data: [
+          coworkingSpace?.length,
+          meetingSpace?.length,
+          officeSpace?.length,
+        ],
         backgroundColor: ["#D4647A", "#1DBFC1", "#6E6FDC"],
         cutout: "80%",
         borderWidth: 0,
       },
     ],
   });
+
   const [chartData, setChartData] = useState({
     labels: Data.map((data) => data.day),
     datasets: [
@@ -48,12 +54,15 @@ const TransactionChart = () => {
       },
     ],
   });
+
   return (
     <>
       <section className="flex gap-4 mt-10">
         <div className="w-1/2 bg-white rounded-xl drop-shadow-4xl">
           <div className="p-8">
-            <h2 className="font-bold text-2xl text-left pt-2">Transaction Chart</h2>
+            <h2 className="font-bold text-2xl text-left pt-2">
+              Transaction Chart
+            </h2>
             <hr className="w-full border-t-white border-l-white border-r-white border-2 my-2 border-b-gray-100 " />
             <div className="flex justify-between py-5">
               <div className="flex flex-wrap justify-center items-center ">

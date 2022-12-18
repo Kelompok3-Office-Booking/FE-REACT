@@ -36,6 +36,8 @@ import behance_team from "./img/img-team/sosmed/behance.svg";
 import github_team from "./img/img-team/sosmed/github.svg";
 import instagram_team from "./img/img-team/sosmed/instagram.svg";
 import dribbble_team from "./img/img-team/sosmed/dribbble.svg";
+import checkbox from "./img/checkbox.svg";
+import notfound from "./img/notfound.svg";
 
 export { logo, logo_black, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone, LogoNavbar, BetterSpace, Arrow, items, items2, items3, items4 };
 // gambar testimonials
@@ -44,5 +46,5 @@ export { image1, image2, image3, image4, image5, image6, image7, image8, image9,
 // image team
 export { team1, team2, linkedin_team, behance_team, github_team, instagram_team, dribbble_team };
 
-// login
-export { login };
+// other
+export { login, checkbox, notfound };

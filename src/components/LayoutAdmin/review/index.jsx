@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { CaretDownOutlined, EyeOutlined, EyeInvisibleOutlined, SmileOutlined } from '@ant-design/icons';
-// import type { PaginationProps } from 'antd';
-import { Dropdown, Menu, Space, Pagination, Select } from 'antd';
-import { Link } from "react-router-dom";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { toast, Toaster } from "react-hot-toast";
+import CloseIcon from "@mui/icons-material/Close";
+import Swal from "sweetalert2";
+import { checkbox } from "assets";
+import { Pagination, Select } from "antd";
 import { twitter } from "assets";
 import { Rating } from "@mui/material";
+import { Helmet } from "react-helmet";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteReview, fetchReview } from "store/Feature/FeatureReview/reviewSlice";
+import { ContentTableLoader } from "components";
 
-import { testimonials } from "store/dataTestimonials";
-
-
-const Card = ({ imgUrl, name, rating, date, office, comment }) => {
+const Card = ({ imgUrl, name, rating, date, office, comment, onChange, key }) => {
   return (
-    <div className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
+    <div key={key} className="bg-white p-8 m-8 drop-shadow-4xl rounded-2xl w-[520px]">
       <div className="flex justify-between">
         <div className="flex">
           <img src={imgUrl} className="rounded-full" alt="gambar" />
           <div className="pl-4 flex flex-col text-start">
             <p className="font-bold text-xl my-auto">{name}</p>
-            <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
+            <Rating
+              name="half-rating-read"
+              defaultValue={rating}
+              precision={0.5}
+              readOnly
+            />
           </div>
         </div>
         <p className="text-gray-500">{date}</p>
@@ -27,110 +35,203 @@ const Card = ({ imgUrl, name, rating, date, office, comment }) => {
         <p className="text-gray-500">“{comment}”</p>
       </div>
       <div className="flex justify-end">
-        <button className="text-red-600 border-2 rounded-2xl border-red-600 px-8 py-1 flex content-center">
-          <EyeInvisibleOutlined className="text-2xl mb-1" />
+        <button onClick={onChange} className="rounded-xl text-white bg-fifth hover:bg-opacity-70 px-8 py-3 flex content-center">
+          <DeleteForeverIcon className="text-white" />
           <p className="ml-4 my-auto">Hide Comment</p>
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const ReviewPage = () => {
-
+  const dispatch = useDispatch();
+  const listOfReview = useSelector((state) => state.reviews.data);
   const pageSize = 4;
   const [dataReview, setDataReview] = useState({
     minValue: 0,
-    maxValue: 2
+    maxValue: 2,
   });
   const [filter, setFilter] = useState("newest");
-  const [testimonial, setTestimonial] = useState(testimonials);
-  // const TestiImage = { image1, image2, image3, image4, image5, image6, image7, image8, image9, image10 }
+  const [testimonial, setTestimonial] = useState(listOfReview);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTestimonial(testimonials);
+    dispatch(fetchReview())
+      .then((res) => {
+        setTestimonial(res.payload);
+        setLoading(false);
+      });
     setDataReview({
       minValue: 0,
-      maxValue: 4
-    })
-  }, [testimonial])
+      maxValue: 4,
+    });
+  }, [dispatch]);
 
   const handleChange = (value) => {
     setDataReview({
       minValue: (value - 1) * pageSize,
-      maxValue: value * pageSize
+      maxValue: value * pageSize,
     });
-    // console.log(dataReview);
+  };
+
+  const setReload = () => {
+    setLoading(true);
+    setTimeout(() => {
+      dispatch(fetchReview())
+        .then((res) => {
+          setTestimonial(res.payload);
+        });
+      setLoading(false);
+    }, 500);
   };
 
   const handleFilter = (value) => {
-    // console.log(`selected ${value}`);
     setFilter(value);
   };
 
-  // const handleFilter = ({ name }) => {
-  //     setFilter(name);
-  // }
+  const handleDelete = (id) => {
+    // alert(id)
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+        cancelButton:
+          "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
+      },
+      buttonsStyling: false,
+    });
 
-  // console.log(dataReview.data);
-  // onClick={handleFilter()}
-  // console.log(menu.props.items[0].name);
-  console.log(filter);
+    swalWithBootstrapButtons
+      .fire({
+        title: `Are you sure?`,
+        text: "The selected record will be permanently deleted. Are you want to continue",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete",
+        cancelButtonText: "No, cancel",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          try {
+            dispatch(deleteReview(id));
+            setReload();
+            Swal.fire({
+              icon: "success",
+              title: `Deleted!`,
+              text: "Your data has been deleted.",
+              showConfirmButton: false,
+              timer: 1200,
+            });
+            setReload();
+            toast.custom((t) => (
+              <div
+                className={`${t.visible
+                  ? "animate-enter ease-in-out duration-200"
+                  : "animate-leave ease-in-out duration-200"
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+              >
+                <div className="flex-1 w-0 p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 pt-0.5">
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={checkbox}
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-3 flex-col text-start">
+                      <p className="text-sm font-bold text-success">Success</p>
+                      <p className="mt-1 text-sm text-gray-500">
+                        Successfully Deleted
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex border-gray-200">
+                  <button
+                    onClick={() => toast.dismiss(t.id)}
+                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
+              </div>
+            ));
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Delete is Failed ",
+            });
+          }
+        }
+      });
+  };
+
   return (
-    <div className="flex flex-col w-full">
-      <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
-        <h1 className="text-3xl font-bold my-auto">Review</h1>
-        <div className="flex content-center px-12 rounded-xl text-lg py-2">
-          <p className="mr-4">Sort By : </p>
-          <Select
-            defaultValue="newest"
-            style={{ width: 140 }}
-            className="ring-0 border-0"
-            onChange={handleFilter}
-            options={[
-              {
-                value: 'newest',
-                label: 'Newest',
-              },
-              {
-                value: 'oldest',
-                label: 'Oldest',
-              },
-            ]}
+    <>
+      <Helmet>
+        <title>Dashboard | Reviews</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
+      <div className="flex flex-col w-full">
+        <div className="flex justify-between px-8 py-4 w-full bg-white rounded-2xl shadow">
+          <h1 className="text-3xl font-bold my-auto">Review</h1>
+          <div className="flex content-center px-12 rounded-xl text-lg py-2">
+            <p className="mr-4">Sort By : </p>
+            <Select
+              defaultValue="newest"
+              style={{ width: 140 }}
+              className="ring-0 border-0"
+              onChange={handleFilter}
+              options={[
+                {
+                  value: "newest",
+                  label: "Newest",
+                },
+                {
+                  value: "oldest",
+                  label: "Oldest",
+                },
+              ]}
+            />
+          </div>
+        </div>
+        <div className=" my-8 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
+          {loading ? (
+            <ContentTableLoader />
+          ) : (
+            <>
+              {testimonial
+                .slice(dataReview.minValue, dataReview.maxValue)
+                .map((review) => (
+                  <Card
+                    key={review.id}
+                    imgUrl={twitter}
+                    name={review.user.full_name}
+                    rating={review.score}
+                    date={review.created_at.substr(0, 11)}
+                    office={review.office.office_name}
+                    comment={review.comment}
+                    onChange={() => handleDelete(review.id)}
+                  />
+                ))}
+            </>
+          )}
+        </div>
+        <div>
+          <Pagination
+            defaultCurrent={1}
+            defaultPageSize={pageSize}
+            total={testimonial.length}
+            onChange={handleChange}
           />
         </div>
-
       </div>
-      <div className=" my-8 py-8 justify-center flex min-w-full flex-wrap bg-white rounded-2xl shadow">
-        {
-          testimonial &&
-          testimonial.length > 0 &&
-          testimonial.slice(dataReview.minValue, dataReview.maxValue).map((review) => {
-            return (
-              <Card
-                key={review.id}
-                imgUrl={twitter}
-                name={review.name}
-                rating={review.rating}
-                date={"22/05/2022"}
-                office="Equity Tower Floor 34"
-                comment={review.comment}
-              />
-            )
-          })
-        }
-      </div>
-      <div>
-        <Pagination
-          defaultCurrent={1}
-          defaultPageSize={pageSize}
-          // current={dataReview.current}
-          total={testimonial.length}
-          onChange={handleChange}
-        />
-      </div>
-    </div>
-  )
-}
+      <Toaster position="bottom-left" reverseOrder={false} />
+    </>
+  );
+};
 
 export default ReviewPage;

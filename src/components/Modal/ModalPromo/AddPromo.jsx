@@ -1,15 +1,95 @@
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchPromo, createPromo } from "store/Feature/FeaturePromo/promoSlice";
+import Swal from "sweetalert2";
+import CloseIcon from '@mui/icons-material/Close';
+import { toast } from "react-hot-toast";
+import { checkbox } from "assets";
 
 const AddPromo = ({
-    handleChangePromo,
-    handleSubmit
+    loading,
+    setReload
 }) => {
+    const dispatch = useDispatch();
+
+    const [data, setData] = useState({
+        voucher_code: "",
+        periode: "",
+        nominal: "",
+    });
 
     const [modal, setModal] = useState(false);
+
+    const handleChangePromo = (ev) => {
+        setData({
+            ...data,
+            [ev.target.name]: ev.target.value,
+        });
+    };
+
     const HandleModal = () => {
         setModal(!modal);
     }
+
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+        const { nominal, periode, voucher_code } = data;
+        try {
+            dispatch(createPromo({ nominal, periode, voucher_code }));
+            setModal(false)
+            setReload()
+            Swal.fire(
+                {
+                    icon: "success",
+                    title: `Success!`,
+                    text: "Add Promo Success.",
+                    showConfirmButton: false,
+                    timer: 1200
+                }
+            );
+            toast.custom((t) => (
+                <div
+                    className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
+                        } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                    <div className="flex-1 w-0 p-4">
+                        <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5">
+                                <img
+                                    className="h-10 w-10 rounded-full"
+                                    src={checkbox}
+                                    alt=""
+                                />
+                            </div>
+                            <div className="ml-3 flex-col text-start">
+                                <p className="text-sm font-bold text-success">
+                                    Success
+                                </p>
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Success Added Promo
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex border-gray-200">
+                        <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+                        >
+                            <CloseIcon />
+                        </button>
+                    </div>
+                </div>
+            ))
+        } catch (error) {
+            return Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Added is Failed ",
+            });
+        }
+
+    };
 
     return (
         <>
@@ -21,7 +101,7 @@ const AddPromo = ({
             {
                 modal && (
                     <div className="flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-20 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full">
-                        <div className="bg-white rounded-2xl px-20 py-12 w-1/2 absolute z-50 drop-shadow-4xl transform -translate-y-0 scale-90 transition-opacity transition-transform duration-300 center">
+                        <div className="bg-white rounded-2xl px-20 py-12 w-1/2 absolute z-50 transform -translate-y-0 scale-90 transition-opacity transition-transform duration-300 center">
                             <div className="absolute">
                                 <button onClick={HandleModal}>
                                     <CloseOutlined className="relative text-xl -top-6 right-12" />

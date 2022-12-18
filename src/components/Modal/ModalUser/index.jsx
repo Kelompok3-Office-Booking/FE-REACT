@@ -4,6 +4,9 @@ import { CloseOutlined } from "@ant-design/icons";
 import { updateUser } from "store/Feature/FeatureUser/userSlice";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import CloseIcon from "@mui/icons-material/Close";
+import { checkbox } from "assets";
 
 const InputField = ({
   name,
@@ -12,7 +15,7 @@ const InputField = ({
   placeholder,
   onClick,
   onChange,
-  className = "border-gray-400",
+  className = "border-gray-300",
   type = "text",
   disabled,
   autoComplete = "off",
@@ -21,7 +24,7 @@ const InputField = ({
     <input
       type={type}
       id="floating_outlined"
-      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+      className={`${className} block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
       placeholder={placeholder}
       name={name}
       onChange={onChange}
@@ -69,20 +72,51 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
 
   const handleReset = () => {
     setReset(!reset);
-    // console.log(reset);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
       dispatch(updateUser({ id, full_name, gender, email }));
-      // window.location.reload();
       setReload();
       Swal.fire({
         icon: "success",
         title: "Success",
         text: "Edit Users Success",
+        showConfirmButton: false,
+        timer: 1000,
       });
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible
+              ? "animate-enter ease-in-out duration-200"
+              : "animate-leave ease-in-out duration-200"
+          } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <img className="h-10 w-10 rounded-full" src={checkbox} alt="" />
+              </div>
+              <div className="ml-3 flex-col text-start">
+                <p className="text-sm font-bold text-success">Success</p>
+                <p className="mt-1 text-sm text-gray-500">
+                  Successfully Updated
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+            >
+              <CloseIcon />
+            </button>
+          </div>
+        </div>
+      ));
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -92,7 +126,6 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
     }
   };
 
-  // console.log(data);
   return (
     <>
       <button
@@ -106,10 +139,10 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
       {/* Edit user modal */}
       {modal && (
         <div className="flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full">
-          <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50 drop-shadow-4xl transform -translate-y-0 scale-125 transition-opacity transition-transform duration-300 center">
+          <div className="bg-white rounded-2xl px-12 py-10 w-1/4 absolute z-50  transform -translate-y-0 scale-125 transition-transform duration-300 center">
             <div className="absolute">
               <button onClick={HANDLEMODAL}>
-                <CloseOutlined className="relative text-xl -top-6 right-12" />
+                <CloseOutlined className="relative text-xl -top-6 right-8" />
               </button>
             </div>
             <div className="text-start pb-6">
@@ -122,24 +155,21 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
                   label="Full Name"
                   placeholder="Full Name"
                   type="text"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   defaultValue={reset ? dataUser.full_name : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />
               </div>
               <div className="pb-6">
-                {/* <InputField
-                  name="gender"
-                  label="Gender"
-                  placeholder="Gender"
-                  type="text"
-                  onClick={() => { }}
-                  defaultValue={reset ? dataUser.gender : ""}
-                  onChange={(ev) => setHandleChangeData(ev)}
-                /> */}
                 <div className="w-full">
-                  <select id="city" onChange={(ev) => setHandleChangeData(ev)} name="gender" defaultValue={dataUser.gender} className="border-2 py-3.5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="male" >Male</option>
+                  <select
+                    id="city"
+                    onChange={(ev) => setHandleChangeData(ev)}
+                    name="gender"
+                    defaultValue={dataUser.gender}
+                    className="border-2 py-3.5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
                 </div>
@@ -150,7 +180,7 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
                   label="Email"
                   placeholder="Email"
                   type="email"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   defaultValue={reset ? dataUser.email : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />

@@ -3,6 +3,8 @@ import { Rating } from "@mui/material";
 import { testimonials } from "store/dataTestimonials";
 import Carousel from "better-react-carousel";
 import "./style.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReview } from "store/Feature/FeatureReview/reviewSlice";
 
 const Card = ({ name, comment, time, rating, imgUrl }) => (
   <div
@@ -38,14 +40,17 @@ const Card = ({ name, comment, time, rating, imgUrl }) => (
 );
 
 const Testimonials = () => {
-  const [testimonial, setTestimonial] = useState(testimonials);
-  // const TestiImage = { image1, image2, image3, image4, image5, image6, image7, image8, image9, image10 }
+  const dispatch = useDispatch()
+  const listOfReview = useSelector((state) => state.reviews.data);
+  const [testimonial, setTestimonial] = useState(listOfReview);
 
   useEffect(() => {
-    setTestimonial(testimonials);
-  }, [testimonials]);
+    dispatch(fetchReview())
+      .then((res) => {
+        setTestimonial(res.payload);
+      });
 
-  // console.log(testimonial)
+  }, [dispatch]);
 
   return (
     <div className="flex pt-16 flex-col lg:pt-32" id="testimonials">
@@ -64,16 +69,16 @@ const Testimonials = () => {
       </div>
       <div className="flex flex-col container">
         <Carousel cols={3} rows={2} gap={0} loop autoPlay>
-          {testimonial.map((testi) => {
+          {testimonial.slice(0, 16).map((testi) => {
             return (
               <Carousel.Item key={testi.id}>
                 <Card
                   key={testi.id}
-                  name={testi.name}
+                  name={testi.user.full_name}
                   comment={testi.comment}
-                  rating={testi.rating}
-                  time={testi.time}
-                  imgUrl={testi.img}
+                  rating={testi.score}
+                  time={testi.created_at.substr(0, 11)}
+                  imgUrl={`image${Math.ceil(Math.floor(Math.random() * (10 - 1) + 1))}`}
                 />
               </Carousel.Item>
             );

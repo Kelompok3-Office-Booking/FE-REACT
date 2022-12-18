@@ -1,15 +1,17 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import APITransaction from "apis/restApis/Transaction";
 
 const initialState = {
     data: [],
     loading: false,
+    status: "idle",
+    error: null,
 };
 
 export const fetchTransaction = createAsyncThunk("fetch/transaction", async() => {
     try {
         const res = await APITransaction.getAllTransaction();
-        return res.data.transaction;
+        return res.data.data;
     } catch (error) {
         console.log(error);
     }
@@ -18,7 +20,6 @@ export const fetchTransaction = createAsyncThunk("fetch/transaction", async() =>
 export const updateTransaction = createAsyncThunk("update/transaction", async(data) => {
     try {
         const res = await APITransaction.updateTransaction(data);
-        console.log(res);
         return res.data;
     } catch (error) {
         console.log(error);
@@ -28,11 +29,14 @@ export const updateTransaction = createAsyncThunk("update/transaction", async(da
 export const deleteTransaction = createAsyncThunk("delete/transaction", async(id) => {
     try {
         const res = await APITransaction.deleteTransaction(id);
-        console.log(res);
         return res;
     } catch (error) {
         console.log(error);
     }
+});
+
+const transactionEntity = createEntityAdapter({
+    selectId: (transactions) => transactions.id,
 });
 
 const transactionSlice = createSlice({
@@ -40,8 +44,18 @@ const transactionSlice = createSlice({
     initialState,
     extraReducers(builder) {
         builder
+            .addCase(fetchTransaction.pending, (state, action) => {
+                state.status = "loading";
+            })
             .addCase(fetchTransaction.fulfilled, (state, action) => {
+                state.status = "succeeded";
                 state.data = action.payload;
+            })
+            .addCase(fetchTransaction.rejected, (state, action) => {
+                state.status = "failed";
+            })
+            .addCase(updateTransaction.pending, (state, action) => {
+                state.status = "loading";
             })
             .addCase(updateTransaction.fulfilled, (state, action) => {
                 state.data = state.data.map((val) => {
@@ -50,12 +64,20 @@ const transactionSlice = createSlice({
                     }
                     return val;
                 });
-                state.currentDetail = action.payload;
                 state.loading = false;
             })
+            .addCase(updateTransaction.rejected, (state, action) => {
+                state.status = "failed";
+            })
+            .addCase(deleteTransaction.pending, (state, action) => {
+                state.status = "loading";
+            })
             .addCase(deleteTransaction.fulfilled, (state, action) => {
-                state.fetchStatus = !state.fetchStatus;
+                state.status = "succeeded";
                 state.data = state.data.filter((item) => item.id !== action.payload.id);
+            })
+            .addCase(deleteTransaction.rejected, (state, action) => {
+                state.status = "failed";
             });
     },
 });

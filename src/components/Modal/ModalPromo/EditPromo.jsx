@@ -1,17 +1,27 @@
 import { CloseOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import toast, { Toaster } from 'react-hot-toast';
+import CloseIcon from '@mui/icons-material/Close';
+import { checkbox } from "assets";
+import { updatePromo } from "store/Feature/FeaturePromo/promoSlice";
 
 const EditPromo = ({
-    dataPromo,
+    dataPromo, setReload
 }) => {
     const [modal, setModal] = useState(false);
     const [reset, setReset] = useState(true);
     const [data, setData] = useState({
+        id: dataPromo.id,
         voucher_code: dataPromo.voucher_code,
         periode: dataPromo.periode,
         nominal: dataPromo.nominal,
     })
+
+    const { id, voucher_code, periode, nominal } = data;
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setReset(true);
@@ -33,9 +43,60 @@ const EditPromo = ({
         })
     }
 
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+        try {
+            dispatch(updatePromo({ id, voucher_code, periode, nominal }));
+            setReload();
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Edit Promo Success",
+                showConfirmButton: false,
+                timer: 1000
+            });
+            toast.custom((t) => (
+                <div
+                    className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
+                        } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                    <div className="flex-1 w-0 p-4">
+                        <div className="flex items-start">
+                            <div className="flex-shrink-0 pt-0.5">
+                                <img
+                                    className="h-10 w-10 rounded-full"
+                                    src={checkbox}
+                                    alt=""
+                                />
+                            </div>
+                            <div className="ml-3 flex-col text-start">
+                                <p className="text-sm font-bold text-success">
+                                    Success
+                                </p>
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Successfully Updated
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex border-gray-200">
+                        <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-slate-400 hover:text-slate-600 focus:outline-none"
+                        >
+                            <CloseIcon />
+                        </button>
+                    </div>
+                </div>
+            ))
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: "Edit Users Fail",
+            });
+        }
+    }
 
-
-    // console.log(data);
     return (
         <>
             <button
@@ -49,7 +110,7 @@ const EditPromo = ({
             {
                 modal && (
                     <div className="flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full">
-                        <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50 drop-shadow-4xl transform -translate-y-0 scale-125 transition-opacity transition-transform duration-300 center">
+                        <div className="bg-white rounded-2xl px-20 py-12 w-1/4 absolute z-50 transform -translate-y-0 scale-125 transition-transform duration-300 center">
                             <div className="absolute">
                                 <button onClick={HandleModal}>
                                     <CloseOutlined className="relative text-xl -top-6 right-12" />
@@ -58,7 +119,7 @@ const EditPromo = ({
                             <div className="text-start pb-6">
                                 <h1 className="text-2xl font-bold text-gray-600">Edit Promo</h1>
                             </div>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="pb-6">
                                     <div className="relative">
                                         <input
