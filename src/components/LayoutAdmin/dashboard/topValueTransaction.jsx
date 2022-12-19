@@ -15,7 +15,7 @@ const TopValueTransaction = () => {
   const [average, setAverage] = useState(1);
 
   useEffect(() => {
-    dispatch(fetchTransaction());
+    dispatch(fetchTransaction())
     let totalPrice = 0;
     listOfTransaction.forEach((transaksi) => {
       totalPrice += transaksi.price;
@@ -48,77 +48,69 @@ const TopValueTransaction = () => {
           </div>
           <div>
             <div className="overflow-x-auto relative">
-              <table className="w-full text-sm text-left text-gray-500 space-y-6 ">
-                {loading ? (
-                  <ContentTableLoader />
-                ) : (
-                  <>
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
-                      <tr>
-                        <th scope="col" className="py-3 px-6 rounded-l-2xl">
-                          Photo
-                        </th>
-                        <th scope="col" className="py-3 px-6">
-                          Name
-                        </th>
-                        <th scope="col" className="py-3 px-6">
-                          Price
-                        </th>
-                        <th scope="col" className="py-3 px-6">
-                          Office Name
-                        </th>
-                        <th scope="col" className="py-3 px-6">
-                          Type
-                        </th>
-                        <th scope="col" className="py-3 px-6 rounded-r-2xl">
-                          Date
-                        </th>
+              {loading ? (
+                <ContentTableLoader />
+              ) : (
+                <table className="w-full text-sm text-left text-gray-500 space-y-6 ">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
+                    <tr>
+                      <th scope="col" className="py-3 px-6 rounded-l-2xl">
+                        Photo
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Name
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Price
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Office Name
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Type
+                      </th>
+                      <th scope="col" className="py-3 px-6 rounded-r-2xl">
+                        Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {topValueList?.slice(0, 5).map((transaksi) => (
+                      <tr
+                        className="bg-white font-medium text-neutral-500"
+                        key={transaksi.id}
+                      >
+                        <td className="py-4 px-6 font-medium  whitespace-nowrap ">
+                          <img
+                            src={items}
+                            className="rounded-full max-w-[40px]"
+                            alt="img"
+                          />
+                        </td>
+                        <td className="py-4 px-6">
+                          {jsConvert.toHeaderCase(transaksi.user.full_name)}
+                        </td>
+                        <td className="py-4 px-6">
+                          <CurrencyFormat
+                            value={transaksi.price}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"Rp."}
+                            renderText={(value) => <div>{value}</div>}
+                          />
+                        </td>
+                        <td className="py-4 px-6">
+                          {jsConvert.toHeaderCase(transaksi.office.office_name)}
+                        </td>
+                        <td className="py-4 px-6">
+                          {jsConvert.toHeaderCase(transaksi.office.office_type)}
+                        </td>
+                        <td className="py-4 px-6">{transaksi.check_in.date}</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {topValueList?.slice(0, 5).map((transaksi) => (
-                        <tr
-                          className="bg-white font-medium text-neutral-500"
-                          key={transaksi.id}
-                        >
-                          <td className="py-4 px-6 font-medium  whitespace-nowrap ">
-                            <img
-                              src={items}
-                              className="rounded-full max-w-[40px]"
-                              alt="img"
-                            />
-                          </td>
-                          <td className="py-4 px-6">
-                            {jsConvert.toHeaderCase(transaksi.user.full_name)}
-                          </td>
-                          <td className="py-4 px-6">
-                            <CurrencyFormat
-                              value={transaksi.price}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              prefix={"Rp."}
-                              renderText={(value) => <div>{value}</div>}
-                            />
-                          </td>
-                          <td className="py-4 px-6">
-                            {jsConvert.toHeaderCase(
-                              transaksi.office.office_name
-                            )}
-                          </td>
-                          <td className="py-4 px-6">
-                            {jsConvert.toHeaderCase(
-                              transaksi.office.office_type
-                            )}
-                          </td>
-                          <td className="py-4 px-6">
-                            {transaksi.check_in.date}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </>
-                )}
-              </table>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>

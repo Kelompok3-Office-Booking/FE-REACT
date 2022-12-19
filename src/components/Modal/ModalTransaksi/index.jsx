@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTransaction, updateTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
+import { useDispatch } from "react-redux";
+import { updateTransaction } from "store/Feature/FeatureTransaction/transactionSlice";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { checkbox } from "assets";
 import jsConvert from "js-convert-case";
-
 
 const InputField = ({
   name,
@@ -19,7 +18,7 @@ const InputField = ({
   type = "text",
   disabled,
   autoComplete = "off",
-  classNameHeader
+  classNameHeader,
 }) => (
   <div className={`${classNameHeader} relative`}>
     <input
@@ -34,7 +33,7 @@ const InputField = ({
       defaultValue={defaultValue}
     />
     <label
-      for="floating_outlined"
+      htmlFor="floating_outlined"
       className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
     >
       {label}
@@ -71,25 +70,23 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
         title: "Success",
         text: "Edit Transaction Success",
         showConfirmButton: false,
-        timer: 1000
+        timer: 1000,
       });
       toast.custom((t) => (
         <div
-          className={`${t.visible ? 'animate-enter ease-in-out duration-200' : 'animate-leave ease-in-out duration-200'
-            } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+          className={`${
+            t.visible
+              ? "animate-enter ease-in-out duration-200"
+              : "animate-leave ease-in-out duration-200"
+          } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">
               <div className="flex-shrink-0 pt-0.5">
-                <img
-                  className="h-10 w-10 rounded-full"
-                  src={checkbox}
-                  alt=""
-                />
+                <img className="h-10 w-10 rounded-full" src={checkbox} alt="" />
               </div>
               <div className="ml-3 flex-col text-start">
-                <p className="text-sm font-bold text-success">
-                  Success
-                </p>
+                <p className="text-sm font-bold text-success">Success</p>
                 <p className="mt-1 text-sm text-gray-500">
                   Successfully Updated
                 </p>
@@ -105,7 +102,7 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
             </button>
           </div>
         </div>
-      ))
+      ));
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -113,8 +110,7 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
         text: "Edit Transaction Fail",
       });
     }
-
-  }
+  };
 
   return (
     <>
@@ -161,17 +157,53 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
                 </button>
               </div>
               {/* Modal body */}
-              <form onSubmit={handleUpdateStatus} className="py-2 px-6 space-y-6">
+              <form
+                onSubmit={handleUpdateStatus}
+                className="py-2 px-6 space-y-6"
+              >
                 <div className="px-6 lg:px-8 space-y-4">
                   <h3 className="mb-4 text-xl font-medium text-neutral-700 ">
                     Edit Transaction
                   </h3>
                   <div className="space-y-6">
-                    <select id="status_booking" name="status" onChange={(ev) => handleChangeStatus(ev)} class="border-2 py-4 border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                      <option selected={dataTransaksi.status === "accepted" ? true : false} value="accepted">Accepted</option>
-                      <option selected={dataTransaksi.status === "rejected" ? true : false} value="rejected">Rejected</option>
-                      <option selected={dataTransaksi.status === "pending" ? true : false} value="pending">Pending</option>
-                      <option selected={dataTransaksi.status === "on process" ? true : false} value="on process">On Process</option>
+                    <select
+                      id="status_booking"
+                      name="status"
+                      onChange={(ev) => handleChangeStatus(ev)}
+                      className="border-2 py-4 border-blue-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option
+                        selected={
+                          dataTransaksi.status === "accepted" ? true : false
+                        }
+                        value="accepted"
+                      >
+                        Accepted
+                      </option>
+                      <option
+                        selected={
+                          dataTransaksi.status === "rejected" ? true : false
+                        }
+                        value="rejected"
+                      >
+                        Rejected
+                      </option>
+                      <option
+                        selected={
+                          dataTransaksi.status === "pending" ? true : false
+                        }
+                        value="pending"
+                      >
+                        Pending
+                      </option>
+                      <option
+                        selected={
+                          dataTransaksi.status === "on process" ? true : false
+                        }
+                        value="on process"
+                      >
+                        On Process
+                      </option>
                     </select>
                   </div>
 
@@ -190,7 +222,9 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
                     placeholder="Type"
                     disabled={true}
                     className="text-gray-400"
-                    defaultValue={jsConvert.toHeaderCase(dataTransaksi.office.office_type)}
+                    defaultValue={jsConvert.toHeaderCase(
+                      dataTransaksi.office.office_type
+                    )}
                   />
 
                   <InputField

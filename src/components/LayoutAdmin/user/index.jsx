@@ -105,6 +105,9 @@ const UserPage = () => {
         console.log(err);
       });
 
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
     setDataUser({
       minValue: 0,
       maxValue: 6,
@@ -285,69 +288,67 @@ const UserPage = () => {
             />
           </div>
         </div>
-        <table className=" w-full text-sm text-left text-gray-500 ">
-          {loading ? (
-            <ContentTableLoader />
-          ) : (
-            <>
-              <TableHead
-                handleSelectAll={handleSelectAll}
-                isChecked={isCheckAll}
-                requestSort={requestSort}
-                getClassNamesFor={getClassNamesFor}
-              />
-              <tbody>
-                {items
-                  ?.slice(dataUser.minValue, dataUser.maxValue)
-                  .map((user, index) => (
-                    <tr
-                      className="bg-white border-b  hover:bg-gray-50"
-                      key={user.id}
-                    >
-                      <td className="p-4 w-4">
-                        <div className="flex items-center">
-                          <input
-                            id={user.id}
-                            type="checkbox"
-                            defaultValue={user.id}
-                            checked={isCheckAll ? true : user.checked}
-                            onChange={handleClickCheck}
-                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
-                          />
-                          <label
-                            htmlFor="checkbox-table-search-1"
-                            className="sr-only"
-                          >
-                            checkbox
-                          </label>
-                        </div>
-                      </td>
-                      <td className="py-4 px-6">{user.id}</td>
-                      <td className="py-4 px-6">{user.full_name}</td>
-                      <td className="py-4 px-6">{user.gender}</td>
-                      <td className="py-4 px-6">{user.email}</td>
-                      <td className="py-4 px-6 flex gap-2 items-center justify-center ">
-                        <button
-                          href="#"
-                          onClick={() => handleDelete(user.id)}
-                          type="button"
-                          data-modal-toggle="editUserModal"
-                          className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
-                        >
-                          <DeleteForeverIcon className="text-slate-500 hover:text-white" />
-                        </button>
-                        <ModalUpdateUser
-                          dataUser={user}
-                          loading={loading}
-                          setReload={setReload}
+        {loading ? (
+          <ContentTableLoader />
+        ) : (
+          <table className=" w-full text-sm text-left text-gray-500 ">
+            <TableHead
+              handleSelectAll={handleSelectAll}
+              isChecked={isCheckAll}
+              requestSort={requestSort}
+              getClassNamesFor={getClassNamesFor}
+            />
+            <tbody>
+              {items
+                ?.slice(dataUser.minValue, dataUser.maxValue)
+                .map((user, index) => (
+                  <tr
+                    className="bg-white border-b  hover:bg-gray-50"
+                    key={user.id}
+                  >
+                    <td className="p-4 w-4">
+                      <div className="flex items-center">
+                        <input
+                          id={user.id}
+                          type="checkbox"
+                          defaultValue={user.id}
+                          checked={isCheckAll ? true : user.checked}
+                          onChange={handleClickCheck}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 "
                         />
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </>
-          )}
-        </table>
+                        <label
+                          htmlFor="checkbox-table-search-1"
+                          className="sr-only"
+                        >
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">{user.id}</td>
+                    <td className="py-4 px-6">{user.full_name}</td>
+                    <td className="py-4 px-6">{user.gender}</td>
+                    <td className="py-4 px-6">{user.email}</td>
+                    <td className="py-4 px-6 flex gap-2 items-center justify-center ">
+                      <button
+                        href="#"
+                        onClick={() => handleDelete(user.id)}
+                        type="button"
+                        data-modal-toggle="editUserModal"
+                        className=" px-2 py-2 font-medium bg-slate-100 hover:underline rounded-lg hover:bg-red-700 text-white"
+                      >
+                        <DeleteForeverIcon className="text-slate-500 hover:text-white" />
+                      </button>
+                      <ModalUpdateUser
+                        dataUser={user}
+                        loading={loading}
+                        setReload={setReload}
+                      />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <div className="mt-8 text-start">
         <Pagination

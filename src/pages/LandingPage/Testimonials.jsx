@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Rating } from "@mui/material";
-import { testimonials } from "store/dataTestimonials";
 import Carousel from "better-react-carousel";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";

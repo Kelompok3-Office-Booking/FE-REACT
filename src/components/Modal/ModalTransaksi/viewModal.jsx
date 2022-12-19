@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { CloseOutlined } from "@ant-design/icons";
-import jsConvert from 'js-convert-case';
-import CurrencyFormat from 'react-currency-format';
+import jsConvert from "js-convert-case";
+import CurrencyFormat from "react-currency-format";
 
 const InputField = ({
   name,
@@ -14,7 +14,7 @@ const InputField = ({
   type = "text",
   disabled,
   autoComplete = "off",
-  classNameHeader
+  classNameHeader,
 }) => (
   <div className={`${classNameHeader} relative`}>
     <input
@@ -29,7 +29,7 @@ const InputField = ({
       defaultValue={defaultValue}
     />
     <label
-      for="floating_outlined"
+      htmlFor="floating_outlined"
       className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
     >
       {label}
@@ -37,16 +37,11 @@ const InputField = ({
   </div>
 );
 
-const ModalViewTransaction = (
-  {
-    dataTransaksi
-  }
-) => {
-
+const ModalViewTransaction = ({ dataTransaksi }) => {
   const [modal, setModal] = useState(false);
-  const [ppn, setPPN] = useState('');
-  const [service, setService] = useState('');
-  const [price, setPrice] = useState('');
+  const [ppn, setPPN] = useState("");
+  const [service, setService] = useState("");
+  const [price, setPrice] = useState("");
   const HANDLEMODAL = () => {
     setModal(!modal);
   };
@@ -63,7 +58,9 @@ const ModalViewTransaction = (
       </button>
       {/* Edit user modal */}
       {modal && (
-        <div className={`transition-transform duration-1000 delay-700 ease-in-out flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-20 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full`}>
+        <div
+          className={`transition-transform duration-1000 delay-700 ease-in-out flex flex-row bg-black bg-opacity-30 overflow-y-auto overflow-x-hidden fixed left-0 top-0 z-20 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full`}
+        >
           <div
             id="extralarge-modal"
             tabIndex={-1}
@@ -72,7 +69,7 @@ const ModalViewTransaction = (
             <div className="relative w-full max-w-lg h-full md:h-auto">
               {/* Modal content */}
               <form
-                onSubmit={() => { }}
+                onSubmit={() => {}}
                 className="relative bg-white rounded-tl-3xl rounded-bl-3xl shadow "
               >
                 {/* Modal header */}
@@ -116,7 +113,9 @@ const ModalViewTransaction = (
                         label="Status Booking"
                         placeholder="Status Booking"
                         disabled={true}
-                        defaultValue={jsConvert.toHeaderCase(dataTransaksi.status)}
+                        defaultValue={jsConvert.toHeaderCase(
+                          dataTransaksi.status
+                        )}
                       />
                       <InputField
                         classNameHeader="col-span-2"
@@ -124,7 +123,9 @@ const ModalViewTransaction = (
                         label="Full Name"
                         placeholder="Full Name"
                         disabled={true}
-                        defaultValue={jsConvert.toHeaderCase(dataTransaksi.user.full_name)}
+                        defaultValue={jsConvert.toHeaderCase(
+                          dataTransaksi.user.full_name
+                        )}
                       />
                       <InputField
                         classNameHeader="col-span-2"
@@ -177,7 +178,9 @@ const ModalViewTransaction = (
                         label="Welcome Drink"
                         placeholder="Welcome Drink"
                         disabled={true}
-                        defaultValue={jsConvert.toHeaderCase(dataTransaksi.drink)}
+                        defaultValue={jsConvert.toHeaderCase(
+                          dataTransaksi.drink
+                        )}
                       />
                       <InputField
                         name="text"
@@ -233,9 +236,36 @@ const ModalViewTransaction = (
                   </div>
                 </div>
                 <div className="hidden">
-                  <CurrencyFormat className="hidden" value={0.11 * dataTransaksi.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => { setPPN(value) }} />
-                  <CurrencyFormat className="hidden" value={dataTransaksi.price} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => { setPrice(value) }} />
-                  <CurrencyFormat className="hidden" value={10000} displayType={'text'} thousandSeparator={true} prefix={'Rp.'} renderText={value => { setService(value) }} />
+                  <CurrencyFormat
+                    className="hidden"
+                    value={0.11 * dataTransaksi.price}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"Rp."}
+                    renderText={(value) => {
+                      setPPN(value);
+                    }}
+                  />
+                  <CurrencyFormat
+                    className="hidden"
+                    value={dataTransaksi.price}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"Rp."}
+                    renderText={(value) => {
+                      setPrice(value);
+                    }}
+                  />
+                  <CurrencyFormat
+                    className="hidden"
+                    value={10000}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"Rp."}
+                    renderText={(value) => {
+                      setService(value);
+                    }}
+                  />
                 </div>
               </form>
             </div>

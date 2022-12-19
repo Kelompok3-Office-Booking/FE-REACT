@@ -3,14 +3,12 @@ import { dataJakarta } from "store/dataJakarta";
 import CreateIcon from "@mui/icons-material/Create";
 import { useDispatch, useSelector } from "react-redux";
 import { updateOffice } from "store/Feature/FeatureOffice/officeSlice";
-import { Helmet } from "react-helmet";
 import CloseIcon from "@mui/icons-material/Close";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { checkbox } from "assets";
-import { AxiosError } from "axios";
 import { fetchFacility } from "store/Feature/FeaturesFacility/facilitySlice";
 import jsConvert from "js-convert-case";
-import CurrencyInput from 'react-currency-input-field';
+import CurrencyInput from "react-currency-input-field";
 
 const InputField = ({
   name,
@@ -22,7 +20,7 @@ const InputField = ({
   className = "border-gray-400",
   type = "text",
   disabled,
-  onKeyPress
+  onKeyPress,
 }) => (
   <div className="relative">
     <input
@@ -85,7 +83,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
   const [jakartaLits, setJakartaList] = useState(dataJakarta);
   const dispatch = useDispatch();
   const [citys, setCitys] = useState([]);
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState("");
   const [visibleCity, setVisibleCity] = useState(false);
   const [district, setDistrict] = useState([]);
   const [lat, setLat] = useState(null);
@@ -142,7 +140,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     const { value, checked } = ev.target;
     setIsCheck([...isCheck, value]);
     if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== value));
+      setIsCheck(isCheck.filter((item) => item !== value));
     }
   };
 
@@ -173,10 +171,9 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
   };
 
   useEffect(() => {
-    dispatch(fetchFacility())
-      .then((res) => {
-        setFacilityList(res.payload);
-      })
+    dispatch(fetchFacility()).then((res) => {
+      setFacilityList(res.payload);
+    });
 
     const fileReaders = [];
     let isCancel = false;
@@ -219,7 +216,6 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
         }
       });
     };
-
   }, [imageFiles]);
 
   const preventMinus = (e) => {
@@ -256,16 +252,16 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     const checked = evt.target.value;
     setCity(checked);
     if (checked) {
-      setVisibleCity(true)
+      setVisibleCity(true);
     }
     const index = citys.indexOf(checked);
     setDistrict(jakartaLits[index].district);
-    setData({ ...data, city: checked })
+    setData({ ...data, city: checked });
   };
 
   const handleSelectedDistrict = (evt) => {
     const checked = evt.target.value;
-    setData({ ...data, district: checked })
+    setData({ ...data, district: checked });
   };
 
   const getLocation = () => {
@@ -285,8 +281,6 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
       );
     }
   };
-
-
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -317,8 +311,8 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     toast.custom((t) => (
       <div
         className={`${t.visible
-          ? "animate-enter ease-in-out duration-200"
-          : "animate-leave ease-in-out duration-200"
+            ? "animate-enter ease-in-out duration-200"
+            : "animate-leave ease-in-out duration-200"
           } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 w-0 p-4">
@@ -328,7 +322,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
             </div>
             <div className="ml-3 flex-col text-start">
               <p className="text-sm font-bold text-success">Success</p>
-              <p className="mt-1 text-sm text-gray-500">Successfully Created</p>
+              <p className="mt-1 text-sm text-gray-500">Successfully Updated</p>
             </div>
           </div>
         </div>
@@ -407,7 +401,8 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
-                            dataDetailOffice.office_type.toLowerCase() === "office"
+                            dataDetailOffice.office_type.toLowerCase() ===
+                              "office"
                               ? true
                               : undefined
                           }
@@ -428,7 +423,8 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
-                            dataDetailOffice.office_type.toLowerCase() === "coworking space"
+                            dataDetailOffice.office_type.toLowerCase() ===
+                              "coworking space"
                               ? true
                               : undefined
                           }
@@ -449,7 +445,8 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           name="office_type"
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
-                            dataDetailOffice.office_type.toLowerCase() === "meeting room"
+                            dataDetailOffice.office_type.toLowerCase() ===
+                              "meeting room"
                               ? true
                               : undefined
                           }
@@ -472,7 +469,9 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         placeholder="Price(Rp)"
                         defaultValue={dataDetailOffice.price}
                         onKeyPress={preventMinus}
-                        onValueChange={(value, name) => setHandleValuePrice(value)}
+                        onValueChange={(value, name) =>
+                          setHandleValuePrice(value)
+                        }
                       />
                     </div>
                     <div className="flex mx-auto w-full ml-8">
@@ -554,10 +553,20 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         name="city"
                         onClick={(ev) => handleSelectedCity(ev)}
                         onChange={(ev) => setHandleChangeData(ev)}
-                        defaultChecked={citys.includes(dataDetailOffice.city) ? true : undefined}
+                        defaultChecked={
+                          citys.includes(dataDetailOffice.city)
+                            ? true
+                            : undefined
+                        }
                         className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
-                        <option value={dataDetailOffice.city} hidden={visibleCity ? true : undefined} defaultChecked={dataDetailOffice.city} >{dataDetailOffice.city}</option>
+                        <option
+                          value={dataDetailOffice.city}
+                          hidden={visibleCity ? true : undefined}
+                          defaultChecked={dataDetailOffice.city}
+                        >
+                          {dataDetailOffice.city}
+                        </option>
                         {jakartaLits.map((city, index) => {
                           return (
                             <option
@@ -581,7 +590,13 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         defaultChecked={dataDetailOffice.district}
                         className="border-2 py-3.5 border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       >
-                        <option value={dataDetailOffice.district} hidden={visibleCity ? true : undefined} defaultChecked={dataDetailOffice.district} >{dataDetailOffice.district}</option>
+                        <option
+                          value={dataDetailOffice.district}
+                          hidden={visibleCity ? true : undefined}
+                          defaultChecked={dataDetailOffice.district}
+                        >
+                          {dataDetailOffice.district}
+                        </option>
                         {district.map((val, index) => {
                           return (
                             <option
@@ -770,7 +785,11 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                       <input
                         onChange={(ev) => handleChangeFacilities(ev)}
                         defaultChecked={
-                          checkedFacilityDesc.includes(`${fasilitas.description}`) ? true : undefined
+                          checkedFacilityDesc.includes(
+                            `${fasilitas.description}`
+                          )
+                            ? true
+                            : undefined
                         }
                         id="default-checkbox"
                         type="checkbox"
