@@ -310,11 +310,10 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     setReload();
     toast.custom((t) => (
       <div
-        className={`${
-          t.visible
+        className={`${t.visible
             ? "animate-enter ease-in-out duration-200"
             : "animate-leave ease-in-out duration-200"
-        } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 w-0 p-4">
           <div className="flex items-start">
@@ -323,7 +322,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
             </div>
             <div className="ml-3 flex-col text-start">
               <p className="text-sm font-bold text-success">Success</p>
-              <p className="mt-1 text-sm text-gray-500">Successfully Created</p>
+              <p className="mt-1 text-sm text-gray-500">Successfully Updated</p>
             </div>
           </div>
         </div>
@@ -403,7 +402,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
                             dataDetailOffice.office_type.toLowerCase() ===
-                            "office"
+                              "office"
                               ? true
                               : undefined
                           }
@@ -425,7 +424,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
                             dataDetailOffice.office_type.toLowerCase() ===
-                            "coworking space"
+                              "coworking space"
                               ? true
                               : undefined
                           }
@@ -447,7 +446,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           onChange={(ev) => setHandleChangeData(ev)}
                           defaultChecked={
                             dataDetailOffice.office_type.toLowerCase() ===
-                            "meeting room"
+                              "meeting room"
                               ? true
                               : undefined
                           }
@@ -481,7 +480,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                           id="inline-radio"
                           type="radio"
                           defaultChecked={true}
-                          onChange={() => {}}
+                          onChange={() => { }}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label
@@ -495,7 +494,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
                         <input
                           id="inline-2-radio"
                           type="radio"
-                          onChange={() => {}}
+                          onChange={() => { }}
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label
