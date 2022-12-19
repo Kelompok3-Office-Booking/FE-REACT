@@ -95,8 +95,6 @@ const AddOffice = () => {
   const [status, setStatus] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
   const [images, setImages] = useState([]);
-  const [facilities_id, setFacilitiesId] = useState([]);
-
   const listOfFacility = useSelector((state) => state.facility.data);
   const [facilityList, setFacilityList] = useState(listOfFacility);
 
