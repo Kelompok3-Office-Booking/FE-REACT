@@ -34,33 +34,37 @@ const BookingStatus = () => {
 
   const setReload = () => {
     setLoading(true);
-    const updateListOnProcess = [];
-    dispatch(fetchTransaction()).then((res) => {
-      res.payload.forEach((transaksi) => {
-        const loweredStatus = transaksi.status.toLowerCase();
-        if (loweredStatus.includes("on process")) {
-          updateListOnProcess.push(transaksi);
-        }
+    dispatch(fetchTransaction())
+      .then((res) => {
+        const updateListOnProcess = [];
+        res.payload.forEach((transaksi) => {
+          const loweredStatus = transaksi.status.toLowerCase();
+          if (loweredStatus.includes("on process")) {
+            updateListOnProcess.push(transaksi);
+          }
+        });
+        setTransaksiList(updateListOnProcess);
       });
-    });
-    setTransaksiList(updateListOnProcess);
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 500);
   };
 
   useEffect(() => {
-    dispatch(fetchTransaction());
-    const updateListOnProcess = [];
-    transaksiList.forEach((transaksi) => {
-      const loweredStatus = transaksi.status.toLowerCase();
-      if (loweredStatus.includes("on process")) {
-        updateListOnProcess.push(transaksi);
-      }
-    });
-    setTransaksiList(updateListOnProcess);
-    setLoading(false);
-
+    dispatch(fetchTransaction())
+      .then((res) => {
+        const updateListOnProcess = [];
+        res.payload.forEach((transaksi) => {
+          const loweredStatus = transaksi.status.toLowerCase();
+          if (loweredStatus.includes("on process")) {
+            updateListOnProcess.push(transaksi);
+          }
+        });
+        setTransaksiList(updateListOnProcess);
+      });
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
     setDataTransaksi({
       minValue: 0,
       maxValue: 6,

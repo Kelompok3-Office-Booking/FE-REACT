@@ -15,7 +15,7 @@ const TopValueTransaction = () => {
   const [average, setAverage] = useState(1);
 
   useEffect(() => {
-    dispatch(fetchTransaction());
+    dispatch(fetchTransaction())
     let totalPrice = 0;
     listOfTransaction.forEach((transaksi) => {
       totalPrice += transaksi.price;

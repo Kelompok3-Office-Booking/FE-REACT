@@ -105,6 +105,9 @@ const UserPage = () => {
         console.log(err);
       });
 
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
     setDataUser({
       minValue: 0,
       maxValue: 6,
@@ -190,11 +193,10 @@ const UserPage = () => {
             setReload();
             toast.custom((t) => (
               <div
-                className={`${
-                  t.visible
-                    ? "animate-enter ease-in-out duration-200"
-                    : "animate-leave ease-in-out duration-200"
-                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                className={`${t.visible
+                  ? "animate-enter ease-in-out duration-200"
+                  : "animate-leave ease-in-out duration-200"
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
               >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">

@@ -105,7 +105,9 @@ const TransactionPage = () => {
       .catch((err) => {
         console.log(err);
       });
-
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
     setDataTransaksi({
       minValue: 0,
       maxValue: 6,
@@ -204,11 +206,10 @@ const TransactionPage = () => {
             });
             toast.custom((t) => (
               <div
-                className={`${
-                  t.visible
+                className={`${t.visible
                     ? "animate-enter ease-in-out duration-200"
                     : "animate-leave ease-in-out duration-200"
-                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
               >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
@@ -360,27 +361,26 @@ const TransactionPage = () => {
                       </td>
                       <td id="status" className="py-4 px-6">
                         <span
-                          className={`${
-                            jsConvert.toHeaderCase(transaction.status) ===
-                            "On Process"
+                          className={`${jsConvert.toHeaderCase(transaction.status) ===
+                              "On Process"
                               ? "bg-blue-200 rounded-2xl border-2 border-blue-500 py-1 px-4"
                               : jsConvert.toHeaderCase(transaction.status) ===
                                 "Confirmed"
-                              ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
-                              : jsConvert.toHeaderCase(transaction.status) ===
-                                "Pending"
-                              ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
-                              : jsConvert.toHeaderCase(transaction.status) ===
-                                "Accepted"
-                              ? "bg-success bg-opacity-30 rounded-2xl border-2 border-success py-1 px-4"
-                              : jsConvert.toHeaderCase(transaction.status) ===
-                                "Cancelled"
-                              ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                              : jsConvert.toHeaderCase(transaction.status) ===
-                                "Rejected"
-                              ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
-                              : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
-                          }`}
+                                ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                                : jsConvert.toHeaderCase(transaction.status) ===
+                                  "Pending"
+                                  ? "bg-green-200 rounded-2xl border-2 border-green-500 py-1 px-4"
+                                  : jsConvert.toHeaderCase(transaction.status) ===
+                                    "Accepted"
+                                    ? "bg-success bg-opacity-30 rounded-2xl border-2 border-success py-1 px-4"
+                                    : jsConvert.toHeaderCase(transaction.status) ===
+                                      "Cancelled"
+                                      ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                                      : jsConvert.toHeaderCase(transaction.status) ===
+                                        "Rejected"
+                                        ? "bg-red-200 rounded-2xl border-2 border-red-500 py-1 px-4"
+                                        : "bg-slate-100 rounded-2xl border-2 border-slate-100 py-1 px-4"
+                            }`}
                         >
                           {jsConvert.toHeaderCase(transaction.status)}
                         </span>
