@@ -23,6 +23,28 @@ import image7 from "./img/testimonials/image7.svg";
 import image8 from "./img/testimonials/image8.svg";
 import image9 from "./img/testimonials/image9.svg";
 import image10 from "./img/testimonials/image10.svg";
+import login from "./img/login/login.svg";
+import Arrow from "./img/arrow.svg";
+import items from "./img/items.svg";
+import items2 from "./img/items2.svg";
+import items3 from "./img/items3.svg";
+import items4 from "./img/items4.svg";
+import team1 from "./img/img-team/david.jpg";
+import team2 from "./img/img-team/ilham.jpg";
+import linkedin_team from "./img/img-team/sosmed/linkedin.svg";
+import behance_team from "./img/img-team/sosmed/behance.svg";
+import github_team from "./img/img-team/sosmed/github.svg";
+import instagram_team from "./img/img-team/sosmed/instagram.svg";
+import dribbble_team from "./img/img-team/sosmed/dribbble.svg";
+import checkbox from "./img/checkbox.svg";
+import notfound from "./img/notfound.svg";
 
-export { logo, logo_black, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone, LogoNavbar, BetterSpace };
+export { logo, logo_black, facebook, instagram, twitter, googleplay, appstore, gambar_header, fitur1, fitur2, fitur3, fitur4, mockup_phone, LogoNavbar, BetterSpace, Arrow, items, items2, items3, items4 };
+// gambar testimonials
 export { image1, image2, image3, image4, image5, image6, image7, image8, image9, image10 };
+
+// image team
+export { team1, team2, linkedin_team, behance_team, github_team, instagram_team, dribbble_team };
+
+// other
+export { login, checkbox, notfound };
