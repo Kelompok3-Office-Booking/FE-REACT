@@ -53,7 +53,7 @@ const DashboardPage = () => {
     seCoworkingSpace(updatedCoworkList);
     setMeetingSpace(updateMeetingList);
     setOfficeSpace(updatedOfficeList);
-  }, [dispatch, officeList]);
+  }, [dispatch]);
 
   return (
     <>
