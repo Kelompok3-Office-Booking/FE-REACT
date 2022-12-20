@@ -142,6 +142,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     if (!checked) {
       setIsCheck(isCheck.filter((item) => item !== value));
     }
+    setData({ ...data, facilities_id: isCheck.toString() });
   };
 
   const [modal, setModal] = useState(false);
@@ -302,7 +303,7 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     formData.append("city", data.city);
     formData.append("district", data.district);
     formData.append("address", data.address);
-    formData.append("facilities_id", isCheck.toString());
+    formData.append("facilities_id", data.facilities_id);
     imageFiles.forEach((image) => {
       formData.append("images", image);
     });
@@ -311,8 +312,8 @@ const EditOffice = ({ dataDetailOffice, setReload }) => {
     toast.custom((t) => (
       <div
         className={`${t.visible
-            ? "animate-enter ease-in-out duration-200"
-            : "animate-leave ease-in-out duration-200"
+          ? "animate-enter ease-in-out duration-200"
+          : "animate-leave ease-in-out duration-200"
           } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 w-0 p-4">

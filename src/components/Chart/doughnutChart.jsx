@@ -32,7 +32,7 @@ const DoughnutChart = ({ chartData }) => {
             backgroundColor: "#ccc",
             borderRadius: 3,
             font: {
-              size: 18,
+              size: 16,
             },
           },
           legend: {
