@@ -65,20 +65,12 @@ const ModalUpdateTransaksi = ({ dataTransaksi, setReload }) => {
     try {
       dispatch(updateTransaction(data));
       setReload();
-      Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Edit Transaction Success",
-        showConfirmButton: false,
-        timer: 1000,
-      });
       toast.custom((t) => (
         <div
-          className={`${
-            t.visible
-              ? "animate-enter ease-in-out duration-200"
-              : "animate-leave ease-in-out duration-200"
-          } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          className={`${t.visible
+            ? "animate-enter ease-in-out duration-200"
+            : "animate-leave ease-in-out duration-200"
+            } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
         >
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">

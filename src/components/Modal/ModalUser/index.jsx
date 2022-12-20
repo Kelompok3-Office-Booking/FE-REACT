@@ -79,20 +79,12 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
     try {
       dispatch(updateUser({ id, full_name, gender, email }));
       setReload();
-      Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Edit Users Success",
-        showConfirmButton: false,
-        timer: 1000,
-      });
       toast.custom((t) => (
         <div
-          className={`${
-            t.visible
-              ? "animate-enter ease-in-out duration-200"
-              : "animate-leave ease-in-out duration-200"
-          } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          className={`${t.visible
+            ? "animate-enter ease-in-out duration-200"
+            : "animate-leave ease-in-out duration-200"
+            } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
         >
           <div className="flex-1 w-0 p-4">
             <div className="flex items-start">
@@ -155,7 +147,7 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
                   label="Full Name"
                   placeholder="Full Name"
                   type="text"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   defaultValue={reset ? dataUser.full_name : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />
@@ -180,7 +172,7 @@ const ModalUpdateUser = ({ dataUser, setReload }) => {
                   label="Email"
                   placeholder="Email"
                   type="email"
-                  onClick={() => {}}
+                  onClick={() => { }}
                   defaultValue={reset ? dataUser.email : ""}
                   onChange={(ev) => setHandleChangeData(ev)}
                 />

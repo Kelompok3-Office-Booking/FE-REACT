@@ -107,7 +107,6 @@ const ReviewPage = () => {
   };
 
   const handleDelete = (id) => {
-    // alert(id)
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton:
@@ -131,14 +130,6 @@ const ReviewPage = () => {
         if (result.isConfirmed) {
           try {
             dispatch(deleteReview(id));
-            setReload();
-            Swal.fire({
-              icon: "success",
-              title: `Deleted!`,
-              text: "Your data has been deleted.",
-              showConfirmButton: false,
-              timer: 1200,
-            });
             setReload();
             toast.custom((t) => (
               <div

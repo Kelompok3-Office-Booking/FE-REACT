@@ -70,6 +70,7 @@ const CurrencyField = ({
       autoComplete="off"
       min="0"
       disabled={disabled}
+      required
     />
     <label
       htmlFor="floating_outlined"

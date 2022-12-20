@@ -9,9 +9,6 @@ import {
 } from "store/Feature/FeatureTransaction/transactionSlice";
 import CurrencyFormat from "react-currency-format";
 import Swal from "sweetalert2";
-import { toast } from "react-hot-toast";
-import CloseIcon from "@mui/icons-material/Close";
-import { checkbox } from "assets";
 
 const BookingStatus = () => {
   const dispatch = useDispatch();
@@ -86,9 +83,9 @@ const BookingStatus = () => {
     swalWithBootstrapButtons
       .fire({
         title: `Are you sure?`,
-        text: "The selected record will be permanently deleted. Are you want to continue",
+        text: "The selected record will be rejected. Are you want to continue",
         showCancelButton: true,
-        confirmButtonText: "Yes, Delete",
+        confirmButtonText: "Yes, Rejected",
         cancelButtonText: "No, cancel",
         reverseButtons: true,
       })
@@ -98,11 +95,11 @@ const BookingStatus = () => {
             dispatch(updateTransaction({ id, status: "rejected" }));
             setReload();
             Swal.fire({
-              icon: "success",
-              title: "Success!",
-              text: "Your data success updates.",
+              icon: "error",
+              title: "Booking Rejected !",
+              text: "This user's order status has been updated, you can see in the transaction details list.",
               showConfirmButton: false,
-              timer: 1200,
+              timer: 1800,
             });
           } catch (error) {
             Swal.fire({
@@ -120,7 +117,7 @@ const BookingStatus = () => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton:
-          "focus:outline-none text-white bg-fifth hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
+          "focus:outline-none text-white bg-success bg-opacity-90 hover:bg-success font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2",
         cancelButton:
           "py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200",
       },
@@ -130,9 +127,9 @@ const BookingStatus = () => {
     swalWithBootstrapButtons
       .fire({
         title: `Are you sure?`,
-        text: "The selected record will be permanently deleted. Are you want to continue",
+        text: "The selected record will be accepted. Are you want to continue",
         showCancelButton: true,
-        confirmButtonText: "Yes, Delete",
+        confirmButtonText: "Yes, Accepted",
         cancelButtonText: "No, cancel",
         reverseButtons: true,
       })
@@ -143,10 +140,10 @@ const BookingStatus = () => {
             setReload();
             Swal.fire({
               icon: "success",
-              title: "Success!",
-              text: "Your data success updates.",
+              title: "Booking Accepted !",
+              text: "This user's order status has been updated, you can see in the transaction details list.",
               showConfirmButton: false,
-              timer: 1200,
+              timer: 1800,
             });
           } catch (error) {
             Swal.fire({

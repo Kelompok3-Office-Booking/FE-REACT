@@ -25,7 +25,7 @@ const APIOffice = {
 
     async updateOffice(data) {
         try {
-            const id = data.id;
+            const id = data.get("id");
             const response = await axiosInstance.put(`/admin/offices/update/${id}`, data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
