@@ -183,14 +183,6 @@ const UserPage = () => {
           try {
             dispatch(deleteUser(id));
             setReload();
-            Swal.fire({
-              icon: "success",
-              title: `Deleted!`,
-              text: "Your data has been deleted.",
-              showConfirmButton: false,
-              timer: 1200,
-            });
-            setReload();
             toast.custom((t) => (
               <div
                 className={`${t.visible
