@@ -177,10 +177,11 @@ const OfficePage = () => {
             setReload();
             toast.custom((t) => (
               <div
-                className={`${t.visible
-                  ? "animate-enter ease-in-out duration-200"
-                  : "animate-leave ease-in-out duration-200"
-                  } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                className={`${
+                  t.visible
+                    ? "animate-enter ease-in-out duration-200"
+                    : "animate-leave ease-in-out duration-200"
+                } max-w-md w-80 bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
               >
                 <div className="flex-1 w-0 p-4">
                   <div className="flex items-start">
@@ -251,7 +252,7 @@ const OfficePage = () => {
                 </h1>
                 <button
                   type="button"
-                  onClick={() => { }}
+                  onClick={() => {}}
                   className="text-white bg-fifth hover:bg-red-400 font-medium rounded-full text-sm px-5 py-2.5 flex text-center mr-2 mb-2"
                 >
                   <DeleteForeverIcon className="text-white" />
@@ -337,7 +338,7 @@ const OfficePage = () => {
                           / Hour
                         </td>
                         <td className="py-4 px-6 text-center">
-                          {office.office_length} Person
+                          {office.accommodate} Person
                         </td>
                         <td className="py-4 px-6 text-center">
                           {office.total_booked}
